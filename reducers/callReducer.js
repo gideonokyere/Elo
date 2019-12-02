@@ -18,3 +18,21 @@
            return state
      }
  }
+
+ export const markCallDone=(state=0,action)=>{
+    switch(action.type){
+        case 'MARK_CALL_DONE':
+            return action.id
+        default:
+            return state
+    }
+ }
+
+ export const markCallUndone=(state=0,action)=>{
+    switch(action.type){
+        case 'MARK_CALL_UNDONE':
+            return action.id
+        default:
+            return state
+    }
+ }

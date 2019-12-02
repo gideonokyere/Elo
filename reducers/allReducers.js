@@ -1,5 +1,5 @@
 import {combineReducers} from 'redux';
-import {newCall,listCalls} from '../reducers/callReducer';
+import {newCall,listCalls,markCallDone,markCallUndone} from '../reducers/callReducer';
 import {newTodo,listTodos} from '../reducers/todoReducer';
 import {newGoto,listGotos} from '../reducers/gotoReducer';
 import {newBuy,listBuys} from '../reducers/buyReducer';
@@ -11,6 +11,8 @@ import {newDaily,listDailys,markDailyDone,markDailyUndone} from '../reducers/dai
 export default combineReducers({
     newCall,
     listCalls,
+    markCallDone,
+    markCallUndone,
     newTodo,
     listTodos,
     newGoto,

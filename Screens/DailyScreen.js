@@ -91,7 +91,7 @@ const styles = StyleSheet.create({
       paddingRight:18,
     },
     doneStyle:{
-        color:'red',
+        color:Color.CHECKED_COLOR,
         textDecorationLine:'line-through',
     },
     undoneStyle:{

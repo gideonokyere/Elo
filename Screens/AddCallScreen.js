@@ -4,7 +4,7 @@ import {connect} from 'react-redux';
 import {Input,Icon,ListItem} from 'react-native-elements';
 import Constainer from '../components/Constainer';
 import Color from '../utilis/colors';
-import {addCall,fetchCalls} from '../actions/callAction';
+import {addCall,fetchCalls,checkedCallDone,checkedCallUndone} from '../actions/callAction';
 
 class AddCallScreen extends Component {
 
@@ -12,6 +12,11 @@ class AddCallScreen extends Component {
     name:''
   }
 
+  
+  UNSAFE_componentWillMount(){
+    this.props.fetchCalls()
+ }
+  
   addCall=()=>{
     const {name} = this.state;
     this.props.saveCall(name);
@@ -19,8 +24,14 @@ class AddCallScreen extends Component {
     this.props.fetchCalls()
   }
 
-  UNSAFE_componentWillMount(){
-     this.props.fetchCalls()
+  checkedCallDone=(id)=>{
+     this.props.checkedCallDone(id);
+     this.props.fetchCalls();
+  }
+
+  checkedCallUndone=(id)=>{
+    this.props.checkedCallUndone(id);
+    this.props.fetchCalls()
   }
 
   
@@ -29,6 +40,8 @@ render(){
       <ListItem
         key={list.id}
         title={list.name}
+        titleProps={{style:list.done?styles.doneStyle:styles.undoneStyle}}
+        onPress={()=>list.done?this.checkedCallUndone(list.id):this.checkedCallDone(list.id)}
         bottomDivider
       />
   ))
@@ -57,14 +70,18 @@ render(){
 const mapStateToProps =(state)=>{
   return{
     id: state.newCall,
-    calls: state.listCalls
+    calls: state.listCalls,
+    checked: state.markCallDone,
+    unchecked: state.markCallUndone
   };
 };
 
 const mapDispatchToProps = (despatch)=>{
   return{
     fetchCalls:()=>despatch(fetchCalls()),
-    saveCall:(name)=>despatch(addCall(name))
+    saveCall:(name)=>despatch(addCall(name)),
+    checkedCallDone:(id)=>despatch(checkedCallDone(id)),
+    checkedCallUndone:(id)=>despatch(checkedCallUndone(id))
   };
 };
 
@@ -72,7 +89,14 @@ const styles = StyleSheet.create({
   row:{
     flexDirection:'row',
     paddingRight:18,
-  }
+  },
+  doneStyle:{
+    color:Color.CHECKED_COLOR,
+    textDecorationLine:'line-through',
+},
+undoneStyle:{
+    fontWeight:'bold'
+}
 })
 
 export default connect(mapStateToProps,mapDispatchToProps)(AddCallScreen);

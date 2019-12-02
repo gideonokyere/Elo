@@ -18,14 +18,14 @@ export const listDailys=(dailys)=>{
 
 export const markDailyDone=(id)=>{
    return {
-       type:'MARK_DONE',
+       type:'MARK_DAILY_DONE',
        id
    }
 }
 
 export const markDailyUndone=(id)=>{
     return{
-        type:'MARK_UNDONE',
+        type:'MARK_DAILY_UNDONE',
         id
     }
 }
@@ -74,7 +74,6 @@ export const checkedDailyUndone=(id)=>{
         DB.transaction((tx)=>{
             tx.executeSql(`update dailys set done=? where id=?`,[0,id],(tx,res)=>{
                 despatch(markDailyUndone(res.rowsAffected));
-                console.log('UNchecked')
             });
         });
     }

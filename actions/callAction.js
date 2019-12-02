@@ -18,6 +18,20 @@ export const listCalls =(calls)=>{
     }
 }
 
+export const markCallDone=(id)=>{
+    return {
+        type:'MARK_CALL_DONE',
+        id
+    }
+}
+
+export const markCallUndone=(id)=>{
+    return {
+        type:'MARK_CALL_UNDONE',
+        id
+    }
+}
+
 /*** Action Creators */
 
 //inserting new call task to db
@@ -40,6 +54,28 @@ export const fetchCalls=()=>{
             tx.executeSql(`select * from calls`,[],(tx,res)=>{
                 despatch(listCalls(res.rows._array));
             })
+        });
+    }
+}
+
+//checked call done
+export const checkedCallDone=(id)=>{
+    return (despatch)=>{
+        DB.transaction((tx)=>{
+            tx.executeSql(`update calls set done=? where id=?`,[1,id],(tx,res)=>{
+                despatch(markCallDone(res.rowsAffected));
+            });
+        });
+    }
+}
+
+export const checkedCallUndone=(id)=>{
+    return (despatch)=>{
+        DB.transaction((tx)=>{
+            tx.executeSql(`update calls set done=? where id=?`,[0,id],(tx,res)=>{
+                despatch(markCallUndone(res.rowsAffected));
+                console.log('Unchecked');
+            });
         });
     }
 }
