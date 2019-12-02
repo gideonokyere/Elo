@@ -48,6 +48,12 @@ export function createProjectTable(){
     })
 }
 
+export function createDailyTable(){
+    DB.transaction((tx)=>{
+        tx.executeSql(`create table if not exists dailys (id INTEGER PRIMARY KEY AUTOINCREMENT,daily text,done int,date text);`)
+    })
+}
+
 
 
 

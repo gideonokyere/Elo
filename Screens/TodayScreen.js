@@ -4,6 +4,7 @@ import Constainer from '../components/Constainer';
 import Add from '../components/Add'
 import Accordian from '../components/Accordian';
 
+import DailyScreen from '../Screens/DailyScreen';
 import AddCallScreen from '../Screens/AddCallScreen';
 import ToDoScreen from '../Screens/ToDoScreen';
 import GoToScreen from '../Screens/GoToScreen';
@@ -18,7 +19,7 @@ const TodayScreen = ()=>{
          <Text>Today</Text>
       <ScrollView>
          <Accordian title='Daily'>
-            <Add/>
+            <DailyScreen/>
          </Accordian>
 
          <Accordian title='Call'>
