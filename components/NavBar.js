@@ -1,14 +1,13 @@
 import React,{Component} from 'react';
-import {Platform,StyleSheet} from 'react-native';
+import {StyleSheet} from 'react-native';
+import Add from './Add';
 import {Header} from 'react-native-elements';
-import {createAppContainer} from 'react-navigation';
 import Color from '../utilis/colors'
 import Host from './Host';
-import AddCallScreen from '../Screens/AddCallScreen';
-
 import Container from './Constainer';
 
 class HomeScreen extends Component{
+
     render(){
         return(
            <Container>
@@ -16,7 +15,7 @@ class HomeScreen extends Component{
                leftComponent={{text:'Azura'}}
                containerStyle={styles.constainer}
              />
-
+               
               <Host/>
            </Container>
         );
