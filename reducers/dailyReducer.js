@@ -15,3 +15,21 @@ export const listDailys=(state=[],action)=>{
             return state
     }
 }
+
+export const markDailyDone=(state=0,action)=>{
+   switch(action.type){
+       case 'MARK_DONE':
+           return action.id
+        default:
+            return state
+   }
+}
+
+export const markDailyUndone=(state=0,action)=>{
+    switch(action.type){
+        case 'MARK_UNDONE':
+            return action.id
+        default:
+            return state
+    }
+}

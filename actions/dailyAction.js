@@ -16,6 +16,20 @@ export const listDailys=(dailys)=>{
     }
 }
 
+export const markDailyDone=(id)=>{
+   return {
+       type:'MARK_DONE',
+       id
+   }
+}
+
+export const markDailyUndone=(id)=>{
+    return{
+        type:'MARK_UNDONE',
+        id
+    }
+}
+
 //action creators
 
 //adding new daily
@@ -40,6 +54,29 @@ export const fetchData=()=>{
               despatch(listDailys(res.rows._array));
           });
        });
+    }
+}
+
+//mark daily done
+export const checkedDailyDone=(id)=>{
+    return (despatch)=>{
+     DB.transaction((tx)=>{
+        tx.executeSql(`update dailys set done=? where id=?`,[1,id],(tx,res)=>{
+           despatch(markDailyDone(res.rowsAffected));
+        });
+    });
+  }
+}
+
+//unmark daily done
+export const checkedDailyUndone=(id)=>{
+    return (despatch)=>{
+        DB.transaction((tx)=>{
+            tx.executeSql(`update dailys set done=? where id=?`,[0,id],(tx,res)=>{
+                despatch(markDailyUndone(res.rowsAffected));
+                console.log('UNchecked')
+            });
+        });
     }
 }
 

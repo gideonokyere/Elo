@@ -6,7 +6,7 @@ import {newBuy,listBuys} from '../reducers/buyReducer';
 import {newVisit,listVisits} from '../reducers/visitReducer';
 import {newStudy,listStudys} from '../reducers/studyReducer';
 import {newProject,listProjects} from '../reducers/projectReducer';
-import {newDaily,listDailys} from '../reducers/dailyReducer';
+import {newDaily,listDailys,markDailyDone,markDailyUndone} from '../reducers/dailyReducer';
 
 export default combineReducers({
     newCall,
@@ -24,5 +24,7 @@ export default combineReducers({
     newProject,
     listProjects,
     newDaily,
-    listDailys
+    listDailys,
+    markDailyDone,
+    markDailyUndone
 });
