@@ -16,3 +16,22 @@ export const listTodos=(state=[],action)=>{
             return state
     }
 }
+
+export const markTodoDone=(state=0,action)=>{
+    switch(action.type){
+        case 'MARK_TODO_DONE':
+            return action.id
+        default:
+            return state
+    }
+}
+
+export const markTodoUndone=(state=0,action)=>{
+    switch(action.type){
+        case 'MARK_TODO_UNDONE':
+            return action.id
+        default:
+            return state
+    }
+}
+

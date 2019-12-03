@@ -16,6 +16,21 @@ export const listGotos =(gotos)=>{
    }
 }
 
+export const markGotoDone=(id)=>{
+   return{
+      type:'MARK_GOTO_DONE',
+      id
+   }
+}
+
+export const markGotoUndone=(id)=>{
+   return{
+      type:'MARK_GOTO_UNDONE',
+      id
+   }
+}
+
+//action creators//
 export const addGoto=(goto)=>{
     createGotoTable();
     return (despatch)=>{
@@ -34,6 +49,26 @@ export const fetchGoto=()=>{
          tx.executeSql(`select * from gotos`,[],(tx,res)=>{
             despatch(listGotos(res.rows._array));
          })
+      });
+   }
+}
+
+export const checkedGoToDone=(id)=>{
+   return (despatch)=>{
+      DB.transaction((tx)=>{
+         tx.executeSql(`update gotos set done=? where id=?`,[1,id],(tx,res)=>{
+            despatch(markGotoDone(res.rowsAffected));
+         });
+      });
+   }
+}
+
+export const checkedGotoUndone=(id)=>{
+   return (despatch)=>{
+      DB.transaction((tx)=>{
+         tx.executeSql(`update gotos set done=? where id=?`,[0,id],(tx,res)=>{
+            despatch(markGotoUndone(res.rowsAffected));
+         });
       });
    }
 }

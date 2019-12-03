@@ -74,7 +74,6 @@ export const checkedCallUndone=(id)=>{
         DB.transaction((tx)=>{
             tx.executeSql(`update calls set done=? where id=?`,[0,id],(tx,res)=>{
                 despatch(markCallUndone(res.rowsAffected));
-                console.log('Unchecked');
             });
         });
     }

@@ -4,7 +4,7 @@ import { Input, Icon,ListItem } from 'react-native-elements';
 import { connect } from 'react-redux';
 import Container from '../components/Constainer';
 import Color from '../utilis/colors';
-import { addGoto, fetchGoto } from '../actions/gotoAction';
+import { addGoto, fetchGoto,checkedGoToDone,checkedGotoUndone } from '../actions/gotoAction';
 
 class GoToScreen extends Component {
    state = {
@@ -22,11 +22,23 @@ class GoToScreen extends Component {
       this.props.fetchData();
    }
 
+   checkedGotoDone=(id)=>{
+     this.props.checkedGotoDone(id);
+     this.props.fetchData();
+   }
+
+   checkedGotoUndone=(id)=>{
+      this.props.checkedGotoUndone(id);
+      this.props.fetchData();
+   }
+
    render() {
        const gotos=this.props.gotos.map((goto)=>(
           <ListItem
              key={goto.id}
              title={goto.goto}
+             titleProps={{style:goto.done?styles.doneStyle:styles.undoneStyle}}
+             onPress={()=>goto.done?this.checkedGotoUndone(goto.id):this.checkedGotoDone(goto.id)}
              bottomDivider
           />
        ))
@@ -54,14 +66,18 @@ class GoToScreen extends Component {
 const mapStateToProps = (state) => {
    return {
       newCall: state.newCall,
-      gotos: state.listGotos
+      gotos: state.listGotos,
+      checked: state.markGotoDone,
+      unchecked: state.markGotoUndone
    }
 }
 
 const mapDespatchToProps = (despatch) => {
    return {
       saveGoto: (goto) => despatch(addGoto(goto)),
-      fetchData: () => despatch(fetchGoto())
+      fetchData: () => despatch(fetchGoto()),
+      checkedGotoDone:(id)=>despatch(checkedGoToDone(id)),
+      checkedGotoUndone:(id)=>despatch(checkedGotoUndone(id))
    }
 }
 
@@ -69,7 +85,14 @@ const styles = StyleSheet.create({
    row: {
       flexDirection: 'row',
       paddingRight: 18,
-   }
+   },
+   doneStyle:{
+      color:Color.CHECKED_COLOR,
+      textDecorationLine:'line-through',
+  },
+  undoneStyle:{
+      fontWeight:'bold'
+  }
 })
 
 export default connect(mapStateToProps,mapDespatchToProps)(GoToScreen);

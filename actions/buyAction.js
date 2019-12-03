@@ -15,6 +15,20 @@ export const listBuys=(buys)=>{
    }
 }
 
+export const markBuyDone=(id)=>{
+    return{
+        type:'MARK_BUY_DONE',
+        id
+    }
+}
+
+export const markBuyUndone=(id)=>{
+    return{
+        type:'MARK_BUY_UNDONE',
+        id
+    }
+}
+
 
 
 //Acction creators
@@ -43,4 +57,24 @@ export const fetchData=(buys)=>{
            });
        });
    }
+}
+
+export const checkedBuyDone=(id)=>{
+    return (despatch)=>{
+        DB.transaction((tx)=>{
+            tx.executeSql(`update buys set done=? where id=?`,[1,id],(tx,res)=>{
+                despatch(markBuyDone(res.rowsAffected));
+            });
+        });
+    }
+}
+
+export const checkedBuyUndone=(id)=>{
+    return (despatch)=>{
+        DB.transaction((tx)=>{
+            tx.executeSql(`update buys set done=? where id=?`,[0,id],(tx,res)=>{
+                despatch(markBuyUndone(res.rowsAffected));
+            });
+        });
+    }
 }

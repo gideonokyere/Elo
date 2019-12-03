@@ -4,7 +4,7 @@ import {Input,Icon,ListItem} from 'react-native-elements';
 import {connect} from 'react-redux';
 import Container from '../components/Constainer';
 import Color from '../utilis/colors';
-import {addTodo,fetchTodos} from '../actions/todoAction';
+import {addTodo,fetchTodos,checkTodoDone,checkedTodoUndone} from '../actions/todoAction';
 
 class ToDoScreen extends Component{
 
@@ -23,11 +23,23 @@ class ToDoScreen extends Component{
     this.props.fetchTodos();
   }
 
+  checkedTodoDone=(id)=>{
+    this.props.checkedTodoDone(id);
+    this.props.fetchTodos();
+  }
+
+  checkedTodoUndone=(id)=>{
+    this.props.checkedTodoUndone(id);
+    this.props.fetchTodos();
+  }
+
    render(){
       const todos = this.props.Todos.map((todo)=>(
         <ListItem
           key={todo.id}
           title={todo.todo}
+          titleProps={{style:todo.done?styles.doneStyle:styles.undoneStyle}}
+          onPress={()=>todo.done?this.checkedTodoUndone(todo.id):this.checkedTodoDone(todo.id)}
           bottomDivider
         />
       ))
@@ -56,14 +68,18 @@ class ToDoScreen extends Component{
 const mapStateToProps =(state)=>{
   return {
     id: state.newTodo,
-    Todos: state.listTodos
+    Todos: state.listTodos,
+    checked:state.markTodoDone,
+    unchecked:state.markTodoUndone
   }
 }
 
 const mapDespatchToProps =(despatch)=>{
   return{
     saveTodo:(todo)=>despatch(addTodo(todo)),
-    fetchTodos:()=>despatch(fetchTodos())
+    fetchTodos:()=>despatch(fetchTodos()),
+    checkedTodoDone:(id)=>despatch(checkTodoDone(id)),
+    checkedTodoUndone:(id)=>despatch(checkedTodoUndone(id))
   }
 }
 
@@ -71,7 +87,14 @@ const styles = StyleSheet.create({
   row:{
     flexDirection:'row',
     paddingRight:18,
-  }
+  },
+  doneStyle:{
+    color:Color.CHECKED_COLOR,
+    textDecorationLine:'line-through',
+},
+undoneStyle:{
+    fontWeight:'bold'
+ }
 })
 
 export default connect(mapStateToProps,mapDespatchToProps)(ToDoScreen);
