@@ -5,7 +5,7 @@ import {newGoto,listGotos,markGotoDone,markGotoUndone} from '../reducers/gotoRed
 import {newBuy,listBuys,markBuyDone,markBuyUndone} from '../reducers/buyReducer';
 import {newVisit,listVisits,markVisitDone,markVisitUndone} from '../reducers/visitReducer';
 import {newStudy,listStudys,markStudyDone,markStudyUndone} from '../reducers/studyReducer';
-import {newProject,listProjects} from '../reducers/projectReducer';
+import {newProject,listProjects,markProjectDone,markProjectUndone} from '../reducers/projectReducer';
 import {newDaily,listDailys,markDailyDone,markDailyUndone} from '../reducers/dailyReducer';
 
 export default combineReducers({
@@ -35,6 +35,8 @@ export default combineReducers({
     markStudyUndone,
     newProject,
     listProjects,
+    markProjectDone,
+    markProjectUndone,
     newDaily,
     listDailys,
     markDailyDone,

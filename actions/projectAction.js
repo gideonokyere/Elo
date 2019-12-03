@@ -15,6 +15,20 @@ export const listProjects=(projects)=>{
     }
 }
 
+export const markProjectDone=(id)=>{
+    return{
+        type:'MARK_PROJECT_DONE',
+        id
+    }
+}
+
+export const markProjectUndone=(id)=>{
+    return{
+        type:'MARK_PROJECT_UNDONE',
+        id
+    }
+}
+
 
 //action creators
 
@@ -40,4 +54,24 @@ export const fetchData=()=>{
           });
        });
    }
+}
+
+export const checkedProjectDone=(id)=>{
+    return (despatch)=>{
+        DB.transaction((tx)=>{
+            tx.executeSql(`update projects set done=? where id=?`,[1,id],(tx,res)=>{
+                despatch(markProjectDone(res.rowsAffected));
+            });
+        });
+    }
+}
+
+export const checkedProjectUndone=(id)=>{
+    return (despatch)=>{
+    DB.transaction((tx)=>{
+        tx.executeSql(`update projects set done=? where id=?`,[0,id],(tx,res)=>{
+            despatch(markProjectUndone(res.rowsAffected));
+        });
+    });
+ }
 }

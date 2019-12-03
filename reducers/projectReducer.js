@@ -15,3 +15,21 @@ export const listProjects=(state=[],action)=>{
             return state
    }
 }
+
+export const markProjectDone=(state=0,action)=>{
+    switch(action.type){
+        case 'MARK_PROJECT_DONE':
+            return action.id
+        default:
+            return state
+    }
+}
+
+export const markProjectUndone=(state=0,action)=>{
+    switch(action.type){
+        case 'MARK_PROJECT_UNDONE':
+            return action.id
+        default:
+            return state
+    }
+}

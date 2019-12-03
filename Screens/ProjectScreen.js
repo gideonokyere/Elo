@@ -4,7 +4,7 @@ import {Icon,Input,ListItem} from 'react-native-elements';
 import {connect} from 'react-redux';
 import Container from '../components/Constainer';
 import Color from '../utilis/colors';
-import {addProject,fetchData} from '../actions/projectAction';
+import {addProject,fetchData,checkedProjectDone,checkedProjectUndone} from '../actions/projectAction';
 
 
 class ProjectScreen extends Component{
@@ -24,11 +24,23 @@ class ProjectScreen extends Component{
         this.props.fetchData();
     }
 
+    checkedProjectDone=(id)=>{
+        this.props.checkedProjectDone(id);
+        this.props.fetchData();
+    }
+
+    checkedProjectUndone=(id)=>{
+        this.props.checkedProjectUndone(id);
+        this.props.fetchData();
+    }
+
     render(){
         const projects = this.props.projects.map((project)=>(
             <ListItem
               key={project.id}
               title={project.project}
+              titleProps={{style:project.done?styles.doneStyle:styles.undoneStyle}}
+              onPress={()=>project.done?this.checkedProjectUndone(project.id):this.checkedProjectDone(project.id)}
               bottomDivider
             />
         ))
@@ -57,14 +69,18 @@ class ProjectScreen extends Component{
 const mapStateToProps=(state)=>{
     return{
         id:state.newProject,
-        projects:state.listProjects
+        projects:state.listProjects,
+        checked:state.markProjectDone,
+        unchecked:state.markProjectUndone
     }
 }
 
 const mapDespatchToProps=(despatch)=>{
     return{
         saveProject:(project)=>despatch(addProject(project)),
-        fetchData:()=>despatch(fetchData())
+        fetchData:()=>despatch(fetchData()),
+        checkedProjectDone:(id)=>despatch(checkedProjectDone(id)),
+        checkedProjectUndone:(id)=>despatch(checkedProjectUndone(id))
     }
 }
 
@@ -72,6 +88,13 @@ const styles = StyleSheet.create({
     row:{
       flexDirection:'row',
       paddingRight:18,
+    },
+    doneStyle:{
+        color:Color.CHECKED_COLOR,
+        textDecorationLine:'line-through',
+    },
+    undoneStyle:{
+        fontWeight:'bold'
     }
   })
 
