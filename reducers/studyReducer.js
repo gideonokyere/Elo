@@ -15,3 +15,21 @@ export const listStudys=(state=[],action)=>{
             return state
     }
 }
+
+export const markStudyDone=(state=0,action)=>{
+    switch(action.type){
+        case 'MARK_STUDY_DONE':
+            return action.id
+        default:
+            return state
+    }
+}
+
+export const markStudyUndone=(state=0,action)=>{
+    switch(action.type){
+        case 'MARK_STUDY_UNDONE':
+            return action.id
+        default:
+            return state
+    }
+}

@@ -9,6 +9,20 @@ const listVisits = (visits)=>{
     }
 }
 
+export const markVisitDone=(id)=>{
+    return{
+        type:'MARK_VISIT_DONE',
+        id
+    }
+}
+
+export const markVisitUndone=(id)=>{
+    return{
+        type:'MARK_VISIT_UNDONE',
+        id
+    }
+}
+
 // creating visit
 export const addVisit =(visit)=>{
    createVisitTable();
@@ -39,3 +53,23 @@ export const fetchData = ()=>{
        });
     }
 } 
+
+export const checkedVisitDone=(id)=>{
+    return (despatch)=>{
+        DB.transaction((tx)=>{
+            tx.executeSql(`update visits set done=? where id=?`,[1,id],(tx,res)=>{
+                despatch(markVisitDone(res.rowsAffected));
+            });
+        });
+    }
+}
+
+export const checkedVisitUndone=(id)=>{
+    return (despatch)=>{
+        DB.transaction((tx)=>{
+            tx.executeSql(`update visits set done=? where id=?`,[0,id],(tx,res)=>{
+                despatch(markVisitUndone(res.rowsAffected));
+            });
+        });
+    }
+}

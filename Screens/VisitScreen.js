@@ -4,7 +4,7 @@ import {Icon,Input,ListItem} from  'react-native-elements';
 import {connect} from 'react-redux';
 import Container from '../components/Constainer';
 import Color from '../utilis/colors';
-import {fetchData,addVisit} from '../actions/visitAction';
+import {fetchData,addVisit,checkedVisitDone,checkedVisitUndone} from '../actions/visitAction';
 
 
 class VisitScreen extends Component{
@@ -24,6 +24,16 @@ class VisitScreen extends Component{
         this.props.fetchData()
     }
 
+    checkedVisitDone=(id)=>{
+        this.props.checkedVisitDone(id);
+        this.props.fetchData();
+    }
+
+    checkedVisitUndone=(id)=>{
+        this.props.checkedVisitUndone(id);
+        this.props.fetchData();
+    }
+
     render(){
 
         const visits = this.props.visits.map((visit)=>(
@@ -31,6 +41,8 @@ class VisitScreen extends Component{
                <ListItem
                   key={visit.id}
                   title={visit.visit}
+                  titleProps={{style:visit.done?styles.doneStyle:styles.undoneStyle}}
+                  onPress={()=>visit.done?this.checkedVisitUndone(visit.id):this.checkedVisitDone(visit.id)}
                   bottomDivider
               />
         ))
@@ -60,14 +72,18 @@ class VisitScreen extends Component{
 const mapStateToProps =state=>{
     return{
         id:state.newVisit,
-        visits:state.listVisits
+        visits:state.listVisits,
+        checked: state.markVisitDone,
+        unchecked:state.markVisitUndone
     }
 }
 
 const mapDespatchToProps=despatch=>{
    return{
     saveVisit:(visit)=>despatch(addVisit(visit)),
-    fetchData:()=>despatch(fetchData())
+    fetchData:()=>despatch(fetchData()),
+    checkedVisitDone:(id)=>despatch(checkedVisitDone(id)),
+    checkedVisitUndone:(id)=>despatch(checkedVisitUndone(id))
    }
 }
 
@@ -75,6 +91,13 @@ const styles = StyleSheet.create({
     row:{
       flexDirection:'row',
       paddingRight:18,
+    },
+    doneStyle:{
+        color:Color.CHECKED_COLOR,
+        textDecorationLine:'line-through',
+    },
+    undoneStyle:{
+        fontWeight:'bold'
     }
   })
 
