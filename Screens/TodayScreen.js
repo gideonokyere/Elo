@@ -15,7 +15,7 @@ import ProjectScreen from '../Screens/ProjectScreen';
 
 const TodayScreen = ()=>{
     return(
-       <Constainer>
+       <KeyboardAvoidingView style={{flex:1}}>
          <Text>Today</Text>
       <ScrollView>
          <Accordian title='Daily'>
@@ -51,7 +51,7 @@ const TodayScreen = ()=>{
          </Accordian>
       </ScrollView>
 
-       </Constainer>
+       </KeyboardAvoidingView>
     );
 }
 

@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import {Modal,Text, View,StyleSheet,SafeAreaView} from 'react-native';
+import {Modal, View,StyleSheet,SafeAreaView} from 'react-native';
 import {Icon,ButtonGroup} from 'react-native-elements';
 import Color from '../utilis/colors';
 

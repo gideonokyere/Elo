@@ -1,13 +1,11 @@
 import React from 'react';
-import {View,Text,Platform} from 'react-native';
+import {View,Text} from 'react-native';
 import {createAppContainer} from 'react-navigation';
 import {createMaterialTopTabNavigator} from 'react-navigation-tabs';
-import { Ionicons } from '@expo/vector-icons';
 import Color from '../utilis/colors';
 
 import AddCallScreen from '../Screens/AddCallScreen'
-import TomorrowScreen from '../Screens/TomorrowScreen';
-import CalenderScreen from '../Screens/CalendarScreen';
+
 
 const AddHost =()=>{
     return(

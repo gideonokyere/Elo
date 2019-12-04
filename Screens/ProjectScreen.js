@@ -46,7 +46,7 @@ class ProjectScreen extends Component{
         ))
 
         return(
-     <Container>
+     <KeyboardAvoidingView style={{flex:1}}>
          {projects}
          <View style={styles.row}>
           <Input
@@ -61,7 +61,7 @@ class ProjectScreen extends Component{
             onPress={()=>this.addProject()}
           />
         </View>
-     </Container>
+     </KeyboardAvoidingView>
         )
     }
 }

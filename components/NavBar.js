@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import {StyleSheet} from 'react-native';
+import {StyleSheet,View,KeyboardAvoidingView} from 'react-native';
 import Add from './Add';
 import {Header} from 'react-native-elements';
 import Color from '../utilis/colors'
@@ -10,14 +10,13 @@ class HomeScreen extends Component{
 
     render(){
         return(
-           <Container>
+            <KeyboardAvoidingView style={{flex:1}}>
              <Header
                leftComponent={{text:'Azura'}}
                containerStyle={styles.constainer}
              />
-               
               <Host/>
-           </Container>
+            </KeyboardAvoidingView>
         );
     }
 }
