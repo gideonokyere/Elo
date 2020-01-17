@@ -1,7 +1,6 @@
 import React from 'react';
-import {Text,ScrollView,KeyboardAvoidingView} from 'react-native';
+import {ScrollView,KeyboardAvoidingView} from 'react-native';
 import Constainer from '../components/Constainer';
-import Add from '../components/Add'
 import Accordian from '../components/Accordian';
 
 import DailyScreen from '../Screens/DailyScreen';
@@ -15,8 +14,8 @@ import ProjectScreen from '../Screens/ProjectScreen';
 
 const TodayScreen = ()=>{
     return(
-       <KeyboardAvoidingView style={{flex:1}}>
-         <Text>Today</Text>
+      <KeyboardAvoidingView behavior='padding' style={{flex:1}}>
+       <Constainer>
       <ScrollView>
          <Accordian title='Daily'>
             <DailyScreen/>
@@ -51,6 +50,7 @@ const TodayScreen = ()=>{
          </Accordian>
       </ScrollView>
 
+       </Constainer>
        </KeyboardAvoidingView>
     );
 }

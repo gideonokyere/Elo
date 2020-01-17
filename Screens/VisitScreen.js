@@ -1,6 +1,6 @@
 import React,{Component} from  'react';
 import {View,StyleSheet} from 'react-native';
-import {Icon,Input,ListItem} from  'react-native-elements';
+import {Icon,Input,ListItem,Card} from  'react-native-elements';
 import {connect} from 'react-redux';
 import Container from '../components/Constainer';
 import Color from '../utilis/colors';
@@ -49,19 +49,23 @@ class VisitScreen extends Component{
 
         return(
      <Container>
-         {visits} 
+         <Card>
+          {visits}
+         </Card>
         <View style={styles.row}>
            <Input
             value={this.state.visit}
             onChangeText={(text)=>this.setState({visit:text})}
+            onSubmitEditing={()=>this.addVisit()}
+            enablesReturnKeyAutomatically={true}
             placeholder='E.g. Grace'
           />
-          <Icon 
+          {/**<Icon 
             name='add'
             disabled={!this.state.visit>0}
             color={Color.PRIMARY_COLOR} size={30} 
             onPress={()=>this.addVisit()}
-          />
+          />*/}
         </View>
 
     </Container>
@@ -97,7 +101,7 @@ const styles = StyleSheet.create({
         textDecorationLine:'line-through',
     },
     undoneStyle:{
-        fontWeight:'bold'
+        fontWeight:'normal'
     }
   })
 

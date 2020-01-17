@@ -8,10 +8,28 @@ export const newTodo=(state=0,action)=>{
    }
 }
 
+export const newTodosTomorrow=(state=0,action)=>{
+    switch(action.type){
+        case 'ADD_TODO_TOMORROW':
+            return action.id
+        default:
+            return state
+    }
+}
+
 export const listTodos=(state=[],action)=>{
     switch(action.type){
         case 'LIST_TODOS':
             return action.todos
+        default:
+            return state
+    }
+}
+
+export const listTodosTomorrow=(state=[],action)=>{
+    switch(action.type){
+        case 'LIST_TODOS_TOMORROW':
+            return action.todos_tomorrow
         default:
             return state
     }

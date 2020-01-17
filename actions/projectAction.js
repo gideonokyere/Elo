@@ -8,11 +8,25 @@ export const newProject=(id)=>{
     }
 }
 
+export const newTomorrowProject=(id)=>{
+    return{
+        type:'NEW_TOMORROW_PROJECT',
+        id
+    }
+}
+
 export const listProjects=(projects)=>{
     return {
         type:'LIST_PROJECTS',
         projects
     }
+}
+
+export const listTomorrowProject=(tomorrow_projects)=>{
+   return{
+       type:'LIST_TOMORROW_PROJECTS',
+       tomorrow_projects
+   }
 }
 
 export const markProjectDone=(id)=>{
@@ -45,6 +59,18 @@ export const addProject=(project)=>{
    }
 }
 
+export const addTomorrowProject=(project)=>{
+    createProjectTable();
+    return (despatch)=>{
+        const date = moment(Date.now()).add(1,'day').format('YYYY-MM-DD');
+        DB.transaction((tx)=>{
+            tx.executeSql(`insert into projects (project,done,date) values (?,?,?)`,[project,0,date],(tx,res)=>{
+                despatch(newTomorrowProject(res.rows._array));
+            });
+        });
+    }
+}
+
 export const fetchData=()=>{
     createProjectTable();
    return (despatch)=>{
@@ -54,6 +80,18 @@ export const fetchData=()=>{
           });
        });
    }
+}
+
+export const fetchTomorrowData=()=>{
+    createProjectTable();
+    return (despatch)=>{
+        const date = moment(Date.now()).add(1,'day').format('YYYY-MM-DD');
+        DB.transaction((tx)=>{
+          tx.executeSql(`select * from projects where date=?`,[date],(tx,res)=>{
+              despatch(listTomorrowProject(res.rows._array));
+          });
+        });
+    }
 }
 
 export const checkedProjectDone=(id)=>{

@@ -9,6 +9,13 @@ const listVisits = (visits)=>{
     }
 }
 
+const listTomorrowVisits=(tomorrow_visits)=>{
+    return{
+        type:'LIST_TOMORROW_VISITS',
+        tomorrow_visits
+    }
+}
+
 export const markVisitDone=(id)=>{
     return{
         type:'MARK_VISIT_DONE',
@@ -41,6 +48,23 @@ export const addVisit =(visit)=>{
    }
 }
 
+export const addTomorrowVisit=(visit)=>{
+    createVisitTable();
+    return (despatch)=>{
+        const date = moment(Date.now()).add(1,'day').format('YYYY-MM-DD');
+        console.log('Visit triggerd');
+        DB.transaction((tx)=>{
+            tx.executeSql(`insert into visits (visit,done,date) values (?,?,?)`,[visit,0,date],(tx,res)=>{
+                despatch(()=>{
+                    return{
+                        type:'NEW_TOMORROW_VISIT',
+                        id:res.insertId
+                    }
+                });
+            });
+        });
+    }
+}
 
 //listing visit
 export const fetchData = ()=>{
@@ -52,7 +76,20 @@ export const fetchData = ()=>{
            });
        });
     }
-} 
+}
+
+
+export const fetchTomorrowData=()=>{
+    createVisitTable();
+    return (despatch)=>{
+        const date = moment(Date.now()).add(1,'day').format('YYYY-MM-DD');
+        DB.transaction((tx)=>{
+            tx.executeSql(`select * from visits where date=?`,[date],(tx,res)=>{
+                despatch(listTomorrowVisits(res.rows._array));
+            });
+        });
+    }
+}
 
 export const checkedVisitDone=(id)=>{
     return (despatch)=>{

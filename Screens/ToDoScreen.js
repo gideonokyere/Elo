@@ -1,6 +1,6 @@
 import React,{Component} from 'react';
-import {Text,StyleSheet,View} from 'react-native';
-import {Input,Icon,ListItem} from 'react-native-elements';
+import {StyleSheet,View} from 'react-native';
+import {Input,Icon,ListItem,Card} from 'react-native-elements';
 import {connect} from 'react-redux';
 import Container from '../components/Constainer';
 import Color from '../utilis/colors';
@@ -46,19 +46,23 @@ class ToDoScreen extends Component{
 
     return(
       <Container>
+         <Card>
            {todos}
+          </Card>
           <View style={styles.row}>
           <Input
             value={this.state.todo}
             onChangeText={(text)=>this.setState({todo:text})}
             placeholder='E.g. post letters'
+            onSubmitEditing={()=>this.addToDo()}
+            enablesReturnKeyAutomatically={true}
           />
-          <Icon 
+          {/**<Icon 
             name='add'
             disabled={!this.state.todo>0}
             color={Color.PRIMARY_COLOR} size={30} 
             onPress={()=>this.addToDo()}
-          />
+          />*/}
         </View>
       </Container>
     );
@@ -93,7 +97,7 @@ const styles = StyleSheet.create({
     textDecorationLine:'line-through',
 },
 undoneStyle:{
-    fontWeight:'bold'
+    fontWeight:'normal'
  }
 })
 

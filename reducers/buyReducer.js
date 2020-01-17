@@ -7,10 +7,28 @@ export const newBuy=(state=0,action)=>{
     }
 }
 
+export const newTomorrowBuy=(state=0,action)=>{
+    switch(action.type){
+        case 'NEW_TOMORROW_BUY':
+            return action.id
+        default:
+            return state
+    }
+}
+
 export const listBuys=(state=[],action)=>{
     switch(action.type){
         case 'LIST_BUYS':
             return action.buys
+        default:
+            return state
+    }
+}
+
+export const listTomorrowBuy=(state=[],action)=>{
+    switch(action.type){
+        case 'LIST_TOMORROW_BUYS':
+            return action.tomorrow_buy
         default:
             return state
     }

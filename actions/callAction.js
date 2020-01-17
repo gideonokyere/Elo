@@ -10,11 +10,25 @@ export const newCall =(id)=>{
     }
 }
 
+export const newTomorrowCall =(id)=>{
+    return{
+        type:'NEW_TOMORROW_CALL',
+        id
+    }
+}
+
 
 export const listCalls =(calls)=>{
     return {
         type:'LIST_CALLS',
         calls
+    }
+}
+
+export const listTomorrowCalls=(tomorrowcalls)=>{
+    return{
+        type:'LIST_TOMORROW_CALLS',
+        tomorrowcalls
     }
 }
 
@@ -32,18 +46,32 @@ export const markCallUndone=(id)=>{
     }
 }
 
+
 /*** Action Creators */
 
 //inserting new call task to db
-export const addCall = (name)=>{
+export const addCall = (name,number)=>{
     createCallTable();
       return (despatch)=>{
        const date = moment(Date.now()).format('YYYY-MM-DD');
        DB.transaction((tx)=>{
-           tx.executeSql("insert into calls (name,done,date) values (?,?,?)",[name,0,date],(tx,res)=>{
+           tx.executeSql("insert into calls (name,number,done,date) values (?,?,?,?)",[name,number,0,date],(tx,res)=>{
               despatch(newCall(res.insertId));
            });
        });
+    }
+}
+
+//inserting new call for tomorrow task
+export const addCallTomorrow = (name,number)=>{
+    createCallTable();
+    return (despatch)=>{
+        const date = moment(Date.now()).add(1,'day').format('YYYY-MM-DD');
+        DB.transaction((tx)=>{
+            tx.executeSql("insert into calls (name,number,done,date) values (?,?,?,?)",[name,number,0,date],(tx,res)=>{
+                despatch(newTomorrowCall(res.insertId));
+            });
+        });
     }
 }
 
@@ -58,6 +86,20 @@ export const fetchCalls=()=>{
     }
 }
 
+//listing all calls for tomorrow
+export const fetchTomorrowCalls=()=>{
+    return (despatch)=>{
+        const date = moment(Date.now()).add(1,'day').format('YYYY-MM-DD');
+        DB.transaction((tx)=>{
+            tx.executeSql(`select * from calls where date=?`,[date],(tx,res)=>{
+                //console.log(res.rows._array)
+                despatch(listTomorrowCalls(res.rows._array));
+            });
+        });
+    }
+}
+
+
 //checked call done
 export const checkedCallDone=(id)=>{
     return (despatch)=>{
@@ -69,6 +111,7 @@ export const checkedCallDone=(id)=>{
     }
 }
 
+//checked call undone
 export const checkedCallUndone=(id)=>{
     return (despatch)=>{
         DB.transaction((tx)=>{

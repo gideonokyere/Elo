@@ -8,11 +8,25 @@ export const newBuy =(id)=>{
    }
 }
 
+export const newTomorrowBuy=(id)=>{
+    return{
+        type:'NEW_TOMORROW_BUY',
+        id
+    }
+}
+
 export const listBuys=(buys)=>{
    return{
        type:'LIST_BUYS',
        buys
    }
+}
+
+export const listTomorrowBuys=(tomorrow_buy)=>{
+    return{
+        type:'LIST_TOMORROW_BUYS',
+        tomorrow_buy
+    }
 }
 
 export const markBuyDone=(id)=>{
@@ -46,14 +60,37 @@ export const addBuy=(buy)=>{
     }
 }
 
+export const addTomorrowBuy=(buy)=>{
+    createBuyTable();
+    return (despatch)=>{
+    DB.transaction((tx)=>{
+        const date = moment(Date.now()).add(1,'day').format('YYYY-MM-DD');
+        tx.executeSql(`insert into buys (buy,done,date) values (?,?,?)`,[buy,0,date],(tx,res)=>{
+            despatch(newTomorrowBuy(res.insertId));
+        });
+    });
+ }
+
+}
 
 //listing all buy list
-export const fetchData=(buys)=>{
+export const fetchData=()=>{
    createBuyTable();
    return (despatch)=>{
        DB.transaction((tx)=>{
            tx.executeSql(`select * from buys`,[],(tx,res)=>{
                despatch(listBuys(res.rows._array));
+           });
+       });
+   }
+}
+
+export const fetchTomorrowData=()=>{
+   return (despatch)=>{
+       DB.transaction((tx)=>{
+           const date = moment(Date.now()).add(1,'day').format('YYYY-MM-DD');
+           tx.executeSql(`select * from buys where date=?`,[date],(tx,res)=>{
+               despatch(listTomorrowBuys(res.rows._array));
            });
        });
    }

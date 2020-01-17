@@ -3,12 +3,12 @@ import {Text,View,StyleSheet} from 'react-native';
 import {Icon,Input,ListItem,Card} from 'react-native-elements';
 import {connect} from 'react-redux';
 import Color from '../utilis/colors';
-import {addBuy,fetchData,checkedBuyDone,checkedBuyUndone} from '../actions/buyAction';
+import {addTomorrowBuy,fetchTomorrowData} from '../actions/buyAction';
 
 import Container from '../components/Constainer';
 
-class BuyScreen extends Component{
-  
+class AddBuyNextdayScreen extends Component{
+   
     state={
         buy:''
     }
@@ -24,30 +24,17 @@ class BuyScreen extends Component{
         this.props.fetchData();
     }
 
-    checkedBuyDone=(id)=>{
-       this.props.checkedBuyDone(id);
-       this.props.fetchData();
-    }
-
-    checkedBuyUndone=(id)=>{
-        this.props.checkedBuyUndone(id);
-        this.props.fetchData();
-    }
-
     render(){
-
         const buy = this.props.buys.map((buy)=>(
             <ListItem
                key={buy.id}
                title={buy.buy}
                titleProps={{style:buy.done?styles.doneStyle:styles.undoneStyle}}
-               onPress={()=>buy.done?this.checkedBuyUndone(buy.id):this.checkedBuyDone(buy.id)}
                bottomDivider
             />
         ))
-
-    return(
-       <Container>
+        return(
+            <Container>
           <Card>
           {buy}
           </Card>
@@ -68,25 +55,22 @@ class BuyScreen extends Component{
           />*/}
         </View>
         </Container>
-     );
+        );
     }
+
 }
 
 const mapStateToProps =(state)=>{
     return{
-        id: state.newBuy,
-        buys: state.listBuys,
-        checked: state.markBuyDone,
-        unchecked: state.markBuyUndone
+        id: state.newTomorrowBuy,
+        buys: state.listTomorrowBuy
     }
 }
 
 const mapDespatchToProps=(despatch)=>{
     return{
-       saveBuy:(buy)=>despatch(addBuy(buy)),
-       fetchData:()=>despatch(fetchData()),
-       checkedBuyDone:(id)=>despatch(checkedBuyDone(id)),
-       checkedBuyUndone:(id)=>despatch(checkedBuyUndone(id))
+       saveBuy:(buy)=>despatch(addTomorrowBuy(buy)),
+       fetchData:()=>despatch(fetchTomorrowData()),
     }
 }
 
@@ -104,5 +88,4 @@ const styles = StyleSheet.create({
     }
   })
 
-
-export default connect(mapStateToProps,mapDespatchToProps)(BuyScreen);
+  export default connect(mapStateToProps,mapDespatchToProps)(AddBuyNextdayScreen);

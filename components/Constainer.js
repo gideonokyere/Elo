@@ -5,11 +5,9 @@ import Color from '../utilis/colors'
  class Container extends Component{
     render(){
       return(
-      <KeyboardAvoidingView style={styles.constainer}>
        <SafeAreaView style={styles.constainer}>
           {this.props.children}
        </SafeAreaView>
-       </KeyboardAvoidingView>
       );
     }
 }

@@ -29,15 +29,6 @@ const TopNav = createMaterialTopTabNavigator({
        navigationOptions:{
            title:'Tomorrow'
        }
-   },
-   Calendar:{
-       screen:CalenderScreen,
-       navigationOptions:{
-           tabBarIcon:({tintColor})=>(
-             <Ionicons name={Platform.OS==='ios'?'ios-calendar':'md-calendar'} size={21} color={tintColor}/>
-           ),
-           tabBarLabel:'Calender'
-        }
    }
 },
 {

@@ -1,12 +1,12 @@
 import React,{Component} from 'react';
 import {View,Text,TouchableOpacity,StyleSheet} from 'react-native'
-import { Icon } from 'react-native-elements';
+import { Icon} from 'react-native-elements';
 import Color from '../utilis/colors';
 
 class Accordian extends Component{
 
     state={
-        expanded:false
+        expanded:true
     }
 
     toggleExpand=()=>{
@@ -17,9 +17,9 @@ class Accordian extends Component{
         return(
            <View>
 
-              <TouchableOpacity style={styles.row} onPress={()=>this.toggleExpand()}>
+              <TouchableOpacity style={styles.row}>
                  <Text style={styles.title}>{'+ ' + this.props.title}</Text>
-                 <Icon name={this.state.expanded?'keyboard-arrow-up':'keyboard-arrow-down'} size={30}/>
+                 <Icon name={this.state.expanded?'keyboard-arrow-up':'keyboard-arrow-down'} color={Color.ACCORDIAL_TITLE} size={30}/>
               </TouchableOpacity>
 
               <View style={styles.parentHr}/>
@@ -27,7 +27,7 @@ class Accordian extends Component{
               {
                   this.state.expanded &&
                    <View style={styles.child}>
-                      {this.props.children}    
+                       {this.props.children}
                    </View>
               }
            </View>
@@ -38,7 +38,7 @@ class Accordian extends Component{
 const styles = StyleSheet.create({
     title:{
         fontSize: 20,
-        fontWeight:'bold',
+        fontWeight:'normal',
         color: Color.ACCORDIAL_TITLE,
     },
     row:{
@@ -56,8 +56,8 @@ const styles = StyleSheet.create({
         width:'100%'
     },
     child:{
-        backgroundColor: Color.BACKGROUND_COLOR,
-        padding:16,
+        backgroundColor:Color.BACKGROUND_COLOR,
+        padding:10,
     }
     
 });

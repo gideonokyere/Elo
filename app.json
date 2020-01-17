@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "TaskApp",
+    "name": "Azura",
     "slug": "taskApp",
     "privacy": "public",
     "sdkVersion": "35.0.0",
@@ -26,6 +26,9 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.cambridge.taskapp"
+    },
+    "android": {
+      "package": "com.cambridge.taskapp"
     }
   }
 }

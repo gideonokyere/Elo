@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {View,StyleSheet} from 'react-native';
-import {Icon,Input,ListItem} from 'react-native-elements';
+import {Icon,Input,ListItem,Card} from 'react-native-elements';
 import {connect} from 'react-redux';
 import Color from '../utilis/colors';
 import Container from '../components/Constainer';
@@ -45,19 +45,23 @@ class StudyScreen extends Component{
     ))
     return(
        <Container>
+         <Card>
           {studys}
+          </Card>
            <View style={styles.row}>
            <Input
             value={this.state.study}
             onChangeText={(text)=>this.setState({study:text})}
+            onSubmitEditing={()=>this.addStudy()}
+            enablesReturnKeyAutomatically={true}
             placeholder='E.g. English'
           />
-          <Icon 
+          {/**<Icon 
             name='add'
             disabled={!this.state.study>0}
             color={Color.PRIMARY_COLOR} size={30} 
             onPress={()=>this.addStudy()}
-          />
+          />*/}
         </View>
        </Container>
     );
@@ -92,7 +96,7 @@ const styles = StyleSheet.create({
     textDecorationLine:'line-through',
 },
 undoneStyle:{
-    fontWeight:'bold'
+    fontWeight:'normal'
 }
 })
 

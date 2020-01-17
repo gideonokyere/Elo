@@ -9,6 +9,16 @@
      }
  }
 
+ //fetching tomorrow call task reducer
+ export function listTomorrowCalls(state=[],action){
+     switch(action.type){
+         case 'LIST_TOMORROW_CALLS':
+             return action.tomorrowcalls
+        default:
+            return state;
+     }
+ }
+
  //adding new call reducer
  export function newCall(state=0,action){
      switch(action.type){
@@ -16,6 +26,16 @@
             return action.id
         default:
            return state
+     }
+ }
+
+ //adding new call for tomorrow
+ export function newCallTomorrow(state=0,action){
+     switch(action.type){
+         case 'NEW_TOMORROW_CALL':
+             return action.id
+        default:
+            return state
      }
  }
 

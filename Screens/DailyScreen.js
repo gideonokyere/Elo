@@ -1,6 +1,6 @@
 import React,{Component} from 'react';
-import {View,StyleSheet} from 'react-native';
-import {Icon,Input,ListItem,CheckBox} from 'react-native-elements';
+import {View,StyleSheet,Platform} from 'react-native';
+import {Icon,Input,ListItem,Card} from 'react-native-elements';
 import {connect} from 'react-redux';
 import Container from '../components/Constainer';
 import Color from '../utilis/colors';
@@ -43,24 +43,30 @@ class DailyScreen extends Component{
               title={daily.daily}
               titleProps={{style:daily.done?styles.doneStyle:styles.undoneStyle}}
               onPress={()=>daily.done?this.checkedUndone(daily.id):this.checkedDone(daily.id)}
+              bottomDivider
             />
         ))
 
         return(
            <Container>
-            {dailys}
+            <Card>   
+              {dailys}
+            </Card>
            <View style={styles.row}>
            <Input
             value={this.state.daily}
             onChangeText={(text)=>this.setState({daily:text})}
+            returnKeyType='go'
+            onSubmitEditing={()=>this.addDaily()}
+            enablesReturnKeyAutomatically={true}
             placeholder='E.g. watch CNN news'
           />
-          <Icon 
+          {/**<Icon 
             name='add'
             disabled={!this.state.daily>0}
             color={Color.PRIMARY_COLOR} size={30} 
             onPress={()=>this.addDaily()}
-          />
+          />*/}
          </View>
         </Container>
         );
@@ -95,7 +101,7 @@ const styles = StyleSheet.create({
         textDecorationLine:'line-through',
     },
     undoneStyle:{
-        fontWeight:'bold'
+        fontWeight:'normal'
     }
   })
 

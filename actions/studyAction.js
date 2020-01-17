@@ -8,10 +8,24 @@ export const newStudy =(id)=>{
    }
 }
 
+export const newTomorrowStudy=(id)=>{
+    return{
+        type:'NEW_TOMORROW_STUDY',
+        id
+    }
+}
+
 export const listStudys=(studys)=>{
     return{
         type:'LIST_STUDYS',
         studys
+    }
+}
+
+export const listTomorrowStudy=(studies)=>{
+    return{
+        type:'LIST_TOMORROW_STUDYS',
+        studies
     }
 }
 
@@ -44,6 +58,18 @@ export const addStudy=(study)=>{
    }
 }
 
+export const addTomorrowStudy=(study)=>{
+    createStudyTable();
+    return (despatch)=>{
+        const date = moment(Date.now()).add(1,'day').format('YYYY-MM-DD');
+        DB.transaction((tx)=>{
+            tx.executeSql(`insert into studys (study,done,date) values (?,?,?)`,[study,0,date],(tx,res)=>{
+                despatch(newTomorrowStudy(res.insertId));
+            });
+        });
+    }
+}
+
 //listing studys
 export const fetchData=()=>{
     createStudyTable();
@@ -54,6 +80,18 @@ export const fetchData=()=>{
             });
         });
     }
+}
+
+export const fetchTomorrowData=()=>{
+   createStudyTable();
+   return (despatch)=>{
+       const date = moment(Date.now()).add(1,'day').format('YYYY-MM-DD');
+       DB.transaction((tx)=>{
+           tx.executeSql(`select * from studys where date=?`,[date],(tx,res)=>{
+                despatch(listTomorrowStudy(res.rows._array));
+           });
+       });
+   }
 }
 
 export const checkedStudyDone=(id)=>{

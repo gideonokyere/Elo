@@ -9,11 +9,27 @@ export const newTodo=(id)=>{
   }
 }
 
+export const newTodoTomorrow=(id)=>{
+  return{
+    type:'ADD_TODO_TOMORROW',
+    id
+  }
+}
+
+
 export const listTodos=(todos)=>{
    return{
        type:'LIST_TODOS',
        todos
    }
+}
+
+
+export const listTodosTomorrow=(todos_tomorrow)=>{
+  return{
+    type:'LIST_TODOS_TOMORROW',
+    todos_tomorrow
+  }
 }
 
 export const markTodoDone=(id)=>{
@@ -42,6 +58,19 @@ export const addTodo=(todo)=>{
    };
 }
 
+export const addTodoTomorrow=(todo)=>{
+  createTodoTable();
+  return (despatch)=>{
+    const date = moment(Date.now()).add(1,'day').format('YYYY-MM-DD');
+    DB.transaction((tx)=>{
+       tx.executeSql(`insert into todos (todo,done,date) values (?,?,?)`,[todo,0,date],(tx,res)=>{
+         //console.log(res.insertId);
+         despatch(newTodoTomorrow(res.insertId));
+       });
+    });
+  }
+}
+
 export const fetchTodos =()=>{
     return (despatch)=>{
         DB.transaction((tx)=>{
@@ -53,6 +82,18 @@ export const fetchTodos =()=>{
     }
 }
 
+export const fetchTodosTomorrow=()=>{
+  createTodoTable();
+  return (despatch)=>{
+     const date = moment(Date.now()).add(1,'day').format('YYYY-MM-DD');
+     DB.transaction((tx)=>{
+       tx.executeSql(`select * from todos where date=?`,[date],(tx,res)=>{
+          despatch(listTodosTomorrow(res.rows._array));
+          //console.log(res.rows._array);
+       });
+     });
+  }
+}
 
 export const checkTodoDone=(id)=>{
   return function(despatch){
@@ -70,7 +111,6 @@ export const checkedTodoUndone=(id)=>{
     DB.transaction((tx)=>{
       tx.executeSql(`update todos set done=? where id=?`,[0,id],(tx,res)=>{
         despatch(markTodoUndone(res.rowsAffected));
-        console.log('Click UNTODO');
       });
     });
   }

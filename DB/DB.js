@@ -4,7 +4,7 @@ const DB = SQLite.openDatabase("azura.db");
 export function createCallTable(){
     DB.transaction((tx)=>{
         //console.log('Creating table');
-        tx.executeSql(`create table if not exists calls (id INTEGER PRIMARY KEY AUTOINCREMENT,name text,done int,date text)`,[],(tx,res)=>{
+        tx.executeSql(`create table if not exists calls (id INTEGER PRIMARY KEY AUTOINCREMENT,name text,number varchar(15),done int,date text)`,[],(tx,res)=>{
             //console.log('DONE Creating DB');
         },(tx,error)=>console.log(error));
         //tx.executeSql('drop database calls',[]);

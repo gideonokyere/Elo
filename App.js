@@ -6,11 +6,9 @@ import {createStore, applyMiddleware} from 'redux';
 import {Provider} from 'react-redux';
 import thunk from 'redux-thunk';
 
-import allReducer from './reducers/allReducers'
+import allReducer from './reducers/allReducers';
 
-let initialState ={};
-
-const store = createStore(allReducer,initialState,applyMiddleware(thunk));
+const store = createStore(allReducer,initialState={},applyMiddleware(thunk));
 
 
 const App = () => {

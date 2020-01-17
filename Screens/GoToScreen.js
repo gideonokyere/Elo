@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View, StyleSheet } from 'react-native';
-import { Input, Icon,ListItem } from 'react-native-elements';
+import { Input, Icon,ListItem,Card} from 'react-native-elements';
 import { connect } from 'react-redux';
 import Container from '../components/Constainer';
 import Color from '../utilis/colors';
@@ -44,19 +44,23 @@ class GoToScreen extends Component {
        ))
       return (
          <Container>
+            <Card>
             {gotos}
+            </Card>
             <View style={styles.row}>
                <Input
                   value={this.state.goto}
                   onChangeText={(text) => this.setState({ goto: text })}
+                  onSubmitEditing={()=>this.addGoto()}
+                  enablesReturnKeyAutomatically={true}
                   placeholder=' E.g. office'
                />
-               <Icon
+               {/**<Icon
                   name='add'
                   disabled={!this.state.goto > 0}
                   color={Color.PRIMARY_COLOR} size={30}
                   onPress={() => this.addGoto()}
-               />
+               />*/}
             </View>
          </Container>
       )
@@ -91,7 +95,7 @@ const styles = StyleSheet.create({
       textDecorationLine:'line-through',
   },
   undoneStyle:{
-      fontWeight:'bold'
+      fontWeight:'normal'
   }
 })
 

@@ -1,6 +1,6 @@
 import React,{ Component } from 'react';
-import {View,Text,StyleSheet,KeyboardAvoidingView} from 'react-native';
-import {Icon,Input,ListItem} from 'react-native-elements';
+import {View,StyleSheet} from 'react-native';
+import {Icon,Input,ListItem,Card} from 'react-native-elements';
 import {connect} from 'react-redux';
 import Container from '../components/Constainer';
 import Color from '../utilis/colors';
@@ -45,23 +45,27 @@ class ProjectScreen extends Component{
             />
         ))
 
-        return(
-     <KeyboardAvoidingView style={{flex:1}}>
-         {projects}
+        return( 
+        <Container>
+         <Card>
+          {projects}
+         </Card>
          <View style={styles.row}>
           <Input
             value={this.state.project}
             onChangeText={(text)=>this.setState({project:text})}
+            onSubmitEditing={()=>this.addProject()}
+            enablesReturnKeyAutomatically={true}
             placeholder='E.g. school blocks'
           />
-          <Icon 
+          {/**<Icon 
             name='add'
             disabled={!this.state.project>0}
-            color={Color.PRIMARY_COLOR} size={30} 
+            color={Color.PRIMARY_COLOR} size={30}
             onPress={()=>this.addProject()}
-          />
+          />*/}
         </View>
-     </KeyboardAvoidingView>
+        </Container>
         )
     }
 }
@@ -94,7 +98,7 @@ const styles = StyleSheet.create({
         textDecorationLine:'line-through',
     },
     undoneStyle:{
-        fontWeight:'bold'
+        fontWeight:'normal'
     }
   })
 

@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
-import { View, StyleSheet,Platform,Text } from 'react-native';
+import { View, StyleSheet,Platform,Text,Linking } from 'react-native';
 import {connect} from 'react-redux';
-import {Input,Icon,ListItem} from 'react-native-elements';
+import {Input,Icon,ListItem,Card} from 'react-native-elements';
+//import {Linking} from 'expo';
+import * as Contacts from 'expo-contacts';
+import * as Permissions from 'expo-permissions';
 import Constainer from '../components/Constainer';
 import Color from '../utilis/colors';
 import {addCall,fetchCalls,checkedCallDone,checkedCallUndone} from '../actions/callAction';
@@ -9,18 +12,54 @@ import {addCall,fetchCalls,checkedCallDone,checkedCallUndone} from '../actions/c
 class AddCallScreen extends Component {
 
   state={
-    name:''
+    name:'',
+    number:'',
+    contactList:[],
+    person:[],
+    showContacts:false
   }
 
   
   UNSAFE_componentWillMount(){
-    this.props.fetchCalls()
+    this.props.fetchCalls();
+    this.fetchCantacts();
  }
+
+fetchCantacts = async()=>{
+  const { status } = await Permissions.getAsync(Permissions.CONTACTS);
+  if(status !== 'granted'){
+     await  Permissions.askAsync(Permissions.CONTACTS);
+  }else if(status === 'granted'){
+    const {data} = await Contacts.getContactsAsync({
+      fields:[Contacts.Fields.Name,Contacts.Fields.PhoneNumbers]
+    });
   
+    if(data.length>0){
+      this.setState({contactList:data});
+      //console.log(this.state.contactList);
+    }
+  }
+
+}
+
+searchContact=async(names)=>{
+  this.setState({showContacts:true});
+  const contacts = this.state.contactList;
+  //console.log(contacts);
+  const result =[];
+  contacts.map((p)=>{
+  result.push({name:p.name,phone:p.phoneNumbers});
+  });
+    const person =  result.filter(f=>f.name.includes(names));
+    await this.setState({person});
+    //console.log(this.state.person);
+
+}
+
   addCall=()=>{
-    const {name} = this.state;
-    this.props.saveCall(name);
-    this.setState({name:''});
+    const {name,number} = this.state;
+    this.props.saveCall(name,number);
+    this.setState({name:'',number:''});
     this.props.fetchCalls()
   }
 
@@ -42,25 +81,40 @@ render(){
         title={list.name}
         titleProps={{style:list.done?styles.doneStyle:styles.undoneStyle}}
         onPress={()=>list.done?this.checkedCallUndone(list.id):this.checkedCallDone(list.id)}
+        rightIcon={<Icon name='phone' onPress={()=>Linking.openURL(`tel:${list.number}`)}/>}
         bottomDivider
-      />
+      /> 
+  ));
+  
+  const persons = this.state.person.map((p,i)=>(
+    <ListItem
+      key={i+1}
+      title={p.name}
+      onPress={()=>this.setState({name:p.name,number:p.phone[0].digits,showContacts:false})}
+    />
   ))
 
   return (
     <Constainer>
-          {lists}
+         <Card>
+           {lists}
+          </Card>
         <View style={styles.row}>
           <Input
             value={this.state.name}
             onChangeText={(text)=>this.setState({name:text})}
+            onChange={(text)=>this.searchContact(text.nativeEvent.text)}
+            onSubmitEditing={()=>this.addCall()}
+            enablesReturnKeyAutomatically={true}
             placeholder='Who do you want to call E.g. Sally'
           />
-          <Icon 
+          {this.state.name?this.state.showContacts && persons:null}
+          {/**<Icon 
             name='add'
             disabled={!this.state.name>0}
             color={Color.PRIMARY_COLOR} size={30} 
             onPress={()=>this.addCall()}
-          />
+          />*/}
         </View>
     </Constainer> 
   );
@@ -79,7 +133,7 @@ const mapStateToProps =(state)=>{
 const mapDispatchToProps = (despatch)=>{
   return{
     fetchCalls:()=>despatch(fetchCalls()),
-    saveCall:(name)=>despatch(addCall(name)),
+    saveCall:(name,number)=>despatch(addCall(name,number)),
     checkedCallDone:(id)=>despatch(checkedCallDone(id)),
     checkedCallUndone:(id)=>despatch(checkedCallUndone(id))
   };
@@ -87,7 +141,7 @@ const mapDispatchToProps = (despatch)=>{
 
 const styles = StyleSheet.create({
   row:{
-    flexDirection:'row',
+    flexDirection:'column',
     paddingRight:18,
   },
   doneStyle:{
@@ -95,7 +149,7 @@ const styles = StyleSheet.create({
     textDecorationLine:'line-through',
 },
 undoneStyle:{
-    fontWeight:'bold'
+    fontWeight:'normal'
 }
 })
 

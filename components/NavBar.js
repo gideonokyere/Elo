@@ -1,10 +1,9 @@
 import React,{Component} from 'react';
 import {StyleSheet,View,KeyboardAvoidingView} from 'react-native';
-import Add from './Add';
+import Calendar from './Calendar';
 import {Header} from 'react-native-elements';
 import Color from '../utilis/colors'
 import Host from './Host';
-import Container from './Constainer';
 
 class HomeScreen extends Component{
 
@@ -14,6 +13,7 @@ class HomeScreen extends Component{
              <Header
                leftComponent={{text:'Azura'}}
                containerStyle={styles.constainer}
+               rightComponent={<Calendar/>}
              />
               <Host/>
             </KeyboardAvoidingView>

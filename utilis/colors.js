@@ -1,9 +1,9 @@
  const Color = {
     BACKGROUND_COLOR: '#ffffff',
-    PRIMARY_COLOR: '#e3a034',
+    PRIMARY_COLOR: '#ff8c00',
     PRIMARY_FONT:'#858481',
-    ACCORDIAL_TITLE:'blue',
-    CHECKED_COLOR:'red'
+    ACCORDIAL_TITLE:'#0073aa',
+    CHECKED_COLOR:'gray'
 }
 
 export default Color;
