@@ -56,3 +56,12 @@
             return state
     }
  }
+
+ export const deleteCall=(state=0,action)=>{
+     switch(action.type){
+         case 'DELETE_CALL':
+             return action.id
+        default:
+            return state
+     }
+ }

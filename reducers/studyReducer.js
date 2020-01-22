@@ -51,3 +51,12 @@ export const markStudyUndone=(state=0,action)=>{
             return state
     }
 }
+
+export const deleteStudy=(state=0,action)=>{
+    switch(action.type){
+        case 'DELETE_STUDY':
+            return action.id
+        default:
+            return state
+    }
+}

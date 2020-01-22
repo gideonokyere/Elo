@@ -48,6 +48,7 @@ export const addDaily=(daily)=>{
 //listing daily
 export const fetchData=()=>{
     createDailyTable();
+    resetDaily();
     return (despatch)=>{
        DB.transaction((tx)=>{
           tx.executeSql(`select * from  dailys`,[],(tx,res)=>{
@@ -60,8 +61,9 @@ export const fetchData=()=>{
 //mark daily done
 export const checkedDailyDone=(id)=>{
     return (despatch)=>{
+     const date = moment(Date.now()).format('YYYY-MM-DD') 
      DB.transaction((tx)=>{
-        tx.executeSql(`update dailys set done=? where id=?`,[1,id],(tx,res)=>{
+        tx.executeSql(`update dailys set done=?,date=? where id=?`,[1,date,id],(tx,res)=>{
            despatch(markDailyDone(res.rowsAffected));
         });
     });
@@ -71,12 +73,44 @@ export const checkedDailyDone=(id)=>{
 //unmark daily done
 export const checkedDailyUndone=(id)=>{
     return (despatch)=>{
+        const date = moment(Date.now()).format('YYYY-MM-DD');
         DB.transaction((tx)=>{
-            tx.executeSql(`update dailys set done=? where id=?`,[0,id],(tx,res)=>{
+            tx.executeSql(`update dailys set done=?,date=? where id=?`,[0,date,id],(tx,res)=>{
                 despatch(markDailyUndone(res.rowsAffected));
             });
         });
     }
+}
+
+export const deleteDaily=(id)=>{
+    return (despatch)=>{
+        DB.transaction((tx)=>{
+            tx.executeSql(`delete from dailys where id=?`,[id],(tx,res)=>{
+                despatch(()=>{
+                    return{
+                        type:'DELETE_DAILY',
+                        id:res.rows.item.length
+                    }
+                });
+            });
+        });
+    }
+}
+
+export const resetDaily=()=>{
+    DB.transaction((tx)=>{
+        let date = moment(Date.now()).format('YYYY-MM-DD');
+        tx.executeSql(`select * from dailys where date<? and done=?`,[date,1],(tx,res)=>{
+            //console.log(res.rows._array);
+            if(!res) return;
+            let list =res.rows._array;
+            list.forEach((l)=>{
+                tx.executeSql(`update dailys set done=? where id=?`,[0,l.id],(tx,res)=>{
+                    return res.rowsAffected;
+                })
+            })
+        })
+    })
 }
 
 

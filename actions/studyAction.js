@@ -74,8 +74,9 @@ export const addTomorrowStudy=(study)=>{
 export const fetchData=()=>{
     createStudyTable();
     return (despatch)=>{
+        const date = moment(Date.now()).add(1,'day').format('YYYY-MM-DD');
         DB.transaction((tx)=>{
-            tx.executeSql(`select * from studys`,[],(tx,res)=>{
+            tx.executeSql(`select * from studys where date<?`,[date],(tx,res)=>{
                 despatch(listStudys(res.rows._array));
             });
         });
@@ -111,5 +112,20 @@ export const checkedStudyUndone=(id)=>{
                 despatch(markStudyUndone(res.rowsAffected));
             });
         });
+    }
+}
+
+export const deleteStudy=(id)=>{
+    return (despatch)=>{
+        DB.transaction((tx)=>{
+            tx.executeSql(`delete from studys where id=?`,[id],(tx,res)=>{
+                despatch(()=>{
+                    return {
+                        type:'DELETE_STUDY',
+                        id:res.rows.item.length
+                    }
+                })
+            })
+        })
     }
 }

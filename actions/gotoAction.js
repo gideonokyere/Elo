@@ -70,9 +70,10 @@ export const addGotoTomorrow=(goto)=>{
 }
 
 export const fetchGoto=()=>{
+   const date = moment(Date.now()).add(1,'day').format('YYYY-MM-DD');
    return (despatch)=>{
       DB.transaction((tx)=>{
-         tx.executeSql(`select * from gotos`,[],(tx,res)=>{
+         tx.executeSql(`select * from gotos where date<?`,[date],(tx,res)=>{
             despatch(listGotos(res.rows._array));
          })
       });
@@ -108,6 +109,21 @@ export const checkedGotoUndone=(id)=>{
             despatch(markGotoUndone(res.rowsAffected));
          });
       });
+   }
+}
+
+export const deleteGoto=(id)=>{
+   return (despatch)=>{
+       DB.transaction((tx)=>{
+          tx.executeSql(`delete from gotos where id=?`,[id],(tx,res)=>{
+             despatch(()=>{
+                return{
+                   type:'DELETE_GOTO',
+                   id:res.rows.item.length
+                }
+             });
+          });
+       });
    }
 }
 

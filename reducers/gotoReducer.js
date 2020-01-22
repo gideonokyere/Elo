@@ -53,3 +53,12 @@ export const markGotoUndone=(state=0,action)=>{
             return state
     }
 }
+
+export const deleteGoto=(state=0,action)=>{
+   switch(action.type){
+       case 'DELETE_GOTO':
+           return action.id
+        default:
+            return state
+   }
+}

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, StyleSheet,Platform,Text,Linking } from 'react-native';
+import { View, StyleSheet,Platform,Text,Linking,Alert } from 'react-native';
 import {connect} from 'react-redux';
 import {Input,Icon,ListItem,Card} from 'react-native-elements';
 //import {Linking} from 'expo';
@@ -7,7 +7,7 @@ import * as Contacts from 'expo-contacts';
 import * as Permissions from 'expo-permissions';
 import Constainer from '../components/Constainer';
 import Color from '../utilis/colors';
-import {addCall,fetchCalls,checkedCallDone,checkedCallUndone} from '../actions/callAction';
+import {addCall,fetchCalls,checkedCallDone,checkedCallUndone,deleteCall} from '../actions/callAction';
 
 class AddCallScreen extends Component {
 
@@ -73,6 +73,10 @@ searchContact=async(names)=>{
     this.props.fetchCalls()
   }
 
+  deleteMyCall=(id)=>{
+    this.props.deleteCall(id);
+    this.props.fetchCalls()
+  }
   
 render(){
   const lists = this.props.calls.map((list)=>(
@@ -81,7 +85,17 @@ render(){
         title={list.name}
         titleProps={{style:list.done?styles.doneStyle:styles.undoneStyle}}
         onPress={()=>list.done?this.checkedCallUndone(list.id):this.checkedCallDone(list.id)}
-        rightIcon={<Icon name='phone' onPress={()=>Linking.openURL(`tel:${list.number}`)}/>}
+        rightIcon={<>
+                 <Icon name='phone' onPress={()=>Linking.openURL(`tel:${list.number}`)}/>
+                 <Icon name='dots-three-vertical' type='entypo' onPress={()=>Alert.alert(
+                    'Confirmation',
+                    'Remove Task ?',
+                    [
+                      {text:'YES',onPress:()=>this.deleteMyCall(list.id)},
+                      {text:'NO'}
+                    ]
+                  )}/>
+                 </>}
         bottomDivider
       /> 
   ));
@@ -126,7 +140,8 @@ const mapStateToProps =(state)=>{
     id: state.newCall,
     calls: state.listCalls,
     checked: state.markCallDone,
-    unchecked: state.markCallUndone
+    unchecked: state.markCallUndone,
+    delete:state.deleteCall
   };
 };
 
@@ -135,7 +150,8 @@ const mapDispatchToProps = (despatch)=>{
     fetchCalls:()=>despatch(fetchCalls()),
     saveCall:(name,number)=>despatch(addCall(name,number)),
     checkedCallDone:(id)=>despatch(checkedCallDone(id)),
-    checkedCallUndone:(id)=>despatch(checkedCallUndone(id))
+    checkedCallUndone:(id)=>despatch(checkedCallUndone(id)),
+    deleteCall:(id)=>despatch(deleteCall(id))
   };
 };
 

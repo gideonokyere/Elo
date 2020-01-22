@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet,Alert } from 'react-native';
 import { Input, Icon,ListItem,Card} from 'react-native-elements';
 import { connect } from 'react-redux';
 import Container from '../components/Constainer';
 import Color from '../utilis/colors';
-import { addGoto, fetchGoto,checkedGoToDone,checkedGotoUndone } from '../actions/gotoAction';
+import { addGoto, fetchGoto,checkedGoToDone,checkedGotoUndone,deleteGoto } from '../actions/gotoAction';
 
 class GoToScreen extends Component {
    state = {
@@ -32,6 +32,11 @@ class GoToScreen extends Component {
       this.props.fetchData();
    }
 
+   deleteMyGoto=(id)=>{
+      this.props.removeGoto(id);
+      this.props.fetchData()
+   }
+
    render() {
        const gotos=this.props.gotos.map((goto)=>(
           <ListItem
@@ -39,6 +44,14 @@ class GoToScreen extends Component {
              title={goto.goto}
              titleProps={{style:goto.done?styles.doneStyle:styles.undoneStyle}}
              onPress={()=>goto.done?this.checkedGotoUndone(goto.id):this.checkedGotoDone(goto.id)}
+             rightIcon={<Icon name='dots-three-vertical' type='entypo' onPress={()=>Alert.alert(
+                'Confirmation',
+                'Remove Task ?',
+                [
+                   {text:'YES',onPress:()=>this.deleteMyGoto(goto.id)},
+                   {text:'NO'}
+                ]
+             )} />}
              bottomDivider
           />
        ))
@@ -72,7 +85,8 @@ const mapStateToProps = (state) => {
       newCall: state.newCall,
       gotos: state.listGotos,
       checked: state.markGotoDone,
-      unchecked: state.markGotoUndone
+      unchecked: state.markGotoUndone,
+      delte:state.deleteGoto
    }
 }
 
@@ -81,7 +95,8 @@ const mapDespatchToProps = (despatch) => {
       saveGoto: (goto) => despatch(addGoto(goto)),
       fetchData: () => despatch(fetchGoto()),
       checkedGotoDone:(id)=>despatch(checkedGoToDone(id)),
-      checkedGotoUndone:(id)=>despatch(checkedGotoUndone(id))
+      checkedGotoUndone:(id)=>despatch(checkedGotoUndone(id)),
+      removeGoto:(id)=>despatch(deleteGoto(id))
    }
 }
 

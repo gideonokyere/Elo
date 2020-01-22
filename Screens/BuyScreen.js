@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import {Text,View,StyleSheet} from 'react-native';
+import {Text,View,StyleSheet,Alert} from 'react-native';
 import {Icon,Input,ListItem,Card} from 'react-native-elements';
 import {connect} from 'react-redux';
 import Color from '../utilis/colors';
-import {addBuy,fetchData,checkedBuyDone,checkedBuyUndone} from '../actions/buyAction';
+import {addBuy,fetchData,checkedBuyDone,checkedBuyUndone,deleteBuy} from '../actions/buyAction';
 
 import Container from '../components/Constainer';
 
@@ -34,6 +34,11 @@ class BuyScreen extends Component{
         this.props.fetchData();
     }
 
+    deleteMyBuy=(id)=>{
+       this.props.deleteBuy(id);
+       this.props.fetchData()
+    }
+
     render(){
 
         const buy = this.props.buys.map((buy)=>(
@@ -42,6 +47,14 @@ class BuyScreen extends Component{
                title={buy.buy}
                titleProps={{style:buy.done?styles.doneStyle:styles.undoneStyle}}
                onPress={()=>buy.done?this.checkedBuyUndone(buy.id):this.checkedBuyDone(buy.id)}
+               rightIcon={<Icon name='dots-three-vertical' type='entypo' onPress={()=>Alert.alert(
+                   'Confirmation',
+                   'Remove Task ?',
+                   [
+                       {text:'YES',onPress:()=>this.deleteMyBuy(buy.id)},
+                       {text:'NO'}
+                   ]
+               )}/>}
                bottomDivider
             />
         ))
@@ -77,7 +90,8 @@ const mapStateToProps =(state)=>{
         id: state.newBuy,
         buys: state.listBuys,
         checked: state.markBuyDone,
-        unchecked: state.markBuyUndone
+        unchecked: state.markBuyUndone,
+        delete:state.deleteBuy
     }
 }
 
@@ -86,7 +100,8 @@ const mapDespatchToProps=(despatch)=>{
        saveBuy:(buy)=>despatch(addBuy(buy)),
        fetchData:()=>despatch(fetchData()),
        checkedBuyDone:(id)=>despatch(checkedBuyDone(id)),
-       checkedBuyUndone:(id)=>despatch(checkedBuyUndone(id))
+       checkedBuyUndone:(id)=>despatch(checkedBuyUndone(id)),
+       deleteBuy:(id)=>despatch(deleteBuy(id))
     }
 }
 

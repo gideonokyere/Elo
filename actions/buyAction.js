@@ -77,8 +77,9 @@ export const addTomorrowBuy=(buy)=>{
 export const fetchData=()=>{
    createBuyTable();
    return (despatch)=>{
+       const date = moment(Date.now()).add(1,'day').format('YYYY-MM-DD');
        DB.transaction((tx)=>{
-           tx.executeSql(`select * from buys`,[],(tx,res)=>{
+           tx.executeSql(`select * from buys where id<?`,[date],(tx,res)=>{
                despatch(listBuys(res.rows._array));
            });
        });
@@ -111,6 +112,21 @@ export const checkedBuyUndone=(id)=>{
         DB.transaction((tx)=>{
             tx.executeSql(`update buys set done=? where id=?`,[0,id],(tx,res)=>{
                 despatch(markBuyUndone(res.rowsAffected));
+            });
+        });
+    }
+}
+
+export const deleteBuy=(id)=>{
+    return (despatch)=>{
+        DB.transaction((tx)=>{
+            tx.executeSql(`delete from buys where id=?`,[id],(tx,res)=>{
+                despatch(()=>{
+                    return{
+                        type:'DELETE_BUY',
+                        id:res.rows.item.length
+                    }
+                });
             });
         });
     }

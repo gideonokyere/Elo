@@ -78,8 +78,9 @@ export const addCallTomorrow = (name,number)=>{
 //listing all calls
 export const fetchCalls=()=>{
     return (despatch)=>{
+        const date = moment(Date.now()).add(1,'day').format('YYYY-MM-DD');
         DB.transaction((tx)=>{
-            tx.executeSql(`select * from calls`,[],(tx,res)=>{
+            tx.executeSql(`select * from calls where date<?`,[date],(tx,res)=>{
                 despatch(listCalls(res.rows._array));
             })
         });
@@ -120,4 +121,21 @@ export const checkedCallUndone=(id)=>{
             });
         });
     }
+}
+
+export const deleteCall=(id)=>{
+    return (despatch)=>{
+
+    DB.transaction((tx)=>{
+        tx.executeSql(`delete from calls where id=?`,[id],(tx,res)=>{
+            //console.log(res.rows.item.length);
+            despatch(()=>{
+                return{
+                    type:'DELETE_CALL',
+                    id:res.rows.item.length
+                }
+            });
+        });
+    });
+   }
 }

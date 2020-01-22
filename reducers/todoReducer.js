@@ -53,3 +53,12 @@ export const markTodoUndone=(state=0,action)=>{
     }
 }
 
+export const deleteTodo=(state=0,action)=>{
+    switch(action.type){
+        case 'DELETE_TODO':
+            return action.id
+        default:
+            return state
+    }
+}
+

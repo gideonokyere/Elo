@@ -1,10 +1,10 @@
 import React,{Component} from 'react';
-import {View,StyleSheet,Platform} from 'react-native';
+import {View,StyleSheet,Alert} from 'react-native';
 import {Icon,Input,ListItem,Card} from 'react-native-elements';
 import {connect} from 'react-redux';
 import Container from '../components/Constainer';
 import Color from '../utilis/colors';
-import {addDaily,fetchData,checkedDailyDone,checkedDailyUndone} from '../actions/dailyAction';
+import {addDaily,fetchData,checkedDailyDone,checkedDailyUndone,deleteDaily} from '../actions/dailyAction';
 
 
 class DailyScreen extends Component{
@@ -35,6 +35,11 @@ class DailyScreen extends Component{
         this.props.fetchData();
     }
 
+    deleteMyDaily=(id)=>{
+        this.props.deleteDaily(id);
+        this.props.fetchData()
+    }
+
     render(){
 
         const dailys = this.props.dailys.map((daily)=>(
@@ -43,6 +48,14 @@ class DailyScreen extends Component{
               title={daily.daily}
               titleProps={{style:daily.done?styles.doneStyle:styles.undoneStyle}}
               onPress={()=>daily.done?this.checkedUndone(daily.id):this.checkedDone(daily.id)}
+              rightIcon={<Icon name='dots-three-vertical' type='entypo' onPress={()=>Alert.alert(
+                  'Confirmation',
+                  'Remove Task ?',
+                  [
+                      {text:'YES',onPress:()=>this.deleteMyDaily(daily.id)},
+                      {text:'NO'}
+                  ]
+              )}/>}
               bottomDivider
             />
         ))
@@ -78,7 +91,8 @@ const mapStateToProps = (state)=>{
         id:state.newDaily,
         dailys:state.listDailys,
         checked:state.markDailyDone,
-        unchecked:state.markDailyUndone
+        unchecked:state.markDailyUndone,
+        delete:state.deleteDaily
     }
 }
 
@@ -87,7 +101,8 @@ const mapDespatchToProps=(despatch)=>{
         saveDaily:(daily)=>despatch(addDaily(daily)),
         fetchData:()=>despatch(fetchData()),
         checkedDone:(id)=>despatch(checkedDailyDone(id)),
-        checkedUndone:(id)=>despatch(checkedDailyUndone(id))
+        checkedUndone:(id)=>despatch(checkedDailyUndone(id)),
+        deleteDaily:(id)=>despatch(deleteDaily(id))
     }
 }
 

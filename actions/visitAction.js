@@ -70,8 +70,9 @@ export const addTomorrowVisit=(visit)=>{
 export const fetchData = ()=>{
     createVisitTable();
     return (despatch)=>{
+        const date = moment(Date.now()).add(1,'day').format('YYYY-MM-DD');
        DB.transaction((tx)=>{
-           tx.executeSql(`select * from visits`,[],(tx,res)=>{
+           tx.executeSql(`select * from visits where date<?`,[date],(tx,res)=>{
                despatch(listVisits(res.rows._array));
            });
        });
@@ -106,6 +107,21 @@ export const checkedVisitUndone=(id)=>{
         DB.transaction((tx)=>{
             tx.executeSql(`update visits set done=? where id=?`,[0,id],(tx,res)=>{
                 despatch(markVisitUndone(res.rowsAffected));
+            });
+        });
+    }
+}
+
+export const deleteVisit=(id)=>{
+    return (despatch)=>{
+        DB.transaction((tx)=>{
+            tx.executeSql(`delete from visits where id=?`,[id],(tx,res)=>{
+                despatch(()=>{
+                    return{
+                        type:'DELETE_VISIT',
+                        id:res.rows.item.length
+                    }
+                });
             });
         });
     }

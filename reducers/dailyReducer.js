@@ -33,3 +33,12 @@ export const markDailyUndone=(state=0,action)=>{
             return state
     }
 }
+
+export const deleteDaily=(state=0,action)=>{
+    switch(action.type){
+        case 'DELETE_DAILY':
+            return action.id
+        default:
+            return state
+    }
+}

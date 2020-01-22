@@ -51,3 +51,12 @@ export const markProjectUndone=(state=0,action)=>{
             return state
     }
 }
+
+export const deleteProject=(state=0,action)=>{
+    switch(action.type){
+        case 'DELETE_PROJECT':
+            return action.id
+        default:
+            return state
+    }
+}

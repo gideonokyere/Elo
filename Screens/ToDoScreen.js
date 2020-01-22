@@ -1,10 +1,10 @@
 import React,{Component} from 'react';
-import {StyleSheet,View} from 'react-native';
+import {StyleSheet,View,Alert} from 'react-native';
 import {Input,Icon,ListItem,Card} from 'react-native-elements';
 import {connect} from 'react-redux';
 import Container from '../components/Constainer';
 import Color from '../utilis/colors';
-import {addTodo,fetchTodos,checkTodoDone,checkedTodoUndone} from '../actions/todoAction';
+import {addTodo,fetchTodos,checkTodoDone,checkedTodoUndone,deleteTodo} from '../actions/todoAction';
 
 class ToDoScreen extends Component{
 
@@ -33,6 +33,11 @@ class ToDoScreen extends Component{
     this.props.fetchTodos();
   }
 
+  deleteMyTodo=(id)=>{
+    this.props.deleteTodo(id);
+    this.props.fetchTodos()
+  }
+
    render(){
       const todos = this.props.Todos.map((todo)=>(
         <ListItem
@@ -40,6 +45,14 @@ class ToDoScreen extends Component{
           title={todo.todo}
           titleProps={{style:todo.done?styles.doneStyle:styles.undoneStyle}}
           onPress={()=>todo.done?this.checkedTodoUndone(todo.id):this.checkedTodoDone(todo.id)}
+          rightIcon={<Icon name='dots-three-vertical' type='entypo' onPress={()=>Alert.alert(
+            'Confirmation',
+            'Remove Task ?',
+            [
+              {text:'YES',onPress:()=>this.deleteMyTodo(todo.id)},
+              {text:'NO'}
+            ]
+          )}/>}
           bottomDivider
         />
       ))
@@ -74,7 +87,8 @@ const mapStateToProps =(state)=>{
     id: state.newTodo,
     Todos: state.listTodos,
     checked:state.markTodoDone,
-    unchecked:state.markTodoUndone
+    unchecked:state.markTodoUndone,
+    delete:state.deleteTodo
   }
 }
 
@@ -83,7 +97,8 @@ const mapDespatchToProps =(despatch)=>{
     saveTodo:(todo)=>despatch(addTodo(todo)),
     fetchTodos:()=>despatch(fetchTodos()),
     checkedTodoDone:(id)=>despatch(checkTodoDone(id)),
-    checkedTodoUndone:(id)=>despatch(checkedTodoUndone(id))
+    checkedTodoUndone:(id)=>despatch(checkedTodoUndone(id)),
+    deleteTodo:(id)=>despatch(deleteTodo(id))
   }
 }
 

@@ -51,3 +51,12 @@ export const markBuyUndone=(state=0,action)=>{
             return state
     }
 }
+
+export const deleteBuy=(state=0,action)=>{
+    switch(action.type){
+        case 'DELETE_BUY':
+            return action.id
+        default:
+            return state
+    }
+}

@@ -73,8 +73,9 @@ export const addTodoTomorrow=(todo)=>{
 
 export const fetchTodos =()=>{
     return (despatch)=>{
+        const date = moment(Date.now()).add(1,'day').format('YYYY-MM-DD');
         DB.transaction((tx)=>{
-          tx.executeSql(`select * from todos`,[],(tx,res)=>{
+          tx.executeSql(`select * from todos where date<?`,[date],(tx,res)=>{
             despatch(listTodos(res.rows._array));
             //console.log(res.rows._array);
           });
@@ -111,6 +112,21 @@ export const checkedTodoUndone=(id)=>{
     DB.transaction((tx)=>{
       tx.executeSql(`update todos set done=? where id=?`,[0,id],(tx,res)=>{
         despatch(markTodoUndone(res.rowsAffected));
+      });
+    });
+  }
+}
+
+export const deleteTodo=(id)=>{
+  return (despatch)=>{
+    DB.transaction((tx)=>{
+      tx.executeSql(`delete from todos where id=?`,[id],(tx,res)=>{
+        despatch(()=>{
+          return{
+            type:'DELETE_TODO',
+            id:res.rows.item.length
+          }
+        });
       });
     });
   }

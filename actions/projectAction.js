@@ -74,8 +74,9 @@ export const addTomorrowProject=(project)=>{
 export const fetchData=()=>{
     createProjectTable();
    return (despatch)=>{
+    const date = moment(Date.now()).add(1,'day').format('YYYY-MM-DD');
        DB.transaction((tx)=>{
-          tx.executeSql(`select * from projects`,[],(tx,res)=>{
+          tx.executeSql(`select * from projects where date<?`,[date],(tx,res)=>{
               despatch(listProjects(res.rows._array));
           });
        });
@@ -112,4 +113,19 @@ export const checkedProjectUndone=(id)=>{
         });
     });
  }
+}
+
+export const deleteProject=(id)=>{
+    return (despatch)=>{
+       DB.transaction((tx)=>{
+           tx.executeSql(`delete from projects where id=?`,[id],(tx,res)=>{
+               despatch(()=>{
+                   return{
+                       type:'DELETE_PROJECT',
+                       id:res.rows.item.length
+                   }
+               });
+           });
+       });
+    }
 }

@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import {View,StyleSheet} from 'react-native';
+import {View,StyleSheet,Alert} from 'react-native';
 import {Icon,Input,ListItem,Card} from 'react-native-elements';
 import {connect} from 'react-redux';
 import Color from '../utilis/colors';
 import Container from '../components/Constainer';
-import {addStudy,fetchData,checkedStudyDone,checkedStudyUndone} from '../actions/studyAction';
+import {addStudy,fetchData,checkedStudyDone,checkedStudyUndone,deleteStudy} from '../actions/studyAction';
 
 class StudyScreen extends Component{
 
@@ -33,6 +33,11 @@ class StudyScreen extends Component{
     this.props.fetchData();
   }
 
+  deleteMyStudy=(id)=>{
+    this.props.deleteStudy(id);
+    this.props.fetchData()
+  }
+
   render(){
     const studys = this.props.studys.map((study)=>(
       <ListItem
@@ -40,6 +45,14 @@ class StudyScreen extends Component{
         title={study.study}
         titleProps={{style:study.done?styles.doneStyle:styles.undoneStyle}}
         onPress={()=>study.done?this.checkedStudyUndone(study.id):this.checkedStudyDone(study.id)}
+        rightIcon={<Icon name='dots-three-vertical' type='entypo' onPress={()=>Alert.alert(
+          'Confirmation',
+          'Remove Task ?',
+          [
+            {text:'YES',onPress:()=>this.deleteMyStudy(study.id)},
+            {text:'NO'}
+          ]
+        )}/>}
         bottomDivider
       />
     ))
@@ -73,7 +86,8 @@ const mapStateToProps =(state)=>{
     id:state.newStudy,
     studys:state.listStudys,
     checked:state.markStudyDone,
-    unchecked:state.markStudyUndone
+    unchecked:state.markStudyUndone,
+    delete:state.deleteStudy
   }
 }
 
@@ -82,7 +96,8 @@ const mapDespatchToState=(despatch)=>{
     saveStudy:(study)=>despatch(addStudy(study)),
     fetchData:()=>despatch(fetchData()),
     checkedStudyDone:(id)=>despatch(checkedStudyDone(id)),
-    checkedStudyUndone:(id)=>despatch(checkedStudyUndone(id))
+    checkedStudyUndone:(id)=>despatch(checkedStudyUndone(id)),
+    deleteStudy:(id)=>despatch(deleteStudy(id))
   }
 }
 

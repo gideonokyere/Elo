@@ -52,3 +52,12 @@ export const markVisitUndone=(state=0,action)=>{
             return state
     }
 }
+
+export const deleteVisit=(state=0,action)=>{
+    switch(action.type){
+        case 'DELETE_VISIT':
+            return action.id
+        default:
+            return state
+    }
+}

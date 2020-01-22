@@ -1,10 +1,10 @@
 import React,{Component} from  'react';
-import {View,StyleSheet} from 'react-native';
+import {View,StyleSheet,Alert} from 'react-native';
 import {Icon,Input,ListItem,Card} from  'react-native-elements';
 import {connect} from 'react-redux';
 import Container from '../components/Constainer';
 import Color from '../utilis/colors';
-import {fetchData,addVisit,checkedVisitDone,checkedVisitUndone} from '../actions/visitAction';
+import {fetchData,addVisit,checkedVisitDone,checkedVisitUndone,deleteVisit} from '../actions/visitAction';
 
 
 class VisitScreen extends Component{
@@ -34,6 +34,11 @@ class VisitScreen extends Component{
         this.props.fetchData();
     }
 
+    deleteMyVisit=(id)=>{
+        this.props.deleteVisit(id);
+        this.props.fetchData()
+    }
+
     render(){
 
         const visits = this.props.visits.map((visit)=>(
@@ -43,6 +48,14 @@ class VisitScreen extends Component{
                   title={visit.visit}
                   titleProps={{style:visit.done?styles.doneStyle:styles.undoneStyle}}
                   onPress={()=>visit.done?this.checkedVisitUndone(visit.id):this.checkedVisitDone(visit.id)}
+                  rightIcon={<Icon name='dots-three-vertical' type='entypo' onPress={()=>Alert.alert(
+                      'Confirmation',
+                      'Remove Task ?',
+                      [
+                          {text:'YES',onPress:()=>this.deleteMyVisit(visit.id)},
+                          {text:'NO'}
+                      ]
+                  )}/>}
                   bottomDivider
               />
         ))
@@ -78,7 +91,8 @@ const mapStateToProps =state=>{
         id:state.newVisit,
         visits:state.listVisits,
         checked: state.markVisitDone,
-        unchecked:state.markVisitUndone
+        unchecked:state.markVisitUndone,
+        delete:state.deleteVisit
     }
 }
 
@@ -87,7 +101,8 @@ const mapDespatchToProps=despatch=>{
     saveVisit:(visit)=>despatch(addVisit(visit)),
     fetchData:()=>despatch(fetchData()),
     checkedVisitDone:(id)=>despatch(checkedVisitDone(id)),
-    checkedVisitUndone:(id)=>despatch(checkedVisitUndone(id))
+    checkedVisitUndone:(id)=>despatch(checkedVisitUndone(id)),
+    deleteVisit:(id)=>despatch(deleteVisit(id))
    }
 }
 
