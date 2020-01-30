@@ -43,6 +43,12 @@ export const markBuyUndone=(id)=>{
     }
 }
 
+export const listDoneBuy=(doneBuys)=>{
+    return {
+        type:'LIST_DONE_BUY',
+        doneBuys
+    }
+}
 
 
 //Acction creators
@@ -79,7 +85,7 @@ export const fetchData=()=>{
    return (despatch)=>{
        const date = moment(Date.now()).add(1,'day').format('YYYY-MM-DD');
        DB.transaction((tx)=>{
-           tx.executeSql(`select * from buys where id<?`,[date],(tx,res)=>{
+           tx.executeSql(`select * from buys where id<? and done=?`,[date,0],(tx,res)=>{
                despatch(listBuys(res.rows._array));
            });
        });
@@ -127,6 +133,16 @@ export const deleteBuy=(id)=>{
                         id:res.rows.item.length
                     }
                 });
+            });
+        });
+    }
+}
+
+export const fetchDoneBuy=()=>{
+    return (despatch)=>{
+        DB.transaction((tx)=>{
+            tx.executeSql(`select * from buys where done=?`,[1],(tx,res)=>{
+                despatch(listDoneBuy(res.rows._array));
             });
         });
     }

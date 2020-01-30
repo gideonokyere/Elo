@@ -65,3 +65,12 @@
             return state
      }
  }
+
+ export const listCallDone=(state=[],action)=>{
+    switch(action.type){
+        case 'LIST_CALL_DONE':
+            return action.callDones
+        default:
+            return state
+    }
+ }

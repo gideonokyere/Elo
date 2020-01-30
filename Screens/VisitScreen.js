@@ -4,7 +4,7 @@ import {Icon,Input,ListItem,Card} from  'react-native-elements';
 import {connect} from 'react-redux';
 import Container from '../components/Constainer';
 import Color from '../utilis/colors';
-import {fetchData,addVisit,checkedVisitDone,checkedVisitUndone,deleteVisit} from '../actions/visitAction';
+import {fetchData,addVisit,checkedVisitDone,checkedVisitUndone,deleteVisit,fetchDoneVisit} from '../actions/visitAction';
 
 
 class VisitScreen extends Component{
@@ -27,6 +27,7 @@ class VisitScreen extends Component{
     checkedVisitDone=(id)=>{
         this.props.checkedVisitDone(id);
         this.props.fetchData();
+        this.props.fetchDoneVisit()
     }
 
     checkedVisitUndone=(id)=>{
@@ -102,7 +103,8 @@ const mapDespatchToProps=despatch=>{
     fetchData:()=>despatch(fetchData()),
     checkedVisitDone:(id)=>despatch(checkedVisitDone(id)),
     checkedVisitUndone:(id)=>despatch(checkedVisitUndone(id)),
-    deleteVisit:(id)=>despatch(deleteVisit(id))
+    deleteVisit:(id)=>despatch(deleteVisit(id)),
+    fetchDoneVisit:()=>despatch(fetchDoneVisit())
    }
 }
 

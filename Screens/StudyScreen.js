@@ -4,7 +4,7 @@ import {Icon,Input,ListItem,Card} from 'react-native-elements';
 import {connect} from 'react-redux';
 import Color from '../utilis/colors';
 import Container from '../components/Constainer';
-import {addStudy,fetchData,checkedStudyDone,checkedStudyUndone,deleteStudy} from '../actions/studyAction';
+import {addStudy,fetchData,checkedStudyDone,checkedStudyUndone,deleteStudy,fetchDoneStudy} from '../actions/studyAction';
 
 class StudyScreen extends Component{
 
@@ -25,6 +25,7 @@ class StudyScreen extends Component{
 
   checkedStudyDone=(id)=>{
     this.props.checkedStudyDone(id);
+    this.props.fetchDoneStudy();
     this.props.fetchData();
   }
 
@@ -97,7 +98,8 @@ const mapDespatchToState=(despatch)=>{
     fetchData:()=>despatch(fetchData()),
     checkedStudyDone:(id)=>despatch(checkedStudyDone(id)),
     checkedStudyUndone:(id)=>despatch(checkedStudyUndone(id)),
-    deleteStudy:(id)=>despatch(deleteStudy(id))
+    deleteStudy:(id)=>despatch(deleteStudy(id)),
+    fetchDoneStudy:()=>despatch(fetchDoneStudy())
   }
 }
 

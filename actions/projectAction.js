@@ -43,6 +43,13 @@ export const markProjectUndone=(id)=>{
     }
 }
 
+export const listDoneProject=(doneProject)=>{
+    return{
+        type:'LIST_DONE_PROJECT',
+        doneProject
+    }
+}
+
 
 //action creators
 
@@ -76,7 +83,7 @@ export const fetchData=()=>{
    return (despatch)=>{
     const date = moment(Date.now()).add(1,'day').format('YYYY-MM-DD');
        DB.transaction((tx)=>{
-          tx.executeSql(`select * from projects where date<?`,[date],(tx,res)=>{
+          tx.executeSql(`select * from projects where date<? and done=?`,[date,0],(tx,res)=>{
               despatch(listProjects(res.rows._array));
           });
        });
@@ -127,5 +134,15 @@ export const deleteProject=(id)=>{
                });
            });
        });
+    }
+}
+
+export const fetchDoneProject=()=>{
+    return (despatch)=>{
+        DB.transaction((tx)=>{
+            tx.executeSql(`select * from projects where done=?`,[1],(tx,res)=>{
+                despatch(listDoneProject(res.rows._array));
+            });
+        });
     }
 }

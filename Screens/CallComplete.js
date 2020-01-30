@@ -1,0 +1,54 @@
+import React,{Component} from 'react';
+import {StyleSheet} from 'react-native';
+import {ListItem,Card} from 'react-native-elements';
+import {connect} from 'react-redux';
+import {checkedCallUndone,listCallDone} from '../actions/callAction';
+import Container from '../components/Constainer';
+import EmptyTaskMessage from '../components/EnptyTaskMessage';
+import Color from '../utilis/colors';
+
+class CallComplete extends Component{
+
+    UNSAFE_componentWillMount=async()=>{
+       await this.props.donefetchCalls()
+    }
+
+    render(){
+        const calls = this.props.doneCalls.map((call)=>(
+            <ListItem
+                key={call.id}
+                title={call.name}
+                titleProps={{style:styles.doneStyle}}
+                topDivider
+            />
+        ))
+        return(
+          <Container>
+                {this.props.doneCalls.length>-1?<Card>{calls}</Card>:<EmptyTaskMessage task='call'/>}
+          </Container>
+        );
+    }
+}
+
+const mapStateToProps=(state)=>{
+    return{
+        id:state.markCallUndone,
+        doneCalls:state.listCallDone
+    }
+}
+
+const mapDispatchToProps=(dispatch)=>{
+    return{
+        makeUndone:(id)=>dispatch(checkedCallUndone(id)),
+        donefetchCalls:()=>dispatch(listCallDone())
+    }
+}
+
+    const styles = StyleSheet.create({
+        doneStyle:{
+            color:Color.CHECKED_COLOR,
+            textDecorationLine:'line-through',
+        }
+})
+
+export default connect(mapStateToProps,mapDispatchToProps)(CallComplete);

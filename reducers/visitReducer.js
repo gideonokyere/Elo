@@ -61,3 +61,12 @@ export const deleteVisit=(state=0,action)=>{
             return state
     }
 }
+
+export const listDoneVisit=(state=[],action)=>{
+    switch(action.type){
+        case 'LIST_DONE_VISIT':
+            return action.doneVisits
+        default:
+            return state
+    }
+}

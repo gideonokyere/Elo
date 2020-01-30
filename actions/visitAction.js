@@ -30,6 +30,13 @@ export const markVisitUndone=(id)=>{
     }
 }
 
+export const listDoneVisit=(doneVisits)=>{
+    return{
+        type:'LIST_DONE_VISIT',
+        doneVisits
+    }
+}
+
 // creating visit
 export const addVisit =(visit)=>{
    createVisitTable();
@@ -72,7 +79,7 @@ export const fetchData = ()=>{
     return (despatch)=>{
         const date = moment(Date.now()).add(1,'day').format('YYYY-MM-DD');
        DB.transaction((tx)=>{
-           tx.executeSql(`select * from visits where date<?`,[date],(tx,res)=>{
+           tx.executeSql(`select * from visits where date<? and done=?`,[date,0],(tx,res)=>{
                despatch(listVisits(res.rows._array));
            });
        });
@@ -122,6 +129,16 @@ export const deleteVisit=(id)=>{
                         id:res.rows.item.length
                     }
                 });
+            });
+        });
+    }
+}
+
+export const fetchDoneVisit=()=>{
+    return (despatch)=>{
+        DB.transaction((tx)=>{
+            tx.executeSql(`select * from visits where done=?`,[1],(tx,res)=>{
+                despatch(listDoneVisit(res.rows._array));
             });
         });
     }

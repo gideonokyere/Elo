@@ -60,3 +60,12 @@ export const deleteBuy=(state=0,action)=>{
             return state
     }
 }
+
+export const listDoneBuy=(state=[],action)=>{
+    switch(action.type){
+        case 'LIST_DONE_BUY':
+            return action.doneBuys
+        default:
+            return state
+    }
+}

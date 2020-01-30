@@ -62,3 +62,12 @@ export const deleteTodo=(state=0,action)=>{
     }
 }
 
+export const listDoneTodo=(state=[],action)=>{
+    switch(action.type){
+        case 'FETCH_TODO_DONE':
+            return action.donetodos
+        default:
+            return state
+    }
+}
+

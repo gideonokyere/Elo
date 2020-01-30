@@ -4,7 +4,7 @@ import {Icon,Input,ListItem,Card} from 'react-native-elements';
 import {connect} from 'react-redux';
 import Container from '../components/Constainer';
 import Color from '../utilis/colors';
-import {addProject,fetchData,checkedProjectDone,checkedProjectUndone,deleteProject} from '../actions/projectAction';
+import {addProject,fetchData,checkedProjectDone,checkedProjectUndone,deleteProject,fetchDoneProject} from '../actions/projectAction';
 
 
 class ProjectScreen extends Component{
@@ -26,6 +26,7 @@ class ProjectScreen extends Component{
 
     checkedProjectDone=(id)=>{
         this.props.checkedProjectDone(id);
+        this.props.fetchDoneProject();
         this.props.fetchData();
     }
 
@@ -99,7 +100,8 @@ const mapDespatchToProps=(despatch)=>{
         fetchData:()=>despatch(fetchData()),
         checkedProjectDone:(id)=>despatch(checkedProjectDone(id)),
         checkedProjectUndone:(id)=>despatch(checkedProjectUndone(id)),
-        deleteProject:(id)=>despatch(deleteProject(id))
+        deleteProject:(id)=>despatch(deleteProject(id)),
+        fetchDoneProject:()=>despatch(fetchDoneProject())
     }
 }
 

@@ -42,3 +42,30 @@ export const deleteDaily=(state=0,action)=>{
             return state
     }
 }
+
+export const listDoneDaily=(state=[],action)=>{
+    switch(action.type){
+        case 'LIST_DONE_DAILY':
+            return action.doneDaily
+        default:
+            return state
+    }
+}
+
+export const dropCallTask=(state=0,action)=>{
+    switch(action.type){
+        case 'DROP_CALL_TASK':
+            return action.id
+        default:
+            return state;
+    }
+}
+
+export const undropCallTask=(state=0,action)=>{
+    switch(action.type){
+        case 'UNDROP_CALL_TASK':
+            return action.id
+        default:
+            return state
+    }
+}

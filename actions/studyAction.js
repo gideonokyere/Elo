@@ -43,6 +43,13 @@ export const markStudyUndone=(id)=>{
    }
 }
 
+export const listDoneStudy=(doneStudy)=>{
+    return{
+        type:'LIST_DONE_STUDY',
+        doneStudy
+    }
+}
+
 //creating action creators
 
 //adding new study
@@ -76,7 +83,7 @@ export const fetchData=()=>{
     return (despatch)=>{
         const date = moment(Date.now()).add(1,'day').format('YYYY-MM-DD');
         DB.transaction((tx)=>{
-            tx.executeSql(`select * from studys where date<?`,[date],(tx,res)=>{
+            tx.executeSql(`select * from studys where date<? and done=?`,[date,0],(tx,res)=>{
                 despatch(listStudys(res.rows._array));
             });
         });
@@ -127,5 +134,15 @@ export const deleteStudy=(id)=>{
                 })
             })
         })
+    }
+}
+
+export const fetchDoneStudy=()=>{
+    return (despatch)=>{
+        DB.transaction((tx)=>{
+            tx.executeSql(`select * from studys where done=?`,[1],(tx,res)=>{
+                despatch(listDoneStudy(res.rows._array));
+            });
+        });
     }
 }

@@ -4,7 +4,7 @@ import {Input,Icon,ListItem,Card} from 'react-native-elements';
 import {connect} from 'react-redux';
 import Container from '../components/Constainer';
 import Color from '../utilis/colors';
-import {addTodo,fetchTodos,checkTodoDone,checkedTodoUndone,deleteTodo} from '../actions/todoAction';
+import {addTodo,fetchTodos,checkTodoDone,checkedTodoUndone,deleteTodo,fetchDoneTodo} from '../actions/todoAction';
 
 class ToDoScreen extends Component{
 
@@ -26,6 +26,7 @@ class ToDoScreen extends Component{
   checkedTodoDone=(id)=>{
     this.props.checkedTodoDone(id);
     this.props.fetchTodos();
+    this.props.fectdoneTodo()
   }
 
   checkedTodoUndone=(id)=>{
@@ -98,7 +99,8 @@ const mapDespatchToProps =(despatch)=>{
     fetchTodos:()=>despatch(fetchTodos()),
     checkedTodoDone:(id)=>despatch(checkTodoDone(id)),
     checkedTodoUndone:(id)=>despatch(checkedTodoUndone(id)),
-    deleteTodo:(id)=>despatch(deleteTodo(id))
+    deleteTodo:(id)=>despatch(deleteTodo(id)),
+    fectdoneTodo:()=>despatch(fetchDoneTodo())
   }
 }
 

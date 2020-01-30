@@ -60,3 +60,12 @@ export const deleteStudy=(state=0,action)=>{
             return state
     }
 }
+
+export const listDoneStudy=(state=[],action)=>{
+   switch(action.type){
+       case 'LIST_DONE_STUDY':
+           return action.doneStudy
+        default:
+            return state
+   }
+}

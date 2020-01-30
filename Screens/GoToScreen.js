@@ -4,7 +4,7 @@ import { Input, Icon,ListItem,Card} from 'react-native-elements';
 import { connect } from 'react-redux';
 import Container from '../components/Constainer';
 import Color from '../utilis/colors';
-import { addGoto, fetchGoto,checkedGoToDone,checkedGotoUndone,deleteGoto } from '../actions/gotoAction';
+import { addGoto, fetchGoto,checkedGoToDone,checkedGotoUndone,deleteGoto,fetchDoneGoto } from '../actions/gotoAction';
 
 class GoToScreen extends Component {
    state = {
@@ -25,6 +25,7 @@ class GoToScreen extends Component {
    checkedGotoDone=(id)=>{
      this.props.checkedGotoDone(id);
      this.props.fetchData();
+     this.props.fetchDoneGoto()
    }
 
    checkedGotoUndone=(id)=>{
@@ -96,7 +97,8 @@ const mapDespatchToProps = (despatch) => {
       fetchData: () => despatch(fetchGoto()),
       checkedGotoDone:(id)=>despatch(checkedGoToDone(id)),
       checkedGotoUndone:(id)=>despatch(checkedGotoUndone(id)),
-      removeGoto:(id)=>despatch(deleteGoto(id))
+      removeGoto:(id)=>despatch(deleteGoto(id)),
+      fetchDoneGoto:()=>despatch(fetchDoneGoto())
    }
 }
 

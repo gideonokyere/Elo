@@ -30,7 +30,30 @@ export const markDailyUndone=(id)=>{
     }
 }
 
-//action creators
+export const listDoneDaily=(doneDaily)=>{
+    return{
+        type:'LIST_DONE_DAILY',
+        doneDaily
+    }
+}
+
+export const dropCallTask=(id)=>{
+    return{
+        type:'DROP_CALL_TASK',
+        id
+    }
+}
+
+export const undropCallTask=(id)=>{
+    return{
+        type:'UNDROP_CALL_TASK',
+        id
+    }
+}
+
+/***************************************************************************************************** */
+
+/**************************************** Action Creators **********************************************/
 
 //adding new daily
 export const addDaily=(daily)=>{
@@ -51,7 +74,7 @@ export const fetchData=()=>{
     resetDaily();
     return (despatch)=>{
        DB.transaction((tx)=>{
-          tx.executeSql(`select * from  dailys`,[],(tx,res)=>{
+          tx.executeSql(`select * from  dailys where done=?`,[0],(tx,res)=>{
               despatch(listDailys(res.rows._array));
           });
        });
@@ -111,6 +134,37 @@ export const resetDaily=()=>{
             })
         })
     })
+}
+
+export const fetchDoneDaily=()=>{
+    return (despatch)=>{
+        DB.transaction((tx)=>{
+            tx.executeSql(`select * from dailys where done>?`,[0],(tx,res)=>{
+                despatch(listDoneDaily(res.rows._array));
+            });
+        });
+    }
+}
+
+export const callTaskDrop=(id)=>{
+   return (despatch)=>{
+       DB.transaction((tx)=>{
+           tx.executeSql(`update dailys set done=? where id=?`,[3,id],(tx,res)=>{
+               despatch(dropCallTask(res.rowsAffected));
+           });
+       });
+   }
+}
+
+export const callTaskUndrop=(id)=>{
+    return (despatch)=>{
+        DB.transaction((tx)=>{
+            tx.executeSql(`update dailys set done=? where id=?`,[0,id],(tx,res)=>{
+                console.log(res.rowsAffected);
+                despatch(undropCallTask(res.rowsAffected));
+            });
+        });
+    }
 }
 
 

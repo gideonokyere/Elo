@@ -62,3 +62,12 @@ export const deleteGoto=(state=0,action)=>{
             return state
    }
 }
+
+export const listDoneGoto=(state=[],action)=>{
+    switch(action.type){
+        case 'LIST_DONE_GOTO':
+            return action.doneGotos
+        default:
+            return state
+    }
+}

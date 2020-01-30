@@ -46,6 +46,13 @@ export const markCallUndone=(id)=>{
     }
 }
 
+export const listDoneCall=(callDones)=>{
+    return{
+        type:'LIST_CALL_DONE',
+        callDones
+    }
+}
+
 
 /*** Action Creators */
 
@@ -80,7 +87,7 @@ export const fetchCalls=()=>{
     return (despatch)=>{
         const date = moment(Date.now()).add(1,'day').format('YYYY-MM-DD');
         DB.transaction((tx)=>{
-            tx.executeSql(`select * from calls where date<?`,[date],(tx,res)=>{
+            tx.executeSql(`select * from calls where date<? and done=?`,[date,0],(tx,res)=>{
                 despatch(listCalls(res.rows._array));
             })
         });
@@ -138,4 +145,14 @@ export const deleteCall=(id)=>{
         });
     });
    }
+}
+
+export const listCallDone=()=>{
+    return (dispatch)=>{
+        DB.transaction((tx)=>{
+            tx.executeSql(`select * from calls where done=?`,[1],(tx,res)=>{
+                dispatch(listDoneCall(res.rows._array));
+            });
+        });
+    }
 }

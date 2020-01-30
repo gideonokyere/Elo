@@ -46,6 +46,13 @@ export const markTodoUndone=(id)=>{
    }
 }
 
+export const listDoneTodo=(donetodos)=>{
+  return{
+    type:'FETCH_TODO_DONE',
+    donetodos
+  }
+}
+
 export const addTodo=(todo)=>{
    createTodoTable();
    return (despatch)=>{
@@ -75,7 +82,7 @@ export const fetchTodos =()=>{
     return (despatch)=>{
         const date = moment(Date.now()).add(1,'day').format('YYYY-MM-DD');
         DB.transaction((tx)=>{
-          tx.executeSql(`select * from todos where date<?`,[date],(tx,res)=>{
+          tx.executeSql(`select * from todos where date<? and done=?`,[date,0],(tx,res)=>{
             despatch(listTodos(res.rows._array));
             //console.log(res.rows._array);
           });
@@ -127,6 +134,17 @@ export const deleteTodo=(id)=>{
             id:res.rows.item.length
           }
         });
+      });
+    });
+  }
+}
+
+//fetching for completed todo tasks.
+export const fetchDoneTodo=()=>{
+  return (despatch)=>{
+    DB.transaction((tx)=>{
+      tx.executeSql(`select * from todos where done=?`,[1],(tx,res)=>{
+        despatch(listDoneTodo(res.rows._array))
       });
     });
   }

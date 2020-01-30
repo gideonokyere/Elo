@@ -7,7 +7,7 @@ import * as Contacts from 'expo-contacts';
 import * as Permissions from 'expo-permissions';
 import Constainer from '../components/Constainer';
 import Color from '../utilis/colors';
-import {addCall,fetchCalls,checkedCallDone,checkedCallUndone,deleteCall} from '../actions/callAction';
+import {addCall,fetchCalls,checkedCallDone,checkedCallUndone,deleteCall,listCallDone} from '../actions/callAction';
 
 class AddCallScreen extends Component {
 
@@ -65,6 +65,7 @@ searchContact=async(names)=>{
 
   checkedCallDone=(id)=>{
      this.props.checkedCallDone(id);
+     this.props.listCallDone();
      this.props.fetchCalls();
   }
 
@@ -151,7 +152,8 @@ const mapDispatchToProps = (despatch)=>{
     saveCall:(name,number)=>despatch(addCall(name,number)),
     checkedCallDone:(id)=>despatch(checkedCallDone(id)),
     checkedCallUndone:(id)=>despatch(checkedCallUndone(id)),
-    deleteCall:(id)=>despatch(deleteCall(id))
+    deleteCall:(id)=>despatch(deleteCall(id)),
+    listCallDone:()=>despatch(listCallDone())
   };
 };
 

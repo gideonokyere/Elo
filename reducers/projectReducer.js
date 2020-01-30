@@ -60,3 +60,12 @@ export const deleteProject=(state=0,action)=>{
             return state
     }
 }
+
+export const listDoneProject=(state=[],action)=>{
+   switch(action.type){
+       case 'LIST_DONE_PROJECT':
+           return action.doneProject
+        default:
+            return state
+   }
+}

@@ -4,7 +4,7 @@ import {Icon,Input,ListItem,Card} from 'react-native-elements';
 import {connect} from 'react-redux';
 import Container from '../components/Constainer';
 import Color from '../utilis/colors';
-import {addDaily,fetchData,checkedDailyDone,checkedDailyUndone,deleteDaily} from '../actions/dailyAction';
+import {addDaily,fetchData,checkedDailyDone,checkedDailyUndone,deleteDaily,fetchDoneDaily,callTaskDrop} from '../actions/dailyAction';
 
 
 class DailyScreen extends Component{
@@ -27,6 +27,7 @@ class DailyScreen extends Component{
 
     checkedDone=(id)=>{
         this.props.checkedDone(id);
+        this.props.fetchDoneDaily();
         this.props.fetchData();
     }
 
@@ -40,6 +41,12 @@ class DailyScreen extends Component{
         this.props.fetchData()
     }
 
+    dropMyCall=(id)=>{
+        this.props.callTaskDrop(id);
+        this.props.fetchData();
+        this.props.fetchDoneDaily();
+    }
+
     render(){
 
         const dailys = this.props.dailys.map((daily)=>(
@@ -48,14 +55,19 @@ class DailyScreen extends Component{
               title={daily.daily}
               titleProps={{style:daily.done?styles.doneStyle:styles.undoneStyle}}
               onPress={()=>daily.done?this.checkedUndone(daily.id):this.checkedDone(daily.id)}
-              rightIcon={<Icon name='dots-three-vertical' type='entypo' onPress={()=>Alert.alert(
+              rightIcon={
+                <>
+                <Icon name='dots-three-vertical' type='entypo' onPress={()=>Alert.alert(
                   'Confirmation',
                   'Remove Task ?',
                   [
                       {text:'YES',onPress:()=>this.deleteMyDaily(daily.id)},
                       {text:'NO'}
                   ]
-              )}/>}
+              )}/>
+             <Icon name='dots-three-horizontal' type='entypo' onPress={()=>this.dropMyCall(daily.id)}/>
+             </>
+            }
               bottomDivider
             />
         ))
@@ -92,7 +104,8 @@ const mapStateToProps = (state)=>{
         dailys:state.listDailys,
         checked:state.markDailyDone,
         unchecked:state.markDailyUndone,
-        delete:state.deleteDaily
+        delete:state.deleteDaily,
+        dropCallId:state.dropCallTask
     }
 }
 
@@ -102,7 +115,9 @@ const mapDespatchToProps=(despatch)=>{
         fetchData:()=>despatch(fetchData()),
         checkedDone:(id)=>despatch(checkedDailyDone(id)),
         checkedUndone:(id)=>despatch(checkedDailyUndone(id)),
-        deleteDaily:(id)=>despatch(deleteDaily(id))
+        deleteDaily:(id)=>despatch(deleteDaily(id)),
+        fetchDoneDaily:()=>despatch(fetchDoneDaily()),
+        callTaskDrop:(id)=>despatch(callTaskDrop(id))
     }
 }
 

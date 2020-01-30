@@ -44,6 +44,13 @@ export const markGotoUndone=(id)=>{
    }
 }
 
+export const listDoneGoto=(doneGotos)=>{
+   return{
+      type:'LIST_DONE_GOTO',
+      doneGotos
+   }
+}
+
 //action creators//
 export const addGoto=(goto)=>{
     createGotoTable();
@@ -73,7 +80,7 @@ export const fetchGoto=()=>{
    const date = moment(Date.now()).add(1,'day').format('YYYY-MM-DD');
    return (despatch)=>{
       DB.transaction((tx)=>{
-         tx.executeSql(`select * from gotos where date<?`,[date],(tx,res)=>{
+         tx.executeSql(`select * from gotos where date<? and done=?`,[date,0],(tx,res)=>{
             despatch(listGotos(res.rows._array));
          })
       });
@@ -124,6 +131,16 @@ export const deleteGoto=(id)=>{
              });
           });
        });
+   }
+}
+
+export const fetchDoneGoto=()=>{
+   return (despatch)=>{
+      DB.transaction((tx)=>{
+         tx.executeSql(`select * from gotos where done=?`,[1],(tx,res)=>{
+            despatch(listDoneGoto(res.rows._array))
+         });
+      });
    }
 }
 

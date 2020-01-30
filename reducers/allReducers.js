@@ -1,12 +1,12 @@
 import {combineReducers} from 'redux';
-import {newCall,newCallTomorrow,listCalls,listTomorrowCalls,markCallDone,markCallUndone,deleteCall} from '../reducers/callReducer';
-import {newTodo,newTodosTomorrow,listTodosTomorrow,listTodos,markTodoDone,markTodoUndone,deleteTodo} from '../reducers/todoReducer';
-import {newGoto,newGotoTomorrow,listGotos,listGotosTomorrow,markGotoDone,markGotoUndone,deleteGoto} from '../reducers/gotoReducer';
-import {newBuy,newTomorrowBuy,listBuys,listTomorrowBuy,markBuyDone,markBuyUndone,deleteBuy} from '../reducers/buyReducer';
-import {newVisit,newTomorrowVisit,listVisits,listTomorrowVisit,markVisitDone,markVisitUndone,deleteVisit} from '../reducers/visitReducer';
-import {newStudy,newTomorrowStudy,listStudys,listTomorrowStudys,markStudyDone,markStudyUndone,deleteStudy} from '../reducers/studyReducer';
-import {newProject,newTomorrowProject,listProjects,listTomorrowProjects,markProjectDone,markProjectUndone,deleteProject} from '../reducers/projectReducer';
-import {newDaily,listDailys,markDailyDone,markDailyUndone,deleteDaily} from '../reducers/dailyReducer';
+import {newCall,newCallTomorrow,listCalls,listTomorrowCalls,markCallDone,markCallUndone,deleteCall,listCallDone} from '../reducers/callReducer';
+import {newTodo,newTodosTomorrow,listTodosTomorrow,listTodos,markTodoDone,markTodoUndone,deleteTodo,listDoneTodo} from '../reducers/todoReducer';
+import {newGoto,newGotoTomorrow,listGotos,listGotosTomorrow,markGotoDone,markGotoUndone,deleteGoto,listDoneGoto} from '../reducers/gotoReducer';
+import {newBuy,newTomorrowBuy,listBuys,listTomorrowBuy,markBuyDone,markBuyUndone,deleteBuy,listDoneBuy} from '../reducers/buyReducer';
+import {newVisit,newTomorrowVisit,listVisits,listTomorrowVisit,markVisitDone,markVisitUndone,deleteVisit,listDoneVisit} from '../reducers/visitReducer';
+import {newStudy,newTomorrowStudy,listStudys,listTomorrowStudys,markStudyDone,markStudyUndone,deleteStudy,listDoneStudy} from '../reducers/studyReducer';
+import {newProject,newTomorrowProject,listProjects,listTomorrowProjects,markProjectDone,markProjectUndone,deleteProject,listDoneProject} from '../reducers/projectReducer';
+import {newDaily,listDailys,markDailyDone,markDailyUndone,deleteDaily,listDoneDaily,dropCallTask,undropCallTask} from '../reducers/dailyReducer';
 
 export default combineReducers({
     newCall,
@@ -16,6 +16,7 @@ export default combineReducers({
     markCallDone,
     markCallUndone,
     deleteCall,
+    listCallDone,
     newTodo,
     newTodosTomorrow,
     listTodos,
@@ -23,6 +24,7 @@ export default combineReducers({
     markTodoDone,
     markTodoUndone,
     deleteTodo,
+    listDoneTodo,
     newGoto,
     newGotoTomorrow,
     listGotos,
@@ -30,6 +32,7 @@ export default combineReducers({
     markGotoDone,
     markGotoUndone,
     deleteGoto,
+    listDoneGoto,
     newBuy,
     newTomorrowBuy,
     listBuys,
@@ -37,6 +40,7 @@ export default combineReducers({
     markBuyDone,
     markBuyUndone,
     deleteBuy,
+    listDoneBuy,
     newVisit,
     newTomorrowVisit,
     listVisits,
@@ -44,6 +48,7 @@ export default combineReducers({
     markVisitDone,
     markVisitUndone,
     deleteVisit,
+    listDoneVisit,
     newStudy,
     newTomorrowStudy,
     listStudys,
@@ -51,6 +56,7 @@ export default combineReducers({
     listTomorrowStudys,
     markStudyDone,
     markStudyUndone,
+    listDoneStudy,
     newProject,
     newTomorrowProject,
     listProjects,
@@ -58,9 +64,13 @@ export default combineReducers({
     markProjectDone,
     markProjectUndone,
     deleteProject,
+    listDoneProject,
     newDaily,
     listDailys,
     markDailyDone,
     markDailyUndone,
     deleteDaily,
+    listDoneDaily,
+    dropCallTask,
+    undropCallTask
 });
