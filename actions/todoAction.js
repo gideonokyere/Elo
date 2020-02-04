@@ -53,6 +53,24 @@ export const listDoneTodo=(donetodos)=>{
   }
 }
 
+export const dropTodo=(id)=>{
+  return{
+    type:'DROP_TODO',
+    id
+  }
+}
+
+export const undropTodo=(id)=>{
+  return{
+    type:'UNDROP_TODO',
+    id
+  }
+}
+
+/****************************************************************************************************************/
+
+/*********************************************** Action Creators ************************************************/
+
 export const addTodo=(todo)=>{
    createTodoTable();
    return (despatch)=>{
@@ -71,7 +89,6 @@ export const addTodoTomorrow=(todo)=>{
     const date = moment(Date.now()).add(1,'day').format('YYYY-MM-DD');
     DB.transaction((tx)=>{
        tx.executeSql(`insert into todos (todo,done,date) values (?,?,?)`,[todo,0,date],(tx,res)=>{
-         //console.log(res.insertId);
          despatch(newTodoTomorrow(res.insertId));
        });
     });
@@ -84,7 +101,6 @@ export const fetchTodos =()=>{
         DB.transaction((tx)=>{
           tx.executeSql(`select * from todos where date<? and done=?`,[date,0],(tx,res)=>{
             despatch(listTodos(res.rows._array));
-            //console.log(res.rows._array);
           });
         });
     }
@@ -97,7 +113,6 @@ export const fetchTodosTomorrow=()=>{
      DB.transaction((tx)=>{
        tx.executeSql(`select * from todos where date=?`,[date],(tx,res)=>{
           despatch(listTodosTomorrow(res.rows._array));
-          //console.log(res.rows._array);
        });
      });
   }
@@ -143,8 +158,28 @@ export const deleteTodo=(id)=>{
 export const fetchDoneTodo=()=>{
   return (despatch)=>{
     DB.transaction((tx)=>{
-      tx.executeSql(`select * from todos where done=?`,[1],(tx,res)=>{
+      tx.executeSql(`select * from todos where done>?`,[0],(tx,res)=>{
         despatch(listDoneTodo(res.rows._array))
+      });
+    });
+  }
+}
+
+export const todoDrop=(id)=>{
+  return (despatch)=>{
+    DB.transaction((tx)=>{
+      tx.executeSql(`update todos set done=? where id=?`,[2,id],(tx,res)=>{
+        despatch(dropTodo(res.rowsAffected));
+      });
+    });
+  }
+}
+
+export const todoUndrop=(id)=>{
+  return (despatch)=>{
+    DB.transaction((tx)=>{
+      tx.executeSql(`update todos set done=? where id=?`,[0,id],(tx,res)=>{
+        despatch(todoUndrop(res.rowsAffected));
       });
     });
   }

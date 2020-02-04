@@ -53,8 +53,23 @@ export const listDoneCall=(callDones)=>{
     }
 }
 
+export const dropCall=(id)=>{
+   return{
+       type:'DROP_CALL',
+       id
+   }
+}
 
-/*** Action Creators */
+export const undropCall=(id)=>{
+    return{
+        type:'UNDROP_CALL',
+        id
+    }
+}
+
+/**************************************************************************************************************/
+
+/********************************************* Action Creators ************************************************/
 
 //inserting new call task to db
 export const addCall = (name,number)=>{
@@ -150,8 +165,28 @@ export const deleteCall=(id)=>{
 export const listCallDone=()=>{
     return (dispatch)=>{
         DB.transaction((tx)=>{
-            tx.executeSql(`select * from calls where done=?`,[1],(tx,res)=>{
+            tx.executeSql(`select * from calls where done>?`,[0],(tx,res)=>{
                 dispatch(listDoneCall(res.rows._array));
+            });
+        });
+    }
+}
+
+export const callDrop=(id)=>{
+    return (despatch)=>{
+        DB.transaction((tx)=>{
+            tx.executeSql(`update calls set done=? where id=?`,[2,id],(tx,res)=>{
+                despatch(dropCall(res.rowsAffected));
+            });
+        });
+    }
+}
+
+export const callUndrop=(id)=>{
+    return (despatch)=>{
+        DB.transaction((tx)=>{
+            tx.executeSql(`update calls set done=? where id=?`,[0,id],(tx,res)=>{
+                despatch(undropCall(res.rowsAffected));
             });
         });
     }

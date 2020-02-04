@@ -3,7 +3,7 @@ import {Text,View,StyleSheet,Alert} from 'react-native';
 import {Icon,Input,ListItem,Card} from 'react-native-elements';
 import {connect} from 'react-redux';
 import Color from '../utilis/colors';
-import {addBuy,fetchData,checkedBuyDone,checkedBuyUndone,deleteBuy} from '../actions/buyAction';
+import {addBuy,fetchData,checkedBuyDone,checkedBuyUndone,deleteBuy,buyDrop,fetchDoneBuy} from '../actions/buyAction';
 
 import Container from '../components/Constainer';
 
@@ -27,6 +27,7 @@ class BuyScreen extends Component{
     checkedBuyDone=(id)=>{
        this.props.checkedBuyDone(id);
        this.props.fetchData();
+       this.props.fetchDoneBuy();
     }
 
     checkedBuyUndone=(id)=>{
@@ -39,6 +40,12 @@ class BuyScreen extends Component{
        this.props.fetchData()
     }
 
+    dropMyBuy=(id)=>{
+        this.props.buyDrop(id);
+        this.props.fetchData();
+        this.props.fetchDoneBuy();
+    }
+
     render(){
 
         const buy = this.props.buys.map((buy)=>(
@@ -47,14 +54,21 @@ class BuyScreen extends Component{
                title={buy.buy}
                titleProps={{style:buy.done?styles.doneStyle:styles.undoneStyle}}
                onPress={()=>buy.done?this.checkedBuyUndone(buy.id):this.checkedBuyDone(buy.id)}
-               rightIcon={<Icon name='dots-three-vertical' type='entypo' onPress={()=>Alert.alert(
+               rightIcon={
+                  <> 
+                  <Icon name='dots-three-vertical' type='entypo' onPress={()=>Alert.alert(
                    'Confirmation',
                    'Remove Task ?',
                    [
                        {text:'YES',onPress:()=>this.deleteMyBuy(buy.id)},
                        {text:'NO'}
                    ]
-               )}/>}
+               )}/>
+
+                <Icon name='dots-three-horizontal' type='entypo' onPress={()=>this.dropMyBuy(buy.id)}/>
+
+               </>
+               }
                bottomDivider
             />
         ))
@@ -101,7 +115,9 @@ const mapDespatchToProps=(despatch)=>{
        fetchData:()=>despatch(fetchData()),
        checkedBuyDone:(id)=>despatch(checkedBuyDone(id)),
        checkedBuyUndone:(id)=>despatch(checkedBuyUndone(id)),
-       deleteBuy:(id)=>despatch(deleteBuy(id))
+       deleteBuy:(id)=>despatch(deleteBuy(id)),
+       buyDrop:(id)=>despatch(buyDrop(id)),
+       fetchDoneBuy:()=>despatch(fetchDoneBuy())
     }
 }
 

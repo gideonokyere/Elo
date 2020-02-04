@@ -4,7 +4,7 @@ import {Icon,Input,ListItem,Card} from 'react-native-elements';
 import {connect} from 'react-redux';
 import Container from '../components/Constainer';
 import Color from '../utilis/colors';
-import {addProject,fetchData,checkedProjectDone,checkedProjectUndone,deleteProject,fetchDoneProject} from '../actions/projectAction';
+import {addProject,fetchData,checkedProjectDone,checkedProjectUndone,deleteProject,fetchDoneProject,projectDrop} from '../actions/projectAction';
 
 
 class ProjectScreen extends Component{
@@ -40,6 +40,12 @@ class ProjectScreen extends Component{
         this.props.fetchData()
     }
 
+    dropMyProject=(id)=>{
+        this.props.projectDrop(id);
+        this.props.fetchData();
+        this.props.fetchDoneProject();
+    }
+
     render(){
         const projects = this.props.projects.map((project)=>(
             <ListItem
@@ -47,14 +53,19 @@ class ProjectScreen extends Component{
               title={project.project}
               titleProps={{style:project.done?styles.doneStyle:styles.undoneStyle}}
               onPress={()=>project.done?this.checkedProjectUndone(project.id):this.checkedProjectDone(project.id)}
-              rightIcon={<Icon name='dots-three-vertical' type='entypo' onPress={()=>Alert.alert(
+              rightIcon={
+              <>  
+              <Icon name='dots-three-vertical' type='entypo' onPress={()=>Alert.alert(
                   'Confirmation',
                   'Remove Task ?',
                   [
                       {text:'YES',onPress:()=>this.deleteMyProject(project.id)},
                       {text:'NO'}
                   ]
-              )}/>}
+              )}/>
+              <Icon name='dots-three-horizontal' type='entypo' onPress={()=>this.dropMyProject(project.id)}/>
+              </>
+              }
               bottomDivider
             />
         ))
@@ -101,7 +112,8 @@ const mapDespatchToProps=(despatch)=>{
         checkedProjectDone:(id)=>despatch(checkedProjectDone(id)),
         checkedProjectUndone:(id)=>despatch(checkedProjectUndone(id)),
         deleteProject:(id)=>despatch(deleteProject(id)),
-        fetchDoneProject:()=>despatch(fetchDoneProject())
+        fetchDoneProject:()=>despatch(fetchDoneProject()),
+        projectDrop:(id)=>despatch(projectDrop(id))
     }
 }
 

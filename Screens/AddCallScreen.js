@@ -2,12 +2,11 @@ import React, { Component } from 'react';
 import { View, StyleSheet,Platform,Text,Linking,Alert } from 'react-native';
 import {connect} from 'react-redux';
 import {Input,Icon,ListItem,Card} from 'react-native-elements';
-//import {Linking} from 'expo';
 import * as Contacts from 'expo-contacts';
 import * as Permissions from 'expo-permissions';
 import Constainer from '../components/Constainer';
 import Color from '../utilis/colors';
-import {addCall,fetchCalls,checkedCallDone,checkedCallUndone,deleteCall,listCallDone} from '../actions/callAction';
+import {addCall,fetchCalls,checkedCallDone,checkedCallUndone,deleteCall,listCallDone,callDrop} from '../actions/callAction';
 
 class AddCallScreen extends Component {
 
@@ -78,6 +77,12 @@ searchContact=async(names)=>{
     this.props.deleteCall(id);
     this.props.fetchCalls()
   }
+
+  dropMyCall=(id)=>{
+    this.props.callDrop(id);
+    this.props.fetchCalls();
+    this.props.listCallDone();
+  }
   
 render(){
   const lists = this.props.calls.map((list)=>(
@@ -96,6 +101,9 @@ render(){
                       {text:'NO'}
                     ]
                   )}/>
+
+                  <Icon name='dots-three-horizontal' type='entypo' onPress={()=>this.dropMyCall(list.id)}/>
+
                  </>}
         bottomDivider
       /> 
@@ -153,7 +161,8 @@ const mapDispatchToProps = (despatch)=>{
     checkedCallDone:(id)=>despatch(checkedCallDone(id)),
     checkedCallUndone:(id)=>despatch(checkedCallUndone(id)),
     deleteCall:(id)=>despatch(deleteCall(id)),
-    listCallDone:()=>despatch(listCallDone())
+    listCallDone:()=>despatch(listCallDone()),
+    callDrop:(id)=>despatch(callDrop(id))
   };
 };
 

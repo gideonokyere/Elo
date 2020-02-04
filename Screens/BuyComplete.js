@@ -1,9 +1,8 @@
 import React,{Component} from 'react';
 import {StyleSheet} from 'react-native';
-import {ListItem,Card} from 'react-native-elements';
+import {ListItem,Card,Icon} from 'react-native-elements';
+import {buyUndrop,fetchData,fetchDoneBuy} from '../actions/buyAction';
 import {connect} from 'react-redux';
-
-import {fetchDoneBuy} from '../actions/buyAction';
 
 import Container from '../components/Constainer';
 import EmptyTaskMessage from '../components/EnptyTaskMessage';
@@ -15,13 +14,20 @@ class BuyComplete extends Component{
         this.props.fetchDoneBuy();
     }
 
+    undropMyBuy=(id)=>{
+        this.props.buyUndrop(id);
+        this.props.fetchDoneBuy();
+        this.props.fetchData();
+    }
+
     render(){
 
         const buys = this.props.listBuysDone.map((buy)=>(
             <ListItem
                key={buy.id}
                title={buy.buy}
-               titleProps={{style:styles.doneStyle}}
+               titleProps={{style:buy.done==1?styles.doneStyle:styles.undoneStyle}}
+               rightIcon={<Icon name='dots-three-horizontal' type='entypo' onPress={()=>this.undropMyBuy(buy.id)}/>}
             />
         ))
 
@@ -41,7 +47,9 @@ const mapStateToProps = (state)=>{
 
 const mapDespatchToProps=(despatch)=>{
     return{
-       fetchDoneBuy:()=>despatch(fetchDoneBuy())
+       fetchDoneBuy:()=>despatch(fetchDoneBuy()),
+       buyUndrop:(id)=>despatch(buyUndrop(id)),
+       fetchData:()=>despatch(fetchData())
     }
 }
 
@@ -50,6 +58,9 @@ const styles = StyleSheet.create({
         color:Color.CHECKED_COLOR,
         textDecorationLine:'line-through',
     },
+    undoneStyle:{
+        fontWeight:'normal'
+    }
 })
 
 export default connect(mapStateToProps,mapDespatchToProps)(BuyComplete);

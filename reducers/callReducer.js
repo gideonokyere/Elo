@@ -74,3 +74,22 @@
             return state
     }
  }
+
+ export const dropCall=(state=0,action)=>{
+     switch(action.type){
+         case 'DROP_CALL':
+             return action.id
+        default:
+            return state
+
+     }
+ }
+
+ export const undropCall=(state=0,action)=>{
+     switch(action.type){
+         case 'UNDROP_CALL':
+             return action.id
+        default:
+            return state
+     }
+ }

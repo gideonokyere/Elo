@@ -51,6 +51,24 @@ export const listDoneGoto=(doneGotos)=>{
    }
 }
 
+export const dropGoto=(id)=>{
+   return{
+      type:'DROP_GOTO',
+      id
+   }
+}
+
+export const undropGoto=(id)=>{
+   return{
+      type:'UNDROP_GOTO',
+      id
+   }
+}
+
+/*****************************************************************************************************************/
+/*********************************************** ACTION CREATORS **************************************************/
+/*****************************************************************************************************************/
+
 //action creators//
 export const addGoto=(goto)=>{
     createGotoTable();
@@ -137,8 +155,28 @@ export const deleteGoto=(id)=>{
 export const fetchDoneGoto=()=>{
    return (despatch)=>{
       DB.transaction((tx)=>{
-         tx.executeSql(`select * from gotos where done=?`,[1],(tx,res)=>{
+         tx.executeSql(`select * from gotos where done>?`,[0],(tx,res)=>{
             despatch(listDoneGoto(res.rows._array))
+         });
+      });
+   }
+}
+
+export const gotoDrop=(id)=>{
+   return (despatch)=>{
+      DB.transaction((tx)=>{
+         tx.executeSql(`update gotos set done=? where id=?`,[2,id],(tx,res)=>{
+            despatch(dropGoto(res.rowsAffected));
+         });
+      });
+   }
+}
+
+export const gotoUndrop=(id)=>{
+   return (despatch)=>{
+      DB.transaction((tx)=>{
+         tx.executeSql(`update gotos set done=? where id=?`,[0,id],(tx,res)=>{
+            despatch(undropGoto(res.rowsAffected));
          });
       });
    }

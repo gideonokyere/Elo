@@ -71,3 +71,21 @@ export const listDoneGoto=(state=[],action)=>{
             return state
     }
 }
+
+export const dropGoto=(state=0,action)=>{
+    switch(action.type){
+        case 'DROP_GOTO':
+            return action.id
+        default:
+            return state
+    }
+}
+
+export const undropGoto=(state=0,action)=>{
+    switch(action.type){
+        case 'UNDROP_GOTO':
+            return action.id
+        default:
+            return state
+    }
+}

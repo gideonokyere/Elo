@@ -1,9 +1,9 @@
 import React,{Component} from 'react';
 import {StyleSheet} from 'react-native';
-import {Card,ListItem} from 'react-native-elements';
+import {Card,ListItem,Icon} from 'react-native-elements';
 import { connect } from 'react-redux';
 
-import {fetchDoneStudy} from '../actions/studyAction';
+import {fetchDoneStudy,studyUndrop,fetchData} from '../actions/studyAction';
 
 import Container from '../components/Constainer';
 import EmptyTaskMessage from '../components/EnptyTaskMessage';
@@ -15,13 +15,20 @@ class StudyComplete extends Component{
         this.props.fetchDoneStudy()
     }
 
+    undropMyStudy=(id)=>{
+        this.props.studyUndrop(id);
+        this.props.fetchDoneStudy();
+        this.props.fetchData();
+    }
+
     render(){
 
         const studys = this.props.doneStudy.map((study)=>(
             <ListItem
                key={study.id}
                title={study.study}
-               titleProps={{style:styles.doneStyle}}
+               rightIcon={<Icon name='dots-three-horizontal' type='entypo' onPress={()=>this.undropMyStudy(study.id)}/>}
+               titleProps={{style:study.done==1?styles.doneStyle:styles.undoneStyle}}
             />
         ))
 
@@ -41,7 +48,9 @@ const mapStateToProps=(state)=>{
 
 const mapDespatchToProps=(despatch)=>{
     return{
-        fetchDoneStudy:()=>despatch(fetchDoneStudy())
+        fetchDoneStudy:()=>despatch(fetchDoneStudy()),
+        studyUndrop:(id)=>despatch(studyUndrop(id)),
+        fetchData:()=>despatch(fetchData())
     }
 }
 
@@ -50,6 +59,9 @@ const styles = StyleSheet.create({
         color:Color.CHECKED_COLOR,
         textDecorationLine:'line-through',
     },
+    undoneStyle:{
+        fontWeight:'normal'
+    }
 })
 
 export default connect(mapStateToProps,mapDespatchToProps)(StudyComplete);

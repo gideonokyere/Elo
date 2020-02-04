@@ -70,3 +70,21 @@ export const listDoneVisit=(state=[],action)=>{
             return state
     }
 }
+
+export const dropVisit=(state=0,action)=>{
+    switch(action.type){
+        case 'DROP_VISIT':
+            return action.id
+        default:
+            return state
+    }
+}
+
+export const undropVisit=(state=0,action)=>{
+    switch(action.type){
+        case 'UNDROP_VISIT':
+            return action.id
+        default:
+            return state
+    }
+}

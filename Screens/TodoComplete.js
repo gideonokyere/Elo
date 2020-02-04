@@ -1,10 +1,10 @@
 import React,{Component} from 'react';
 import {StyleSheet} from 'react-native';
-import {ListItem,Card} from 'react-native-elements';
+import {ListItem,Card,Icon} from 'react-native-elements';
 import {connect} from 'react-redux';
 import Container from '../components/Constainer';
 import EmptyTaskMessage from '../components/EnptyTaskMessage'
-import {fetchDoneTodo} from '../actions/todoAction';
+import {fetchDoneTodo,fetchTodos,todoUndrop} from '../actions/todoAction';
 import Color from '../utilis/colors';
 
 class TodoComplete extends Component{
@@ -13,12 +13,19 @@ class TodoComplete extends Component{
         this.props.fetchDoneTodo();
     }
 
+    undropMyTodo=(id)=>{
+       this.props.todoUndrop(id);
+       this.props.fetchTodos();
+       this.props.fetchDoneTodo();
+    }
+
     render(){
         const doneTodo=this.props.listTodoDone.map((todo)=>(
             <ListItem
               key={todo.id}
               title={todo.todo}
-              titleProps={{style:styles.doneStyle}}
+              rightIcon={<Icon name='dots-three-horizontal' type='entypo' onPress={()=>this.undropMyTodo(todo.id)}/>}
+              titleProps={{style:todo.done==1?styles.doneStyle:styles.undoneStyle}}
             />
         ))
         return(
@@ -37,7 +44,9 @@ const mapStateToProps=(state)=>{
 
 const mapDespatchToProps=(despatch)=>{
     return{
-      fetchDoneTodo:()=>despatch(fetchDoneTodo())
+      fetchDoneTodo:()=>despatch(fetchDoneTodo()),
+      todoUndrop:(id)=>despatch(todoUndrop(id)),
+      fetchTodos:()=>despatch(fetchTodos())
     }
 }
 
@@ -46,6 +55,9 @@ const styles = StyleSheet.create({
         color:Color.CHECKED_COLOR,
         textDecorationLine:'line-through',
     },
+    undoneStyle:{
+        fontWeight:'normal'
+    }
 })
 
 export default connect(mapStateToProps,mapDespatchToProps)(TodoComplete);

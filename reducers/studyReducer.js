@@ -1,3 +1,4 @@
+
 export const newStudy=(state=0,action)=>{
    switch(action.type){
        case 'NEW_STUDY':
@@ -68,4 +69,22 @@ export const listDoneStudy=(state=[],action)=>{
         default:
             return state
    }
+}
+
+export const dropStudy=(state=0,action)=>{
+    switch(action.type){
+        case 'DROP_STUDY':
+            return action.id
+        default:
+            return state
+    }
+}
+
+export const undropStudy=(state=0,action)=>{
+    switch(action.type){
+        case 'UNDROP_STUDY':
+            return action.id
+        default:
+            return state
+    }
 }

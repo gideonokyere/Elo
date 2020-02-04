@@ -1,8 +1,8 @@
 import React,{Component} from 'react';
 import {StyleSheet} from 'react-native';
-import {Card,ListItem} from 'react-native-elements';
+import {Card,ListItem,Icon} from 'react-native-elements';
 import { connect } from 'react-redux';
-import {fetchDoneGoto} from '../actions/gotoAction'
+import {fetchDoneGoto,gotoUndrop,fetchGoto} from '../actions/gotoAction'
 
 import Container from '../components/Constainer';
 import EmptyTaskMessage from '../components/EnptyTaskMessage';
@@ -15,12 +15,19 @@ class GotoComplete extends Component{
         this.props.fetchDoneGoto()
     }
 
+    undropMyGoto=(id)=>{
+        this.props.gotoUndrop(id);
+        this.props.fetchDoneGoto();
+        this.props.fetchGoto()
+    }
+
     render(){
         const doneGoto = this.props.listDoneGoto.map((goto)=>(
             <ListItem
                key={goto.id}
                title={goto.goto}
-              titleProps={{style:styles.doneStyle}}
+              titleProps={{style:goto.done==1?styles.doneStyle:styles.undoneStyle}}
+              rightIcon={<Icon name='dots-three-horizontal' type='entypo' onPress={()=>this.undropMyGoto(goto.id)}/>}
               topDivider
             />
         ))
@@ -41,7 +48,9 @@ const mapStateToProps=(state)=>{
 
 const mapDespatchToProps=(despatch)=>{
     return{
-        fetchDoneGoto:()=>despatch(fetchDoneGoto())
+        fetchDoneGoto:()=>despatch(fetchDoneGoto()),
+        gotoUndrop:(id)=>despatch(gotoUndrop(id)),
+        fetchGoto:(id)=>despatch(fetchGoto(id))
     }
 }
 
@@ -51,6 +60,9 @@ const styles = StyleSheet.create({
         color:Color.CHECKED_COLOR,
         textDecorationLine:'line-through',
     },
+    undoneStyle:{
+        fontWeight:'normal'
+    }
 })
 
 export default connect(mapStateToProps,mapDespatchToProps)(GotoComplete)

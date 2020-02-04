@@ -160,7 +160,6 @@ export const callTaskUndrop=(id)=>{
     return (despatch)=>{
         DB.transaction((tx)=>{
             tx.executeSql(`update dailys set done=? where id=?`,[0,id],(tx,res)=>{
-                console.log(res.rowsAffected);
                 despatch(undropCallTask(res.rowsAffected));
             });
         });

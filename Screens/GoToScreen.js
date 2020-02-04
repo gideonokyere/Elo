@@ -4,7 +4,7 @@ import { Input, Icon,ListItem,Card} from 'react-native-elements';
 import { connect } from 'react-redux';
 import Container from '../components/Constainer';
 import Color from '../utilis/colors';
-import { addGoto, fetchGoto,checkedGoToDone,checkedGotoUndone,deleteGoto,fetchDoneGoto } from '../actions/gotoAction';
+import { addGoto, fetchGoto,checkedGoToDone,checkedGotoUndone,deleteGoto,fetchDoneGoto,gotoDrop } from '../actions/gotoAction';
 
 class GoToScreen extends Component {
    state = {
@@ -25,7 +25,7 @@ class GoToScreen extends Component {
    checkedGotoDone=(id)=>{
      this.props.checkedGotoDone(id);
      this.props.fetchData();
-     this.props.fetchDoneGoto()
+     this.props.fetchDoneGoto();
    }
 
    checkedGotoUndone=(id)=>{
@@ -38,6 +38,12 @@ class GoToScreen extends Component {
       this.props.fetchData()
    }
 
+   dropMyGoto=(id)=>{
+      this.props.dropGoto(id);
+      this.props.fetchData();
+      this.props.fetchDoneGoto();
+   }
+
    render() {
        const gotos=this.props.gotos.map((goto)=>(
           <ListItem
@@ -45,14 +51,19 @@ class GoToScreen extends Component {
              title={goto.goto}
              titleProps={{style:goto.done?styles.doneStyle:styles.undoneStyle}}
              onPress={()=>goto.done?this.checkedGotoUndone(goto.id):this.checkedGotoDone(goto.id)}
-             rightIcon={<Icon name='dots-three-vertical' type='entypo' onPress={()=>Alert.alert(
+             rightIcon={
+               <> 
+               <Icon name='dots-three-vertical' type='entypo' onPress={()=>Alert.alert(
                 'Confirmation',
                 'Remove Task ?',
                 [
                    {text:'YES',onPress:()=>this.deleteMyGoto(goto.id)},
                    {text:'NO'}
                 ]
-             )} />}
+             )} />
+              <Icon name='dots-three-horizontal' type='entypo' onPress={()=>this.dropMyGoto(goto.id)}/>
+              </>
+             }
              bottomDivider
           />
        ))
@@ -98,7 +109,8 @@ const mapDespatchToProps = (despatch) => {
       checkedGotoDone:(id)=>despatch(checkedGoToDone(id)),
       checkedGotoUndone:(id)=>despatch(checkedGotoUndone(id)),
       removeGoto:(id)=>despatch(deleteGoto(id)),
-      fetchDoneGoto:()=>despatch(fetchDoneGoto())
+      fetchDoneGoto:()=>despatch(fetchDoneGoto()),
+      dropGoto:(id)=>despatch(gotoDrop(id))
    }
 }
 

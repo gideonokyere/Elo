@@ -4,7 +4,7 @@ import {Icon,Input,ListItem,Card} from 'react-native-elements';
 import {connect} from 'react-redux';
 import Color from '../utilis/colors';
 import Container from '../components/Constainer';
-import {addStudy,fetchData,checkedStudyDone,checkedStudyUndone,deleteStudy,fetchDoneStudy} from '../actions/studyAction';
+import {addStudy,fetchData,checkedStudyDone,checkedStudyUndone,deleteStudy,fetchDoneStudy,studyDrop} from '../actions/studyAction';
 
 class StudyScreen extends Component{
 
@@ -39,6 +39,12 @@ class StudyScreen extends Component{
     this.props.fetchData()
   }
 
+  dropMyStudy=(id)=>{
+    this.props.studyDrop(id);
+    this.props.fetchData();
+    this.props.fetchDoneStudy();
+  }
+
   render(){
     const studys = this.props.studys.map((study)=>(
       <ListItem
@@ -46,14 +52,19 @@ class StudyScreen extends Component{
         title={study.study}
         titleProps={{style:study.done?styles.doneStyle:styles.undoneStyle}}
         onPress={()=>study.done?this.checkedStudyUndone(study.id):this.checkedStudyDone(study.id)}
-        rightIcon={<Icon name='dots-three-vertical' type='entypo' onPress={()=>Alert.alert(
+        rightIcon={
+          <>
+          <Icon name='dots-three-vertical' type='entypo' onPress={()=>Alert.alert(
           'Confirmation',
           'Remove Task ?',
           [
             {text:'YES',onPress:()=>this.deleteMyStudy(study.id)},
             {text:'NO'}
           ]
-        )}/>}
+        )}/>
+        <Icon name='dots-three-horizontal' type='entypo' onPress={()=>this.dropMyStudy(study.id)}/>
+        </>
+        }
         bottomDivider
       />
     ))
@@ -99,7 +110,8 @@ const mapDespatchToState=(despatch)=>{
     checkedStudyDone:(id)=>despatch(checkedStudyDone(id)),
     checkedStudyUndone:(id)=>despatch(checkedStudyUndone(id)),
     deleteStudy:(id)=>despatch(deleteStudy(id)),
-    fetchDoneStudy:()=>despatch(fetchDoneStudy())
+    fetchDoneStudy:()=>despatch(fetchDoneStudy()),
+    studyDrop:(id)=>despatch(studyDrop(id))
   }
 }
 

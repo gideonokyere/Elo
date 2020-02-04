@@ -50,6 +50,22 @@ export const listDoneBuy=(doneBuys)=>{
     }
 }
 
+export const dropBuy=(id)=>{
+    return{
+        type:'DROP_BUY',
+        id
+    }
+}
+
+export const undropBuy=(id)=>{
+    return{
+        type:'UNDROP_BUY',
+        id
+    }
+}
+
+/*************************************************************************************************************/
+/**************************************** Action Creators *****************************************************/
 
 //Acction creators
 
@@ -141,8 +157,28 @@ export const deleteBuy=(id)=>{
 export const fetchDoneBuy=()=>{
     return (despatch)=>{
         DB.transaction((tx)=>{
-            tx.executeSql(`select * from buys where done=?`,[1],(tx,res)=>{
+            tx.executeSql(`select * from buys where done>?`,[0],(tx,res)=>{
                 despatch(listDoneBuy(res.rows._array));
+            });
+        });
+    }
+}
+
+export const buyDrop=(id)=>{
+    return (despatch)=>{
+        DB.transaction((tx)=>{
+            tx.executeSql(`update buys set done=? where id=?`,[2,id],(tx,res)=>{
+                despatch(dropBuy(res.rowsAffected));
+            });
+        });
+    }
+}
+
+export const buyUndrop=(id)=>{
+    return (despatch)=>{
+        DB.transaction((tx)=>{
+            tx.executeSql(`update buys set done=? where id=?`,[0,id],(tx,res)=>{
+                despatch(undropBuy(res.rowsAffected));
             });
         });
     }

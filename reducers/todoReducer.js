@@ -71,3 +71,21 @@ export const listDoneTodo=(state=[],action)=>{
     }
 }
 
+export const dropTodo=(state=0,action)=>{
+    switch(action.type){
+        case 'DROP_TODO':
+            return action.id
+        default:
+            return state
+    }
+}
+
+export const undropTodo=(state=0,action)=>{
+    switch(action.type){
+        case 'UNDROP_TODO':
+            return action.id
+        default:
+            return state
+    }
+}
+

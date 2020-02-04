@@ -1,8 +1,8 @@
 import React,{Component} from 'react';
 import {StyleSheet} from 'react-native';
-import {Card,ListItem} from 'react-native-elements';
+import {Card,ListItem,Icon} from 'react-native-elements';
 import { connect } from 'react-redux';
-import {fetchDoneVisit} from '../actions/visitAction';
+import {fetchDoneVisit,visitUndrop,fetchData} from '../actions/visitAction';
 
 import Container from '../components/Constainer';
 import EmptyTaskMessage from '../components/EnptyTaskMessage';
@@ -15,13 +15,20 @@ class VisitComplete extends Component{
         this.props.fetchVisitDone()
     }
 
+    undropMyVisit=(id)=>{
+        this.props.visitUndrop(id);
+        this.props.fetchVisitDone()
+        this.props.fetchData();
+    }
+
     render(){
 
         const visits = this.props.listVisitDone.map((visit)=>(
             <ListItem
               key={visit.id}
               title={visit.visit}
-              titleProps={{style:styles.doneStyle}}
+              titleProps={{style:visit.done==1?styles.doneStyle:styles.undoneStyle}}
+              rightIcon={<Icon name='dots-three-horizontal' type='entypo' onPress={()=>this.undropMyVisit(visit.id)}/>}
               topDivider
             />
         ))
@@ -42,7 +49,9 @@ const mapStateToProps =(state)=>{
 
 const mapDespatchToProps=(despatch)=>{
     return{
-        fetchVisitDone:()=>despatch(fetchDoneVisit())
+        fetchVisitDone:()=>despatch(fetchDoneVisit()),
+        visitUndrop:(id)=>despatch(visitUndrop(id)),
+        fetchData:()=>despatch(fetchData())
     }
 }
 
@@ -51,6 +60,9 @@ const styles = StyleSheet.create({
         color:Color.CHECKED_COLOR,
         textDecorationLine:'line-through',
     },
+    undoneStyle:{
+        fontWeight:'normal'
+    }
 })
 
 export default connect(mapStateToProps,mapDespatchToProps)(VisitComplete);

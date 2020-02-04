@@ -4,7 +4,7 @@ import {Input,Icon,ListItem,Card} from 'react-native-elements';
 import {connect} from 'react-redux';
 import Container from '../components/Constainer';
 import Color from '../utilis/colors';
-import {addTodo,fetchTodos,checkTodoDone,checkedTodoUndone,deleteTodo,fetchDoneTodo} from '../actions/todoAction';
+import {addTodo,fetchTodos,checkTodoDone,checkedTodoUndone,deleteTodo,fetchDoneTodo,todoDrop} from '../actions/todoAction';
 
 class ToDoScreen extends Component{
 
@@ -26,7 +26,7 @@ class ToDoScreen extends Component{
   checkedTodoDone=(id)=>{
     this.props.checkedTodoDone(id);
     this.props.fetchTodos();
-    this.props.fectdoneTodo()
+    this.props.fetchDoneTodo();
   }
 
   checkedTodoUndone=(id)=>{
@@ -39,6 +39,12 @@ class ToDoScreen extends Component{
     this.props.fetchTodos()
   }
 
+  dropMyTodo=(id)=>{
+    this.props.todoDrop(id);
+    this.props.fetchTodos()
+    this.props.fetchDoneTodo();
+  }
+
    render(){
       const todos = this.props.Todos.map((todo)=>(
         <ListItem
@@ -46,14 +52,20 @@ class ToDoScreen extends Component{
           title={todo.todo}
           titleProps={{style:todo.done?styles.doneStyle:styles.undoneStyle}}
           onPress={()=>todo.done?this.checkedTodoUndone(todo.id):this.checkedTodoDone(todo.id)}
-          rightIcon={<Icon name='dots-three-vertical' type='entypo' onPress={()=>Alert.alert(
+          rightIcon={
+          <>
+           <Icon name='dots-three-vertical' type='entypo' onPress={()=>Alert.alert(
             'Confirmation',
             'Remove Task ?',
             [
               {text:'YES',onPress:()=>this.deleteMyTodo(todo.id)},
               {text:'NO'}
             ]
-          )}/>}
+          )}/>
+
+            <Icon name='dots-three-horizontal' type='entypo' onPress={()=>this.dropMyTodo(todo.id)}/>
+          </>
+          }
           bottomDivider
         />
       ))
@@ -100,7 +112,8 @@ const mapDespatchToProps =(despatch)=>{
     checkedTodoDone:(id)=>despatch(checkTodoDone(id)),
     checkedTodoUndone:(id)=>despatch(checkedTodoUndone(id)),
     deleteTodo:(id)=>despatch(deleteTodo(id)),
-    fectdoneTodo:()=>despatch(fetchDoneTodo())
+    fetchDoneTodo:()=>despatch(fetchDoneTodo()),
+    todoDrop:(id)=>despatch(todoDrop(id)),
   }
 }
 

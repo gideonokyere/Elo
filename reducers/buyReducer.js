@@ -1,3 +1,4 @@
+
 export const newBuy=(state=0,action)=>{
     switch(action.type){
         case 'ADD_BUY':
@@ -68,4 +69,22 @@ export const listDoneBuy=(state=[],action)=>{
         default:
             return state
     }
+}
+
+export const dropBuy=(state=0,action)=>{
+    switch(action.type){
+        case 'DROP_BUY':
+            return action.id
+        default:
+            return state
+    }
+}
+
+export const undropBuy=(state=0,action)=>{
+   switch(action.type){
+       case 'UNDROP_BUY':
+           return action.id
+        default:
+            return state
+   }
 }

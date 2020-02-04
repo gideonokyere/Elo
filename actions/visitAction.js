@@ -37,6 +37,23 @@ export const listDoneVisit=(doneVisits)=>{
     }
 }
 
+export const dropVisit=(id)=>{
+    return{
+        type:'DROP_VISIT',
+        id
+    }
+}
+
+export const undropVisit=(id)=>{
+    return{
+        type:'UNDROP_VISIT',
+        id
+    }
+}
+
+/****************************************************************************************************************/
+/************************************************ Action Creators **********************************************/
+
 // creating visit
 export const addVisit =(visit)=>{
    createVisitTable();
@@ -137,8 +154,28 @@ export const deleteVisit=(id)=>{
 export const fetchDoneVisit=()=>{
     return (despatch)=>{
         DB.transaction((tx)=>{
-            tx.executeSql(`select * from visits where done=?`,[1],(tx,res)=>{
+            tx.executeSql(`select * from visits where done>?`,[0],(tx,res)=>{
                 despatch(listDoneVisit(res.rows._array));
+            });
+        });
+    }
+}
+
+export const visitDrop=(id)=>{
+    return (despatch)=>{
+        DB.transaction((tx)=>{
+            tx.executeSql(`update visits set done=? where id=?`,[2,id],(tx,res)=>{
+                despatch(dropVisit(res.rowsAffected));
+            });
+        });
+    }
+}
+
+export const visitUndrop=(id)=>{
+    return (despatch)=>{
+        DB.transaction((tx)=>{
+            tx.executeSql(`update visits set done=? where id=?`,[0,id],(tx,res)=>{
+                despatch(undropVisit(res.rowsAffected));
             });
         });
     }

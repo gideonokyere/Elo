@@ -69,3 +69,21 @@ export const listDoneProject=(state=[],action)=>{
             return state
    }
 }
+
+export const dropProject=(state=0,action)=>{
+  switch(action.type){
+      case 'DROP_PROJECT':
+          return action.id
+      default:
+          return state
+  }
+}
+
+export const undropProject=(state=0,action)=>{
+    switch(action.type){
+        case 'UNDROP_PROJECT':
+            return action.id
+        default:
+            return state
+    }
+}

@@ -50,6 +50,23 @@ export const listDoneProject=(doneProject)=>{
     }
 }
 
+export const dropProject=(id)=>{
+    return{
+        type:'DROP_PROJECT',
+        id
+    }
+}
+
+export const undropProject=(id)=>{
+    return{
+        type:'UNDROP_PROJECT',
+        id
+    }
+}
+
+/***************************************************************************************************************/
+/************************************************ Action Creators **********************************************/
+
 
 //action creators
 
@@ -142,6 +159,26 @@ export const fetchDoneProject=()=>{
         DB.transaction((tx)=>{
             tx.executeSql(`select * from projects where done=?`,[1],(tx,res)=>{
                 despatch(listDoneProject(res.rows._array));
+            });
+        });
+    }
+}
+
+export const projectDrop=(id)=>{
+    return (despatch)=>{
+        DB.transaction((tx)=>{
+            tx.executeSql(`update projects set done=? where id=?`,[2,id],(tx,res)=>{
+                despatch(dropProject(res.rowsAffected));
+            });
+        });
+    }
+}
+
+export const projectUndrop=(id)=>{
+    return (despatch)=>{
+        DB.transaction((tx)=>{
+            tx.executeSql(`update projects set done=? where id=?`,[0,id],(tx,res)=>{
+                despatch(undropProject(res.rowsAffected));
             });
         });
     }

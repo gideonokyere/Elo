@@ -50,6 +50,23 @@ export const listDoneStudy=(doneStudy)=>{
     }
 }
 
+export const dropStudy=(id)=>{
+    return{
+        type:'DROP_STUDY',
+        id
+    }
+}
+
+export const undropStudy=(id)=>{
+    return{
+        type:'UNDROP_STUDY',
+        id
+    }
+}
+
+/**************************************************************************************************************/
+/********************************************** Action Creators***********************************************/
+
 //creating action creators
 
 //adding new study
@@ -140,9 +157,29 @@ export const deleteStudy=(id)=>{
 export const fetchDoneStudy=()=>{
     return (despatch)=>{
         DB.transaction((tx)=>{
-            tx.executeSql(`select * from studys where done=?`,[1],(tx,res)=>{
+            tx.executeSql(`select * from studys where done>?`,[0],(tx,res)=>{
                 despatch(listDoneStudy(res.rows._array));
             });
         });
+    }
+}
+
+export const studyDrop=(id)=>{
+    return (despatch)=>{
+        DB.transaction((tx)=>{
+            tx.executeSql(`update studys set done=? where id=?`,[2,id],(tx,res)=>{
+                despatch(dropStudy(res.rowsAffected));
+            });
+        });
+    }
+}
+
+export const studyUndrop=(id)=>{
+    return (despatch)=>{
+       DB.transaction((tx)=>{
+           tx.executeSql(`update studys set done=? where id=?`,[0,id],(tx,res)=>{
+               despatch(undropStudy(res.rowsAffected));
+           });
+       });
     }
 }
