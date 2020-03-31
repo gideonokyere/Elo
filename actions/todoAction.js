@@ -67,6 +67,20 @@ export const undropTodo=(id)=>{
   }
 }
 
+export const addTodoByDate=(id)=>{
+  return{
+    type:'ADD_TODO_BY_DATE',
+    id
+  }
+}
+
+export const listTodoByDate=(tododates)=>{
+  return{
+    type:'LIST_TODO_BY_DATES',
+    tododates
+  }
+}
+
 /****************************************************************************************************************/
 
 /*********************************************** Action Creators ************************************************/
@@ -95,6 +109,19 @@ export const addTodoTomorrow=(todo)=>{
   }
 }
 
+//adding todo at any date
+export const addTodoByDates=(todo,date)=>{
+  createTodoTable();
+  return (despatch)=>{
+    DB.transaction((tx)=>{
+      tx.executeSql(`insert into todos (todo,done,date) values(?,?,?)`,[todo,0,date],(tx,res)=>{
+        despatch(addTodoByDate(res.insertId));
+      });
+    });
+  }
+}
+
+
 export const fetchTodos =()=>{
     return (despatch)=>{
         const date = moment(Date.now()).add(1,'day').format('YYYY-MM-DD');
@@ -104,6 +131,19 @@ export const fetchTodos =()=>{
           });
         });
     }
+}
+
+//fetching todos > today
+export const listTodoByDates=()=>{
+  createTodoTable();
+  return (despatch)=>{
+    const date = moment(Date.now()).format("YYYY-MM-DD");
+    DB.transaction((tx)=>{
+      tx.executeSql(`select * from todos where date>? and done=0`,[date,0],(tx,res)=>{
+        despatch(listTodoByDate(res.rows._array));
+      });
+    });
+  }
 }
 
 export const fetchTodosTomorrow=()=>{

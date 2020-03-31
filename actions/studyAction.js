@@ -64,6 +64,20 @@ export const undropStudy=(id)=>{
     }
 }
 
+export const addStudyByDate=(id)=>{
+    return{
+        type:'ADD_STUDY_BY_DATE',
+        id
+    }
+}
+
+export const listStudyByDate=(studydates)=>{
+    return{
+        type:'LIST_STUDY_BY_DATE',
+        studydates
+    }
+}
+
 /**************************************************************************************************************/
 /********************************************** Action Creators***********************************************/
 
@@ -80,6 +94,19 @@ export const addStudy=(study)=>{
           });
        });
    }
+}
+
+//adding study at any date//
+export const addStudyByDates=(study,date)=>{
+    createStudyTable();
+    return (despatch)=>{
+        DB.transaction((tx)=>{
+            tx.executeSql(`insert into studys (study,done,date) values (?,?,?)`,[study,0,date],(tx,res)=>{
+                //console.log(res.insertId);
+                despatch(addStudyByDate(res.insertId));
+            });
+        });
+    }
 }
 
 export const addTomorrowStudy=(study)=>{
@@ -104,6 +131,19 @@ export const fetchData=()=>{
                 despatch(listStudys(res.rows._array));
             });
         });
+    }
+}
+
+//listing study > today//
+export const listStudyByDates=()=>{
+    createStudyTable();
+    return (despatch)=>{
+        const date = moment(Date.now()).format("YYYY-MM-DD");
+    DB.transaction((tx)=>{
+        tx.executeSql(`select * from studys where date>? and done=?`,[date,0],(tx,res)=>{
+            despatch(listStudyByDate(res.rows._array));
+        });
+    });
     }
 }
 

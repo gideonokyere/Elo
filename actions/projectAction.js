@@ -64,6 +64,20 @@ export const undropProject=(id)=>{
     }
 }
 
+export const addProjectByDate=(id)=>{
+    return{
+        type:'ADD_PROJECT_BY_DATE',
+        id
+    }
+}
+
+export const listProjectByDate=(projectdates)=>{
+    return{
+        type:'LIST_PROJECT_BY_DATE',
+        projectdates
+    }
+}
+
 /***************************************************************************************************************/
 /************************************************ Action Creators **********************************************/
 
@@ -81,6 +95,18 @@ export const addProject=(project)=>{
            });
        });
    }
+}
+
+//adding projects at any date
+export const addProjectByDates=(project,date)=>{
+    return (despatch)=>{
+        DB.transaction((tx)=>{
+            tx.executeSql(`insert into projects (project,done,date) values (?,?,?)`,[project,0,date],(tx,res)=>{
+                console.log(res.insertId);
+                despatch(addProjectByDate(res.insertId));
+            });
+        });
+    }
 }
 
 export const addTomorrowProject=(project)=>{
@@ -105,6 +131,20 @@ export const fetchData=()=>{
           });
        });
    }
+}
+
+//listing projects > today
+export const listProjectByDates=()=>{
+    createProjectTable();
+    return (despatch)=>{
+        //console.log("Loading Data....");
+        const date = moment(Date.now()).format("YYYY-MM-DD");
+        DB.transaction((tx)=>{
+            tx.executeSql(`select * from projects where date>? and done=?`,[date,0],(tx,res)=>{
+                despatch(listProjectByDate(res.rows._array));
+            });
+        });
+    }
 }
 
 export const fetchTomorrowData=()=>{

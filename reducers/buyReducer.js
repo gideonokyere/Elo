@@ -88,3 +88,21 @@ export const undropBuy=(state=0,action)=>{
             return state
    }
 }
+
+export const addBuyByDate=(state=0,action)=>{
+    switch(action.type){
+        case 'ADD_BUY_BY_DATE':
+            return action.id
+        default:
+            return state
+    }
+}
+
+export const listBuyByDate=(state=[],action)=>{
+    switch(action.type){
+        case 'LIST_BUY_BY_DATE':
+            return action.buydates
+        default:
+            return state
+    }
+}

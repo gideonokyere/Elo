@@ -15,7 +15,7 @@ class HomeScreen extends Component{
                containerStyle={styles.constainer}
                rightComponent={<Calendar/>}
              />
-              <Host/>
+              <Host/>{/**dont forget to set it back to Host component when done */}
             </KeyboardAvoidingView>
         );
     }

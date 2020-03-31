@@ -89,3 +89,21 @@ export const undropGoto=(state=0,action)=>{
             return state
     }
 }
+
+export const addGotoByDate=(state=0,action)=>{
+   switch(action.type){
+       case 'ADD_GOTO_BY_DATE':
+           return action.id
+        default:
+            return state
+   }
+}
+
+export const listGotoByDate=(state=[],action)=>{
+    switch(action.type){
+        case 'LIST_GOTO_DATES':
+            return action.gotodates
+        default:
+            return state
+    }
+}

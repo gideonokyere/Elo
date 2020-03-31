@@ -64,6 +64,20 @@ export const undropBuy=(id)=>{
     }
 }
 
+export const addBuyByDate=(id)=>{
+    return{
+        type:'ADD_BUY_BY_DATE',
+        id
+    }
+}
+
+export const listBuyByDate=(buydates)=>{
+    return{
+        type:'LIST_BUY_BY_DATE',
+        buydates
+    }
+}
+
 /*************************************************************************************************************/
 /**************************************** Action Creators *****************************************************/
 
@@ -92,7 +106,18 @@ export const addTomorrowBuy=(buy)=>{
         });
     });
  }
+}
 
+//adding buy at any date//
+export const addBuyByDates=(buy,date)=>{
+    createBuyTable();
+    return (despatch)=>{
+        DB.transaction((tx)=>{
+            tx.executeSql(`insert into buys (buy,done,date) values (?,?,?)`,[buy,0,date],(tx,res)=>{
+                despatch(addBuyByDate(res.insertId));
+            });
+        });
+    }
 }
 
 //listing all buy list
@@ -106,6 +131,18 @@ export const fetchData=()=>{
            });
        });
    }
+}
+
+//listing buy > today//
+export const listBuyByDates=()=>{
+    const date = moment(Date.now()).format("YYYY-MM-DD");
+    return (despatch)=>{
+       DB.transaction((tx)=>{
+           tx.executeSql(`select * from buys where date>? and done=?`,[date,0],(tx,res)=>{
+               despatch(listBuyByDate(res.rows._array));
+           });
+       });
+    }
 }
 
 export const fetchTomorrowData=()=>{

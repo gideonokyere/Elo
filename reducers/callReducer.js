@@ -93,3 +93,21 @@
             return state
      }
  }
+
+ export const addCallByDate=(state=0,action)=>{
+     switch(action.type){
+         case 'ADD_CALL_BY_DATE':
+             return action.id
+        default:
+            return state
+     }
+ }
+
+ export const listDateCall=(state=[],action)=>{
+     switch(action.type){
+         case 'DATECALLS':
+             return action.datecalls
+        default:
+            return state
+     }
+ }

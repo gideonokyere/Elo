@@ -65,6 +65,20 @@ export const undropGoto=(id)=>{
    }
 }
 
+export const addGotoByDate=(id)=>{
+   return{
+      type:'ADD_GOTO_BY_DATE',
+      id
+   }
+}
+
+export const listGotoByDate=(gotodates)=>{
+   return{
+      type:'LIST_GOTO_DATES',
+      gotodates
+   }
+}
+
 /*****************************************************************************************************************/
 /*********************************************** ACTION CREATORS **************************************************/
 /*****************************************************************************************************************/
@@ -80,6 +94,17 @@ export const addGoto=(goto)=>{
            });
         });
     }
+}
+
+//adding goto by date
+export const addGotoByDates=(goto,date)=>{
+   return (despatch)=>{
+      DB.transaction((tx)=>{
+         tx.executeSql(`insert into gotos (goto,done,date) values (?,?,?)`,[goto,0,date],(tx,res)=>{
+            despatch(addGotoByDate(res.insertId));
+         });
+      });
+   }
 }
 
 export const addGotoTomorrow=(goto)=>{
@@ -101,6 +126,18 @@ export const fetchGoto=()=>{
          tx.executeSql(`select * from gotos where date<? and done=?`,[date,0],(tx,res)=>{
             despatch(listGotos(res.rows._array));
          })
+      });
+   }
+}
+
+//listing goto > today//
+export const listGotoByDates=()=>{
+   const date = moment(Date.now()).format('YYYY-MM-DD');
+   return (despatch)=>{
+      DB.transaction((tx)=>{
+         tx.executeSql(`select * from gotos where date>? and done=?`,[date,0],(tx,res)=>{
+            despatch(listGotoByDate(res.rows._array));
+         });
       });
    }
 }

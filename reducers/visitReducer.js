@@ -88,3 +88,21 @@ export const undropVisit=(state=0,action)=>{
             return state
     }
 }
+
+export const addVisitByDate=(state=0,action)=>{
+    switch(action.type){
+        case 'ADD_VISIT_BY_DATE':
+          return action.id
+        default:
+            return state
+    }
+}
+
+export const listVisitByDate=(state=[],action)=>{
+    switch(action.type){
+        case 'LIST_VISIT_BY_DATE':
+            return action.visitdates
+        default:
+            return state
+    }
+}

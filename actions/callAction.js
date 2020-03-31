@@ -67,6 +67,20 @@ export const undropCall=(id)=>{
     }
 }
 
+export const addCallByDate=(id)=>{
+    return{
+        type:'ADD_CALL_BY_DATE',
+        id
+    }
+}
+
+export const listDateCall=(datecalls)=>{
+    return{
+        type:'DATECALLS',
+        datecalls
+    }
+}
+
 /**************************************************************************************************************/
 
 /********************************************* Action Creators ************************************************/
@@ -97,6 +111,18 @@ export const addCallTomorrow = (name,number)=>{
     }
 }
 
+//add call on any day//
+export const addCallByDates=(name,number,date)=>{
+    createCallTable();
+    return (despatch)=>{
+        DB.transaction((tx)=>{
+            tx.executeSql(`insert into calls (name,number,done,date) values (?,?,?,?)`,[name,number,0,date],(tx,res)=>{
+                despatch(addCallByDate(res.insertId));
+            });
+        });
+    }
+}
+
 //listing all calls
 export const fetchCalls=()=>{
     return (despatch)=>{
@@ -105,6 +131,19 @@ export const fetchCalls=()=>{
             tx.executeSql(`select * from calls where date<? and done=?`,[date,0],(tx,res)=>{
                 despatch(listCalls(res.rows._array));
             })
+        });
+    }
+}
+
+//listing all calls > today//
+export const listDateCalls=()=>{
+    createCallTable();
+    return (despatch)=>{
+        const date = moment(Date.now()).format('YYYY-MM-DD');
+        DB.transaction((tx)=>{
+            tx.executeSql(`select * from calls where date>? and done=?`,[date,0],(tx,res)=>{
+                despatch(listDateCall(res.rows._array));
+            });
         });
     }
 }

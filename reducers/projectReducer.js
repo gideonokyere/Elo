@@ -87,3 +87,21 @@ export const undropProject=(state=0,action)=>{
             return state
     }
 }
+
+export const addProjectByDate=(state=0,action)=>{
+   switch(action.type){
+       case 'ADD_PROJECT_BY_DATE':
+           return action.id
+        default:
+            return state
+   }
+}
+
+export const listProjectByDate=(state=[],action)=>{
+    switch(action.type){
+        case 'LIST_PROJECT_BY_DATE':
+            return action.projectdates
+        default:
+            return state
+    }
+}

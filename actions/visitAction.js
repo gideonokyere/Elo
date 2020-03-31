@@ -51,6 +51,20 @@ export const undropVisit=(id)=>{
     }
 }
 
+export const addVisitByDate=(id)=>{
+    return{
+        type:'ADD_VISIT_BY_DATE',
+        id
+    }
+}
+
+export const listVisitByDate=(visitdates)=>{
+    return{
+        type:'LIST_VISIT_BY_DATE',
+        visitdates
+    }
+}
+
 /****************************************************************************************************************/
 /************************************************ Action Creators **********************************************/
 
@@ -90,6 +104,19 @@ export const addTomorrowVisit=(visit)=>{
     }
 }
 
+//adding visit at any date
+export const addVisitByDates=(visit,date)=>{
+    createVisitTable();
+    return (despatch)=>{
+        DB.transaction((tx)=>{
+            tx.executeSql(`insert into visits (visit,done,date) values (?,?,?)`,[visit,0,date],(tx,res)=>{
+                console.log(res.insertId);
+                despatch(addVisitByDate(res.rows._array));
+            });
+        });
+    }
+}
+
 //listing visit
 export const fetchData = ()=>{
     createVisitTable();
@@ -100,6 +127,18 @@ export const fetchData = ()=>{
                despatch(listVisits(res.rows._array));
            });
        });
+    }
+}
+
+//listing visit > today//
+export const listVisitByDates=()=>{
+    return (despatch)=>{
+        const date = moment(Date.now()).format("YYYY-MM-DD");
+        DB.transaction((tx)=>{
+            tx.executeSql(`select * from visits where date>? and done=?`,[date,0],(tx,res)=>{
+                despatch(listVisitByDate(res.rows._array));
+            });
+        });
     }
 }
 

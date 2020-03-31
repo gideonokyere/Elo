@@ -88,3 +88,21 @@ export const undropStudy=(state=0,action)=>{
             return state
     }
 }
+
+export const addStudyByDate=(state=0,action)=>{
+    switch(action.type){
+        case 'ADD_STUDY_BY_DATE':
+            return action.id
+        default:
+            return state
+    }
+}
+
+export const listStudyByDate=(state=[],action)=>{
+    switch(action.type){
+        case 'LIST_STUDY_BY_DATE':
+            return action.studydates
+        default:
+            return state
+    }
+}
