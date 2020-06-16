@@ -25,10 +25,10 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.cambridge.taskapp"
+      "bundleIdentifier": "com.elo.taskapp"
     },
     "android": {
-      "package": "com.cambridge.taskapp"
+      "package": "com.elo.taskapp"
     }
   }
 }
