@@ -11,7 +11,7 @@ class HomeScreen extends Component{
         return(
             <KeyboardAvoidingView style={{flex:1}}>
              <Header
-               leftComponent={{text:'Azura'}}
+               leftComponent={{text:'Elo'}}
                containerStyle={styles.constainer}
                rightComponent={<Calendar/>}
              />

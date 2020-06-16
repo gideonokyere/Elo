@@ -1,8 +1,11 @@
 import React,{Component} from 'react';
-import {View,StyleSheet,Alert} from 'react-native';
-import {Icon,Input,ListItem,Card} from 'react-native-elements';
+import {View,StyleSheet,Alert,Dimensions} from 'react-native';
+import {Icon,Input,ListItem,Card,CheckBox} from 'react-native-elements';
 import {connect} from 'react-redux';
 import Container from '../components/Constainer';
+import Accordian from '../components/Accordian';
+import CompleteTask from '../components/CompleteTask';
+import DailyComplete from '../Screens/DailyComplete';
 import Color from '../utilis/colors';
 import {addDaily,fetchData,checkedDailyDone,checkedDailyUndone,deleteDaily,fetchDoneDaily,callTaskDrop} from '../actions/dailyAction';
 
@@ -74,10 +77,12 @@ class DailyScreen extends Component{
 
         return(
            <Container>
-            <Card>   
+            <Card containerStyle={styles.cardStyle}>
+              <>
+              <Accordian title='Daily'/>
               {dailys}
-            </Card>
-           <View style={styles.row}>
+
+         <View style={styles.row}>
            <Input
             value={this.state.daily}
             onChangeText={(text)=>this.setState({daily:text})}
@@ -93,6 +98,13 @@ class DailyScreen extends Component{
             onPress={()=>this.addDaily()}
           />*/}
          </View>
+
+         <CompleteTask>
+            <DailyComplete/>
+         </CompleteTask>
+         </>
+        </Card>
+           
         </Container>
         );
     }
@@ -125,6 +137,7 @@ const styles = StyleSheet.create({
     row:{
       flexDirection:'row',
       paddingRight:18,
+      marginBottom:15
     },
     doneStyle:{
         color:Color.CHECKED_COLOR,
@@ -132,6 +145,9 @@ const styles = StyleSheet.create({
     },
     undoneStyle:{
         fontWeight:'normal'
+    },
+    cardStyle:{
+        borderRadius:4
     }
   })
 

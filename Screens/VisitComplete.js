@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import {fetchDoneVisit,visitUndrop,fetchData} from '../actions/visitAction';
 
 import Container from '../components/Constainer';
+import Accordian from '../components/Accordian';
 import EmptyTaskMessage from '../components/EnptyTaskMessage';
 import Color from  '../utilis/colors';
 
@@ -35,7 +36,11 @@ class VisitComplete extends Component{
 
         return(
             <Container>
-                {this.props.listVisitDone.length>-1?<Card>{visits}</Card>:<EmptyTaskMessage task='Visit'/>}
+                {this.props.listVisitDone.length>-1?
+                <>
+                  {visits}
+                </>:
+                <EmptyTaskMessage task='Visit'/>}
             </Container>
         )
     }

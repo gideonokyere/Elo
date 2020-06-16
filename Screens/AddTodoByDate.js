@@ -73,10 +73,10 @@ class ToDoByDate extends Component{
 
     return(
       <Container>
-         <Card>
+         <Card containerStyle={styles.cardStyle}>
+           <>
            {todos}
-          </Card>
-          <View style={styles.row}>
+           <View style={styles.row}>
           <Input
             value={this.state.todo}
             onChangeText={(text)=>this.setState({todo:text})}
@@ -91,6 +91,8 @@ class ToDoByDate extends Component{
             onPress={()=>this.addToDo()}
           />*/}
         </View>
+           </>
+          </Card>
       </Container>
     );
    }
@@ -129,7 +131,10 @@ const styles = StyleSheet.create({
 },
 undoneStyle:{
     fontWeight:'normal'
- }
+ },
+ cardStyle:{
+  borderRadius:4
+}
 })
 
 export default connect(mapStateToProps,mapDespatchToProps)(ToDoByDate);

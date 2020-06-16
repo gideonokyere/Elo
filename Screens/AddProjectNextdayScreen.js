@@ -3,6 +3,7 @@ import {View,StyleSheet} from 'react-native';
 import {Icon,Input,ListItem,Card} from 'react-native-elements';
 import {connect} from 'react-redux';
 import Container from '../components/Constainer';
+import Accordian from '../components/Accordian';
 import Color from '../utilis/colors';
 import {addTomorrowProject,fetchTomorrowData} from '../actions/projectAction';
 
@@ -36,10 +37,12 @@ class AddProjectNexdayScreen extends Component{
 
         return(
             <Container>
-            <Card>
+            <Card containerStyle={styles.cardStyle}>
+             <>
+            <Accordian title='Project'/>
              {projects}
-            </Card>
-            <View style={styles.row}>
+
+             <View style={styles.row}>
              <Input
                value={this.state.project}
                onChangeText={(text)=>this.setState({project:text})}
@@ -54,6 +57,8 @@ class AddProjectNexdayScreen extends Component{
                onPress={()=>this.addProject()}
              />*/}
            </View>
+             </>
+            </Card>
            </Container>
         );
     }
@@ -84,6 +89,9 @@ const styles = StyleSheet.create({
     },
     undoneStyle:{
         fontWeight:'normal'
+    },
+    cardStyle:{
+        borderRadius:4
     }
   })
 

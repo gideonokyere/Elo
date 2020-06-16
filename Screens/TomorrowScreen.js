@@ -17,33 +17,20 @@ const TomorrowScreen =()=>{
             <Container>
                 
                 <ScrollView>
-                    <Accordian title='Call'>
-                        <CallNextDayScreen/>
-                    </Accordian>
 
-                    <Accordian title='To Do'>
-                        <TodosNextDayScreen/>
-                    </Accordian>
+                    <CallNextDayScreen/>
 
-                    <Accordian title='Go To'>
-                        <AddGotoNextDayScreen/>
-                    </Accordian>
+                    <TodosNextDayScreen/>
 
-                    <Accordian title="Buy">
-                        <AddBuyNextDayScreen/>
-                    </Accordian>
+                    <AddGotoNextDayScreen/>
 
-                    <Accordian title='Visit'>
-                        <AddVisitNextDayScreen/>
-                    </Accordian>
+                    <AddBuyNextDayScreen/>
 
-                    <Accordian title='Study'>
-                        <AddStudyNextDayScreen/>
-                    </Accordian>
+                    <AddVisitNextDayScreen/>
 
-                    <Accordian title='Project'>
-                        <AddProjectNextDayScreen/>
-                    </Accordian>
+                    <AddStudyNextDayScreen/>
+
+                    <AddProjectNextDayScreen/>
 
                 </ScrollView>
                 

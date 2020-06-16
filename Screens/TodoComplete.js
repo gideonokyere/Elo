@@ -3,7 +3,8 @@ import {StyleSheet} from 'react-native';
 import {ListItem,Card,Icon} from 'react-native-elements';
 import {connect} from 'react-redux';
 import Container from '../components/Constainer';
-import EmptyTaskMessage from '../components/EnptyTaskMessage'
+import EmptyTaskMessage from '../components/EnptyTaskMessage';
+import Accordian from '../components/Accordian';
 import {fetchDoneTodo,fetchTodos,todoUndrop} from '../actions/todoAction';
 import Color from '../utilis/colors';
 
@@ -30,7 +31,11 @@ class TodoComplete extends Component{
         ))
         return(
           <Container>
-              {this.props.listTodoDone.length>-1?<Card>{doneTodo}</Card>:<EmptyTaskMessage task='Todo'/>}
+              {this.props.listTodoDone.length>-1?
+              <>
+                  {doneTodo}
+               </>:
+               <EmptyTaskMessage task='Todo'/>}
           </Container>
         );
     }

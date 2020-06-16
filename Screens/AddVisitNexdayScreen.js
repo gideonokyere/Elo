@@ -3,6 +3,7 @@ import {View,StyleSheet} from 'react-native';
 import {Icon,Input,ListItem,Card} from  'react-native-elements';
 import {connect} from 'react-redux';
 import Container from '../components/Constainer';
+import Accordian from '../components/Accordian';
 import Color from '../utilis/colors';
 import {fetchTomorrowData,addTomorrowVisit} from '../actions/visitAction';
 
@@ -38,10 +39,11 @@ class AddVisitNextdayScreen extends Component{
 
         return(
             <Container>
-            <Card>
-              
-            </Card>
-           <View style={styles.row}>
+            <Card containerStyle={styles.cardStyle}>
+             <>
+            <Accordian title='Visit'/>
+
+            <View style={styles.row}>
               <Input
                value={this.state.visit}
                onChangeText={(text)=>this.setState({visit:text})}
@@ -56,7 +58,8 @@ class AddVisitNextdayScreen extends Component{
                onPress={()=>this.addVisit()}
              />*/}
            </View>
-   
+             </>
+            </Card>
        </Container>
         );
     }
@@ -87,7 +90,10 @@ const styles = StyleSheet.create({
     },
     undoneStyle:{
         fontWeight:'normal'
-    }
+    },
+    cardStyle:{
+      borderRadius:4
+  }
   })
 
 export default connect(mapStateToProps,mapDespatchToProps)(AddVisitNextdayScreen)

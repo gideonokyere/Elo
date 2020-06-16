@@ -5,6 +5,7 @@ import {buyUndrop,fetchData,fetchDoneBuy} from '../actions/buyAction';
 import {connect} from 'react-redux';
 
 import Container from '../components/Constainer';
+import Accordian from '../components/Accordian';
 import EmptyTaskMessage from '../components/EnptyTaskMessage';
 import Color from '../utilis/colors';
 
@@ -33,7 +34,11 @@ class BuyComplete extends Component{
 
         return(
            <Container>
-              {this.props.listBuysDone.length>-1?<Card>{buys}</Card>:<EmptyTaskMessage task='Buy'/>}
+              {this.props.listBuysDone.length>-1?
+              <>
+                {buys}
+             </>:
+             <EmptyTaskMessage task='Buy'/>}
            </Container>
         )
     }

@@ -5,6 +5,7 @@ import {Input,Icon,ListItem,Card} from 'react-native-elements';
 import * as Contacts from 'expo-contacts';
 import * as Permissions from 'expo-permissions';
 import Constainer from '../components/Constainer';
+import Accordian from '../components/Accordian';
 import Color from '../utilis/colors';
 import {addCallTomorrow,fetchTomorrowCalls,checkedCallDone,checkedCallUndone} from '../actions/callAction';
 
@@ -84,11 +85,11 @@ class CallNextDayScreen extends Component{
 
         return(
            <Constainer>
-               <Card>
-                   {lists}
-               </Card>
-
-            <View style={styles.row}>
+               <Card containerStyle={styles.cardStyle}>
+                 <>
+                 <Accordian title='Call'/>
+                  {lists}
+              <View style={styles.row}>
               <Input
               value={this.state.name}
               onChangeText={(text)=>this.setState({name:text})}
@@ -99,6 +100,8 @@ class CallNextDayScreen extends Component{
            />
            {this.state.name?this.state.showContacts && persons:null}
            </View>
+                 </>
+               </Card>
 
            </Constainer>
         )
@@ -134,7 +137,10 @@ const styles = StyleSheet.create({
   },
   undoneStyle:{
       fontWeight:'normal'
-  }
+  },
+  cardStyle:{
+    borderRadius:4
+}
   })
 
   export default connect(mapStateToProps,mapDispatchToProps)(CallNextDayScreen)

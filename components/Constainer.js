@@ -1,13 +1,15 @@
 import React,{Component} from 'react';
-import {SafeAreaView,StyleSheet,KeyboardAvoidingView} from 'react-native';
+import {SafeAreaView,StyleSheet,KeyboardAvoidingView,Platform,Dimensions} from 'react-native';
 import Color from '../utilis/colors'
 
  class Container extends Component{
     render(){
       return(
+       <KeyboardAvoidingView behavior={Platform.Os == "ios" ? "padding" : "height"} style={{flex:1}} >
        <SafeAreaView style={styles.constainer}>
           {this.props.children}
        </SafeAreaView>
+       </KeyboardAvoidingView>
       );
     }
 }
@@ -15,7 +17,8 @@ import Color from '../utilis/colors'
 const styles = StyleSheet.create({
    constainer:{
        flex:1,
-       backgroundColor:Color.BACKGROUND_COLOR
+       backgroundColor:Color.BACKGROUND_COLOR,
+       width:Dimensions.get('screen').width,
    }
 });
 

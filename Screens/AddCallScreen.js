@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
-import { View, StyleSheet,Platform,Text,Linking,Alert } from 'react-native';
+import { View, StyleSheet,Platform,Text,Linking,Alert, CheckBox } from 'react-native';
 import {connect} from 'react-redux';
 import {Input,Icon,ListItem,Card} from 'react-native-elements';
 import * as Contacts from 'expo-contacts';
 import * as Permissions from 'expo-permissions';
 import Constainer from '../components/Constainer';
+import Accordian from '../components/Accordian';
+import CompleteTask from '../components/CompleteTask';
+import CallComplete from '../Screens/CallComplete';
 import Color from '../utilis/colors';
 import {addCall,fetchCalls,checkedCallDone,checkedCallUndone,deleteCall,listCallDone,callDrop} from '../actions/callAction';
 
@@ -119,18 +122,20 @@ render(){
 
   return (
     <Constainer>
-         <Card>
+         <Card containerStyle={styles.cardStyle}>
+           <>
+          <Accordian title='Call'/>
            {lists}
-          </Card>
-        <View style={styles.row}>
-          <Input
+
+          <View style={styles.row}>
+           <Input
             value={this.state.name}
             onChangeText={(text)=>this.setState({name:text})}
             onChange={(text)=>this.searchContact(text.nativeEvent.text)}
             onSubmitEditing={()=>this.addCall()}
             enablesReturnKeyAutomatically={true}
             placeholder='Who do you want to call E.g. Sally'
-          />
+           />
           {this.state.name?this.state.showContacts && persons:null}
           {/**<Icon 
             name='add'
@@ -139,6 +144,12 @@ render(){
             onPress={()=>this.addCall()}
           />*/}
         </View>
+
+         <CompleteTask>
+            <CallComplete/>
+         </CompleteTask>
+           </>
+          </Card>
     </Constainer> 
   );
 }
@@ -170,6 +181,7 @@ const styles = StyleSheet.create({
   row:{
     flexDirection:'column',
     paddingRight:18,
+    marginBottom:15
   },
   doneStyle:{
     color:Color.CHECKED_COLOR,
@@ -177,6 +189,9 @@ const styles = StyleSheet.create({
 },
 undoneStyle:{
     fontWeight:'normal'
+},
+cardStyle:{
+  borderRadius:4
 }
 })
 

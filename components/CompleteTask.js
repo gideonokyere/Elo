@@ -2,16 +2,6 @@ import React,{Component} from 'react';
 import {View,Text,TouchableOpacity,StyleSheet} from 'react-native'
 import { Icon} from 'react-native-elements';
 import Color from '../utilis/colors';
-import Accordian from '../components/Accordian';
-
-import CallComplete from '../Screens/CallComplete';
-import TodoComplete from '../Screens/TodoComplete';
-import GotoComplete from '../Screens/GotoComplete';
-import BuyComplete from '../Screens/BuyComplete';
-import VisitComplete from '../Screens/VisitComplete';
-import StudyComplete from  '../Screens/StudyComplete';
-import ProjectComplete from '../Screens/ProjectComplete';
-import DailyComplete from '../Screens/DailyComplete';
 
 class CompleteTask extends Component{
 
@@ -28,8 +18,8 @@ class CompleteTask extends Component{
            <View>
 
               <TouchableOpacity style={styles.row} onPress={()=>this.toggleExpand()}>
-                 <Text style={styles.title}>Completed Task</Text>
-                 <Icon name={this.state.expanded?'chevrons-up':'chevrons-down'} type='feather' color={Color.ACCORDIAL_TITLE} size={30}/>
+                 <Text style={styles.title}>Completed Tasks</Text>
+                 <Icon name={this.state.expanded?'chevrons-up':'chevrons-down'} type='feather' color={Color.BLACK} size={20}/>
               </TouchableOpacity>
 
               <View style={styles.parentHr}/>
@@ -37,39 +27,7 @@ class CompleteTask extends Component{
               {
                   this.state.expanded &&
                    <View style={styles.child}>
-
-                       <Accordian title="Daily">
-                           <DailyComplete/>
-                       </Accordian>
-
-                       <Accordian title="Call">
-                          <CallComplete/>
-                       </Accordian>
-
-                       <Accordian title="To Do">
-                           <TodoComplete/>
-                       </Accordian>
-
-                       <Accordian title="Go To">
-                          <GotoComplete/>
-                       </Accordian>
-
-                       <Accordian title="Buy">
-                           <BuyComplete/>
-                       </Accordian>
-
-                       <Accordian title="Visit">
-                          <VisitComplete/>
-                       </Accordian>
-
-                       <Accordian title="Study">
-                           <StudyComplete/>
-                       </Accordian>
-
-                       <Accordian title="Project">
-                           <ProjectComplete/>
-                       </Accordian>
-
+                       {this.props.children}
                    </View>
               }
            </View>
@@ -79,9 +37,9 @@ class CompleteTask extends Component{
 
 const styles = StyleSheet.create({
     title:{
-        fontSize: 20,
+        fontSize: 15,
         fontWeight:'normal',
-        color: Color.ACCORDIAL_TITLE,
+        color: Color.BLACK,
     },
     row:{
         flexDirection: 'column',

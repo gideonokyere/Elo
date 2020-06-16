@@ -70,9 +70,9 @@ class AddGotoByDate extends Component {
        ))
       return (
          <Container>
-            <Card>
+            <Card containerStyle={styles.cardStyle}>
+            <>
             {gotos}
-            </Card>
             <View style={styles.row}>
                <Input
                   value={this.state.goto}
@@ -88,6 +88,8 @@ class AddGotoByDate extends Component {
                   onPress={() => this.addGoto()}
                />*/}
             </View>
+            </>
+            </Card>
          </Container>
       )
    }
@@ -126,7 +128,10 @@ const styles = StyleSheet.create({
   },
   undoneStyle:{
       fontWeight:'normal'
-  }
+  },
+  cardStyle:{
+   borderRadius:4
+}
 })
 
 export default connect(mapStateToProps,mapDespatchToProps)(AddGotoByDate);

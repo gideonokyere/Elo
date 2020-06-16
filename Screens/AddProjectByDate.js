@@ -73,10 +73,10 @@ class AddProjectByDate extends Component{
 
         return( 
         <Container>
-         <Card>
+         <Card containerStyle={styles.cardStyle}>
+          <>
           {projects}
-         </Card>
-         <View style={styles.row}>
+          <View style={styles.row}>
           <Input
             value={this.state.project}
             onChangeText={(text)=>this.setState({project:text})}
@@ -91,6 +91,8 @@ class AddProjectByDate extends Component{
             onPress={()=>this.addProject()}
           />*/}
         </View>
+          </>
+         </Card>
         </Container>
         )
     }
@@ -129,6 +131,9 @@ const styles = StyleSheet.create({
     },
     undoneStyle:{
         fontWeight:'normal'
+    },
+    cardStyle:{
+        borderRadius:4
     }
   })
 

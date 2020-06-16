@@ -5,6 +5,7 @@ import {connect} from 'react-redux';
 import {checkedCallUndone,listCallDone,callUndrop,fetchCalls} from '../actions/callAction';
 import Container from '../components/Constainer';
 import EmptyTaskMessage from '../components/EnptyTaskMessage';
+import Accordian from '../components/Accordian';
 import Color from '../utilis/colors';
 
 class CallComplete extends Component{
@@ -31,7 +32,10 @@ class CallComplete extends Component{
         ))
         return(
           <Container>
-                {this.props.doneCalls.length>-1?<Card>{calls}</Card>:<EmptyTaskMessage task='call'/>}
+                {this.props.doneCalls.length>-1?<>
+                      {calls}
+                 </>:
+                <EmptyTaskMessage task='call'/>}
           </Container>
         );
     }

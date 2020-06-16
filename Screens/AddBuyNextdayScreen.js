@@ -6,6 +6,7 @@ import Color from '../utilis/colors';
 import {addTomorrowBuy,fetchTomorrowData} from '../actions/buyAction';
 
 import Container from '../components/Constainer';
+import Accordian from '../components/Accordian';
 
 class AddBuyNextdayScreen extends Component{
    
@@ -35,11 +36,12 @@ class AddBuyNextdayScreen extends Component{
         ))
         return(
             <Container>
-          <Card>
-          {buy}
-          </Card>
+          <Card containerStyle={styles.cardStyle}>
+            <>
+           <Accordian title="Buy"/>
+           {buy}
 
-          <View style={styles.row}>
+           <View style={styles.row}>
           <Input
             value={this.state.buy}
             onChangeText={(text)=>this.setState({buy:text})}
@@ -54,6 +56,9 @@ class AddBuyNextdayScreen extends Component{
             onPress={()=>this.addBuy()}
           />*/}
         </View>
+           </>
+          </Card>
+
         </Container>
         );
     }
@@ -85,6 +90,9 @@ const styles = StyleSheet.create({
     },
     undoneStyle:{
         fontWeight:'normal'
+    },
+    cardStyle:{
+        borderRadius:4
     }
   })
 

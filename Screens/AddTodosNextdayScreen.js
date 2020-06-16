@@ -4,6 +4,7 @@ import {StyleSheet,View} from 'react-native';
 import {Input,Icon,ListItem,Card} from 'react-native-elements';
 import {connect} from 'react-redux';
 import Container from '../components/Constainer';
+import Accordian from '../components/Accordian';
 import Color from '../utilis/colors';
 import {addTodoTomorrow,fetchTodosTomorrow} from '../actions/todoAction';
 
@@ -38,11 +39,13 @@ class AddTodosNextdayScreen extends Component{
         
         return(
          <Container>
-          <Card>
+          <Card containerStyle={styles.cardStyle}>
+            <>
+          <Accordian title='To Do'/>
            {todos}
-          </Card>
-          <View style={styles.row}>
-          <Input
+           
+           <View style={styles.row}>
+           <Input
             value={this.state.todo}
             onChangeText={(text)=>this.setState({todo:text})}
             placeholder='E.g. post letters'
@@ -56,6 +59,8 @@ class AddTodosNextdayScreen extends Component{
             onPress={()=>this.addToDo()}
           />*/}
         </View>
+           </>
+          </Card>
       </Container>
         );
     }
@@ -88,7 +93,10 @@ const styles = StyleSheet.create({
   },
   undoneStyle:{
       fontWeight:'normal'
-   }
+   },
+   cardStyle:{
+    borderRadius:4
+}
   })
 
   export default connect(mapStateToProps,mapDespatchToProps)(AddTodosNextdayScreen);

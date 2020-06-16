@@ -3,6 +3,9 @@ import {View,StyleSheet,Alert} from 'react-native';
 import {Icon,Input,ListItem,Card} from  'react-native-elements';
 import {connect} from 'react-redux';
 import Container from '../components/Constainer';
+import Accordian from '../components/Accordian';
+import CompleteTask from '../components/CompleteTask';
+import VisitComplete from '../Screens/VisitComplete';
 import Color from '../utilis/colors';
 import {fetchData,addVisit,checkedVisitDone,checkedVisitUndone,deleteVisit,fetchDoneVisit,visitDrop} from '../actions/visitAction';
 
@@ -74,10 +77,12 @@ class VisitScreen extends Component{
 
         return(
      <Container>
-         <Card>
+         <Card containerStyle={styles.cardStyle}>
+          <>
+          <Accordian title='Visit'/>
           {visits}
-         </Card>
-        <View style={styles.row}>
+
+          <View style={styles.row}>
            <Input
             value={this.state.visit}
             onChangeText={(text)=>this.setState({visit:text})}
@@ -91,8 +96,12 @@ class VisitScreen extends Component{
             color={Color.PRIMARY_COLOR} size={30} 
             onPress={()=>this.addVisit()}
           />*/}
-        </View>
-
+         </View>
+          <CompleteTask>
+              <VisitComplete/>
+          </CompleteTask>
+          </>
+         </Card>
     </Container>
         );
     }
@@ -124,6 +133,7 @@ const styles = StyleSheet.create({
     row:{
       flexDirection:'row',
       paddingRight:18,
+      marginBottom:15
     },
     doneStyle:{
         color:Color.CHECKED_COLOR,
@@ -131,6 +141,9 @@ const styles = StyleSheet.create({
     },
     undoneStyle:{
         fontWeight:'normal'
+    },
+    cardStyle:{
+        borderRadius:4
     }
   })
 

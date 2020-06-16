@@ -3,6 +3,9 @@ import {Text,View,StyleSheet,Alert} from 'react-native';
 import {Icon,Input,ListItem,Card} from 'react-native-elements';
 import {connect} from 'react-redux';
 import Color from '../utilis/colors';
+import Accordian from '../components/Accordian';
+import CompleteTask from '../components/CompleteTask';
+import BuyComplete from '../Screens/BuyComplete';
 import {addBuy,fetchData,checkedBuyDone,checkedBuyUndone,deleteBuy,buyDrop,fetchDoneBuy} from '../actions/buyAction';
 
 import Container from '../components/Constainer';
@@ -75,9 +78,10 @@ class BuyScreen extends Component{
 
     return(
        <Container>
-          <Card>
+          <Card containerStyle={styles.cardStyle}>
+           <>
+          <Accordian title='Buy'/>
           {buy}
-          </Card>
 
           <View style={styles.row}>
           <Input
@@ -94,6 +98,11 @@ class BuyScreen extends Component{
             onPress={()=>this.addBuy()}
           />*/}
         </View>
+          <CompleteTask>
+              <BuyComplete/>
+          </CompleteTask>
+          </>
+          </Card>
         </Container>
      );
     }
@@ -125,6 +134,7 @@ const styles = StyleSheet.create({
     row:{
       flexDirection:'row',
       paddingRight:18,
+      marginBottom:15
     },
     doneStyle:{
         color:Color.CHECKED_COLOR,
@@ -132,6 +142,9 @@ const styles = StyleSheet.create({
     },
     undoneStyle:{
         fontWeight:'normal'
+    },
+    cardStyle:{
+        borderRadius:4
     }
   })
 

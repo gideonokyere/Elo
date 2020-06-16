@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "Azura",
-    "slug": "taskApp",
+    "name": "Elo",
+    "slug": "Elo Tasks Manager",
     "privacy": "public",
     "sdkVersion": "35.0.0",
     "platforms": [

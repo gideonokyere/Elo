@@ -1,8 +1,11 @@
 import React,{ Component } from 'react';
-import {View,StyleSheet, Alert} from 'react-native';
+import {View,StyleSheet, Alert,KeyboardAvoidingView,Platform} from 'react-native';
 import {Icon,Input,ListItem,Card} from 'react-native-elements';
 import {connect} from 'react-redux';
 import Container from '../components/Constainer';
+import Accordian from '../components/Accordian';
+import CompleteTask from '../components/CompleteTask';
+import ProjectComplete from '../Screens/ProjectComplete';
 import Color from '../utilis/colors';
 import {addProject,fetchData,checkedProjectDone,checkedProjectUndone,deleteProject,fetchDoneProject,projectDrop} from '../actions/projectAction';
 
@@ -70,12 +73,14 @@ class ProjectScreen extends Component{
             />
         ))
 
-        return( 
+        return(
         <Container>
-         <Card>
+         <Card containerStyle={styles.cardStyle}>
+          <>
+         <Accordian title='Projects'/>
           {projects}
-         </Card>
-         <View style={styles.row}>
+
+          <View style={styles.row}>
           <Input
             value={this.state.project}
             onChangeText={(text)=>this.setState({project:text})}
@@ -90,6 +95,11 @@ class ProjectScreen extends Component{
             onPress={()=>this.addProject()}
           />*/}
         </View>
+         <CompleteTask>
+             <ProjectComplete/>
+         </CompleteTask>
+          </>
+         </Card>
         </Container>
         )
     }
@@ -121,6 +131,7 @@ const styles = StyleSheet.create({
     row:{
       flexDirection:'row',
       paddingRight:18,
+      marginBottom:15
     },
     doneStyle:{
         color:Color.CHECKED_COLOR,
@@ -128,6 +139,12 @@ const styles = StyleSheet.create({
     },
     undoneStyle:{
         fontWeight:'normal'
+    },
+    cardStyle:{
+        borderRadius:4
+    },
+    keyView:{
+        flex:1
     }
   })
 

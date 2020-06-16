@@ -75,10 +75,10 @@ class AddVisitByDate extends Component{
 
         return(
      <Container>
-         <Card>
+         <Card containerStyle={styles.cardStyle}>
+          <>
           {visits}
-         </Card>
-        <View style={styles.row}>
+          <View style={styles.row}>
            <Input
             value={this.state.visit}
             onChangeText={(text)=>this.setState({visit:text})}
@@ -93,7 +93,8 @@ class AddVisitByDate extends Component{
             onPress={()=>this.addVisit()}
           />*/}
         </View>
-
+          </>
+         </Card>
     </Container>
         );
     }
@@ -132,6 +133,9 @@ const styles = StyleSheet.create({
     },
     undoneStyle:{
         fontWeight:'normal'
+    },
+    cardStyle:{
+        borderRadius:4
     }
   })
 

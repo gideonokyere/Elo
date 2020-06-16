@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
-import {View,StyleSheet,Alert} from 'react-native';
+import {View,StyleSheet,Alert,KeyboardAvoidingView, Dimensions} from 'react-native';
 import {Icon,Input,ListItem,Card} from 'react-native-elements';
 import {connect} from 'react-redux';
 import Color from '../utilis/colors';
 import Container from '../components/Constainer';
+import Accordian from '../components/Accordian';
+import CompleteTask from '../components/CompleteTask';
+import StudyComplete from '../Screens/StudyComplete';
 import {addStudy,fetchData,checkedStudyDone,checkedStudyUndone,deleteStudy,fetchDoneStudy,studyDrop} from '../actions/studyAction';
 
 class StudyScreen extends Component{
@@ -69,11 +72,14 @@ class StudyScreen extends Component{
       />
     ))
     return(
+      
        <Container>
-         <Card>
+         <Card containerStyle={styles.cardStyle}>
+           <>
+          <Accordian title='Study'/>
           {studys}
-          </Card>
-           <View style={styles.row}>
+
+          <View style={styles.row}>
            <Input
             value={this.state.study}
             onChangeText={(text)=>this.setState({study:text})}
@@ -88,6 +94,11 @@ class StudyScreen extends Component{
             onPress={()=>this.addStudy()}
           />*/}
         </View>
+          <CompleteTask>
+            <StudyComplete/>
+          </CompleteTask>
+          </>
+          </Card>
        </Container>
     );
   }
@@ -119,6 +130,7 @@ const styles = StyleSheet.create({
   row:{
     flexDirection:'row',
     paddingRight:18,
+    marginBottom:15
   },
   doneStyle:{
     color:Color.CHECKED_COLOR,
@@ -126,6 +138,12 @@ const styles = StyleSheet.create({
 },
 undoneStyle:{
     fontWeight:'normal'
+},
+cardStyle:{
+  borderRadius:4
+},
+keyView:{
+  height:Dimensions.get('window').height
 }
 })
 

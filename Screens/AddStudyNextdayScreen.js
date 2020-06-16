@@ -4,6 +4,7 @@ import {Icon,Input,ListItem,Card} from 'react-native-elements';
 import {connect} from 'react-redux';
 import Color from '../utilis/colors';
 import Container from '../components/Constainer';
+import Accordian from '../components/Accordian';
 import {addTomorrowStudy,fetchTomorrowData} from '../actions/studyAction';
 
 class AddStudyNextdayScreen extends Component{
@@ -36,10 +37,12 @@ class AddStudyNextdayScreen extends Component{
 
         return(
       <Container>
-         <Card>
+         <Card containerStyle={styles.cardStyle}>
+           <>
+           <Accordian title='Study'/>
           {studys}
-          </Card>
-           <View style={styles.row}>
+
+          <View style={styles.row}>
            <Input
             value={this.state.study}
             onChangeText={(text)=>this.setState({study:text})}
@@ -54,6 +57,8 @@ class AddStudyNextdayScreen extends Component{
             onPress={()=>this.addStudy()}
           />*/}
         </View>
+          </>
+          </Card>
        </Container>
         );
     }
@@ -84,7 +89,10 @@ const mapStateToProps =(state)=>{
   },
   undoneStyle:{
       fontWeight:'normal'
-  }
+  },
+  cardStyle:{
+    borderRadius:4
+}
   })
 
   export default connect(mapStateToProps,mapDespatchToState)(AddStudyNextdayScreen)

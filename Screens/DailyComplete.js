@@ -1,12 +1,13 @@
 import React,{Component} from 'react';
 import {StyleSheet} from 'react-native';
-import {Card,ListItem,Icon} from 'react-native-elements';
+import {ListItem,Icon} from 'react-native-elements';
 import { connect } from 'react-redux';
 
 import {fetchDoneDaily,callTaskUndrop,fetchData} from '../actions/dailyAction';
 
 import Container from '../components/Constainer';
 import EmptyTaskMessage from '../components/EnptyTaskMessage';
+import Accordian from '../components/Accordian';
 import Color from  '../utilis/colors';
 
 class DailyComplete extends Component{
@@ -32,7 +33,10 @@ class DailyComplete extends Component{
         ))
         return(
           <Container>
-             {this.props.listDoneDaily.length>-1?<Card>{dailys}</Card>:<EmptyTaskMessage task="Daily"/>}
+             {this.props.listDoneDaily.length>-1?<>
+                  {dailys}
+                 </>
+                :<EmptyTaskMessage task="Daily"/>}
           </Container>
         );
     }

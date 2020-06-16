@@ -3,6 +3,9 @@ import { View, StyleSheet,Alert } from 'react-native';
 import { Input, Icon,ListItem,Card} from 'react-native-elements';
 import { connect } from 'react-redux';
 import Container from '../components/Constainer';
+import Accordian from '../components/Accordian';
+import CompleteTask from '../components/CompleteTask';
+import GotoComplete from '../Screens/GotoComplete';
 import Color from '../utilis/colors';
 import { addGoto, fetchGoto,checkedGoToDone,checkedGotoUndone,deleteGoto,fetchDoneGoto,gotoDrop } from '../actions/gotoAction';
 
@@ -69,9 +72,11 @@ class GoToScreen extends Component {
        ))
       return (
          <Container>
-            <Card>
-            {gotos}
-            </Card>
+            <Card containerStyle={styles.cardStyle}>
+            <>
+            <Accordian title='Go To'/>
+             {gotos}
+
             <View style={styles.row}>
                <Input
                   value={this.state.goto}
@@ -87,6 +92,11 @@ class GoToScreen extends Component {
                   onPress={() => this.addGoto()}
                />*/}
             </View>
+             <CompleteTask>
+                <GotoComplete/>
+             </CompleteTask>
+             </>
+            </Card>
          </Container>
       )
    }
@@ -118,6 +128,7 @@ const styles = StyleSheet.create({
    row: {
       flexDirection: 'row',
       paddingRight: 18,
+      marginBottom:15
    },
    doneStyle:{
       color:Color.CHECKED_COLOR,
@@ -125,7 +136,10 @@ const styles = StyleSheet.create({
   },
   undoneStyle:{
       fontWeight:'normal'
-  }
+  },
+  cardStyle:{
+   borderRadius:4
+}
 })
 
 export default connect(mapStateToProps,mapDespatchToProps)(GoToScreen);

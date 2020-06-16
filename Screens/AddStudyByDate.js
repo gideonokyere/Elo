@@ -71,10 +71,10 @@ class AddStudyByDate extends Component{
     ))
     return(
        <Container>
-         <Card>
+         <Card containerStyle={styles.cardStyle}>
+           <>
           {studys}
-          </Card>
-           <View style={styles.row}>
+          <View style={styles.row}>
            <Input
             value={this.state.study}
             onChangeText={(text)=>this.setState({study:text})}
@@ -89,6 +89,8 @@ class AddStudyByDate extends Component{
             onPress={()=>this.addStudy()}
           />*/}
         </View>
+          </>
+          </Card>
        </Container>
     );
   }
@@ -127,6 +129,9 @@ const styles = StyleSheet.create({
 },
 undoneStyle:{
     fontWeight:'normal'
+},
+cardStyle:{
+  borderRadius:4
 }
 })
 

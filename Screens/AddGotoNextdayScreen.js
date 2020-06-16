@@ -3,6 +3,7 @@ import { View, StyleSheet } from 'react-native';
 import { Input, Icon,ListItem,Card} from 'react-native-elements';
 import { connect } from 'react-redux';
 import Container from '../components/Constainer';
+import Accordian from '../components/Accordian';
 import Color from '../utilis/colors';
 import { addGotoTomorrow, fetchGotoTomorrow} from '../actions/gotoAction';
 
@@ -36,10 +37,12 @@ class AddGotoNextdayScreen extends Component{
 
         return(
             <Container>
-            <Card>
-            {gotos}
-            </Card>
-            <View style={styles.row}>
+            <Card containerStyle={styles.cardStyle}>
+             <>
+            <Accordian title='Go To'/>
+              {gotos}
+
+              <View style={styles.row}>
                <Input
                   value={this.state.goto}
                   onChangeText={(text) => this.setState({ goto: text })}
@@ -54,6 +57,8 @@ class AddGotoNextdayScreen extends Component{
                   onPress={() => this.addGoto()}
                />*/}
             </View>
+             </>
+            </Card>
          </Container>
         );
     }
@@ -84,7 +89,10 @@ const mapStateToProps = (state) => {
    },
    undoneStyle:{
        fontWeight:'normal'
-   }
+   },
+   cardStyle:{
+      borderRadius:4
+  }
  })
 
  export default connect(mapStateToProps,mapDespatchToProps)(AddGotoNextdayScreen);

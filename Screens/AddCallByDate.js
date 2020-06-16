@@ -120,11 +120,11 @@ render(){
 
   return (
     <Constainer>
-         <Card>
+         <Card containerStyle={styles.cardStyle}>
+           <>
            {lists}
-          </Card>
-        <View style={styles.row}>
-          <Input
+           <View style={styles.row}>
+           <Input
             value={this.state.name}
             onChangeText={(text)=>this.setState({name:text})}
             onChange={(text)=>this.searchContact(text.nativeEvent.text)}
@@ -140,6 +140,8 @@ render(){
             onPress={()=>this.addCall()}
           />*/}
         </View>
+           </>
+          </Card>
     </Constainer> 
   );
 }
@@ -178,6 +180,9 @@ const styles = StyleSheet.create({
 },
 undoneStyle:{
     fontWeight:'normal'
+},
+cardStyle:{
+  borderRadius:4
 }
 })
 

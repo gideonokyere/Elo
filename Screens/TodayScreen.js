@@ -1,10 +1,7 @@
 import React from 'react';
-import {ScrollView,KeyboardAvoidingView} from 'react-native';
-import {Icon} from 'react-native-elements';
-import Color from '../utilis/colors';
+import {ScrollView,KeyboardAvoidingView,Platform} from 'react-native';
 import Constainer from '../components/Constainer';
-import Accordian from '../components/Accordian';
-import CompleteTask from '../components/CompleteTask';
+
 
 import DailyScreen from '../Screens/DailyScreen';
 import AddCallScreen from '../Screens/AddCallScreen';
@@ -19,46 +16,28 @@ import CallComplete from './CallComplete';
 
 const TodayScreen = ()=>{
     return(
-      <KeyboardAvoidingView behavior='padding' style={{flex:1}}>
        <Constainer>
       <ScrollView>
-         <Accordian title='Daily'>
-            <DailyScreen/>
-         </Accordian>
+      <KeyboardAvoidingView behavior={Platform.Os == "ios" ? "padding" : "height"} style={{flex:1}}>
+          <DailyScreen/>
 
-         <Accordian title='Call'>
-            <AddCallScreen/>
-         </Accordian>
-
-         <Accordian title='To Do'>
-            <ToDoScreen/>
-         </Accordian>
-
-         <Accordian title='Go To'>
-            <GoToScreen/>
-         </Accordian>
-
-         <Accordian title='Buy'>
-            <BuyScreen/>
-         </Accordian>
-
-         <Accordian title='Visit'>
-            <VisitScreen/>
-         </Accordian>
-
-         <Accordian title='Study'>
-            <StudyScreen/>
-         </Accordian>
-
-         <Accordian title='Projects'>
-            <ProjectScreen/>
-         </Accordian>
+          <AddCallScreen/>
          
-         <CompleteTask/>
+          <ToDoScreen/>
+
+          <GoToScreen/>
+
+         <BuyScreen/>
+
+         <VisitScreen/>
+        
+         <StudyScreen/>
+
+         <ProjectScreen/>
+         </KeyboardAvoidingView>
       </ScrollView>
 
        </Constainer>
-       </KeyboardAvoidingView>
     );
 }
 

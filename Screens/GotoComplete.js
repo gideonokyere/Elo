@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import {fetchDoneGoto,gotoUndrop,fetchGoto} from '../actions/gotoAction'
 
 import Container from '../components/Constainer';
+import Accordian from '../components/Accordian';
 import EmptyTaskMessage from '../components/EnptyTaskMessage';
 import Color from  '../utilis/colors';
 
@@ -34,7 +35,11 @@ class GotoComplete extends Component{
 
         return(
           <Container>
-             {this.props.listDoneGoto.length>-1?<Card>{doneGoto}</Card>:<EmptyTaskMessage task='Go to'/>}
+             {this.props.listDoneGoto.length>-1?
+             <>
+                {doneGoto}
+             </>:
+             <EmptyTaskMessage task='Go to'/>}
           </Container>
         )
     }

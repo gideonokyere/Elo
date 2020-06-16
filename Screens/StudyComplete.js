@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import {fetchDoneStudy,studyUndrop,fetchData} from '../actions/studyAction';
 
 import Container from '../components/Constainer';
+import Accordian from '../components/Accordian';
 import EmptyTaskMessage from '../components/EnptyTaskMessage';
 import Color from  '../utilis/colors';
 
@@ -34,7 +35,11 @@ class StudyComplete extends Component{
 
         return(
            <Container>
-               {this.props.doneStudy.length>-1?<Card>{studys}</Card>:<EmptyTaskMessage task="Study"/>}
+               {this.props.doneStudy.length>-1?
+               <>
+                {studys}
+              </>:
+              <EmptyTaskMessage task="Study"/>}
            </Container>
         )
     }

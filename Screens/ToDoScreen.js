@@ -1,8 +1,11 @@
 import React,{Component} from 'react';
-import {StyleSheet,View,Alert} from 'react-native';
+import {StyleSheet,View,Alert, CheckBox} from 'react-native';
 import {Input,Icon,ListItem,Card} from 'react-native-elements';
 import {connect} from 'react-redux';
 import Container from '../components/Constainer';
+import Accordian from '../components/Accordian';
+import CompleteTask from '../components/CompleteTask';
+import TodoComplete from  '../Screens/TodoComplete';
 import Color from '../utilis/colors';
 import {addTodo,fetchTodos,checkTodoDone,checkedTodoUndone,deleteTodo,fetchDoneTodo,todoDrop} from '../actions/todoAction';
 
@@ -72,11 +75,13 @@ class ToDoScreen extends Component{
 
     return(
       <Container>
-         <Card>
+         <Card containerStyle={styles.cardStyle}>
+           <>
+          <Accordian title='To Do'/>
            {todos}
-          </Card>
+
           <View style={styles.row}>
-          <Input
+           <Input
             value={this.state.todo}
             onChangeText={(text)=>this.setState({todo:text})}
             placeholder='E.g. post letters'
@@ -90,6 +95,11 @@ class ToDoScreen extends Component{
             onPress={()=>this.addToDo()}
           />*/}
         </View>
+        <CompleteTask>
+           <TodoComplete/>
+        </CompleteTask>
+        </>
+       </Card>
       </Container>
     );
    }
@@ -121,6 +131,7 @@ const styles = StyleSheet.create({
   row:{
     flexDirection:'row',
     paddingRight:18,
+    marginBottom:15
   },
   doneStyle:{
     color:Color.CHECKED_COLOR,
@@ -128,7 +139,10 @@ const styles = StyleSheet.create({
 },
 undoneStyle:{
     fontWeight:'normal'
- }
+ },
+ cardStyle:{
+  borderRadius:4
+}
 })
 
 export default connect(mapStateToProps,mapDespatchToProps)(ToDoScreen);

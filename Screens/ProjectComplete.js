@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import {fetchDoneProject,projectUndrop,fetchData} from '../actions/projectAction';
 
 import Container from '../components/Constainer';
+import Accordian from '../components/Accordian';
 import EmptyTaskMessage from '../components/EnptyTaskMessage';
 import Color from  '../utilis/colors';
 
@@ -35,7 +36,11 @@ class ProjectComplete extends Component{
 
         return(
             <Container>
-              {this.props.listProjectsDone.length>-1?<Card>{projects}</Card>:<EmptyTaskMessage task="Project"/>}
+              {this.props.listProjectsDone.length>-1?
+              <>
+                {projects}
+              </>:
+              <EmptyTaskMessage task="Project"/>}
             </Container>
         )
     }

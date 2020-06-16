@@ -77,10 +77,9 @@ class AddBuyByDate extends Component{
 
     return(
        <Container>
-          <Card>
+          <Card containerStyle={styles.cardStyle}>
+           <>
           {buy}
-          </Card>
-
           <View style={styles.row}>
           <Input
             value={this.state.buy}
@@ -96,6 +95,8 @@ class AddBuyByDate extends Component{
             onPress={()=>this.addBuy()}
           />*/}
         </View>
+          </>
+          </Card>
         </Container>
      );
     }
@@ -134,6 +135,9 @@ const styles = StyleSheet.create({
     },
     undoneStyle:{
         fontWeight:'normal'
+    },
+    cardStyle:{
+        borderRadius:4
     }
   })
 
