@@ -1,5 +1,5 @@
 import * as SQLite from 'expo-sqlite';
-const DB = SQLite.openDatabase("azura.db");
+const DB = SQLite.openDatabase("elo.db");
 
 export function createCallTable(){
     DB.transaction((tx)=>{
